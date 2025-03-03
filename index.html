@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
     <link rel="manifest" href="https://alchemeowww.github.io/alchemeowww/images/favicon/site.webmanifest">
-
+    <meta name="theme-color" content="#D0B68F">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -22,10 +22,7 @@
     <style>
         body {
             font-family: "Tangerine", cursive;
-            overflow: hidden;
         }
-
-
         .parallax {
             position: absolute;
             width: 100%;
@@ -67,7 +64,7 @@
     </style>
 </head>
 
-<body class="relative w-full h-screen flex items-top justify-top bg-[#D0B68F] text-white" x-data="{
+<body class="w-full h-screen flex flex-col items-top justify-top bg-[#D0B68F] text-white" x-data="{
     x: 0, y: 0, year: new Date().getFullYear(),
     updateMouse(event) {
         this.x = (event.clientX / window.innerWidth - 0.5) * 30;
@@ -80,30 +77,31 @@
         }
     }
 }" @mousemove="updateMouse" @deviceorientation.window="updateGyro">
+    <div class="relative flex" >
+        <div class="parallax bg-[url('images/MIST;Y.png')] z-30 flex flex-col items-center justify-center text-4xl font-bold"
+            :style="`transform: translate(${x}px, ${y}px)`">
+        </div>
+        <div class="parallax bg-[url('images/FOREST.png')] z-20 flex items-center justify-center text-3xl font-semibold"
+            :style="`transform: translate(${x * 0.9}px, ${y * 0.9}px)`">
+        </div>
+        <div class="parallax bg-[url('images/leave.png')] z-20 flex items-center justify-center text-3xl font-semibold"
+            :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
+        </div>
+        <div class="parallax bg-[url('images/leave.png')] z-20 flex items-center justify-center text-3xl font-semibold"
+            :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
+        </div>
+        <div class="parallax bg-[url('images/mist.png')] z-20 flex items-center justify-center text-3xl font-semibold"
+            :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
+        </div>
+        <div class="parallax bg-[url('images/miwusenlin.png')] z-10 flex items-center justify-center text-2xl font-medium"
+            :style="`transform: translate(${x * 0.7}px, ${y * 0.7}px)`">
+        </div>
+        <div class="parallax bg-[url('images/tree.png')] z-10 flex items-center justify-center text-2xl font-medium"
+            :style="`transform: translate(${x * 0.4}px, ${y * 0.4}px)`">
+        </div>
+    </div>
 
-    <div class="parallax bg-[url('images/MIST;Y.png')] z-30 flex flex-col items-center justify-center text-4xl font-bold"
-        :style="`transform: translate(${x}px, ${y}px)`">
-    </div>
-    <div class="parallax bg-[url('images/FOREST.png')] z-20 flex items-center justify-center text-3xl font-semibold"
-        :style="`transform: translate(${x * 0.9}px, ${y * 0.9}px)`">
-    </div>
-    <div class="parallax bg-[url('images/leave.png')] z-20 flex items-center justify-center text-3xl font-semibold"
-        :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
-    </div>
-    <div class="parallax bg-[url('images/leave.png')] z-20 flex items-center justify-center text-3xl font-semibold"
-        :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
-    </div>
-    <div class="parallax bg-[url('images/mist.png')] z-20 flex items-center justify-center text-3xl font-semibold"
-        :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
-    </div>
-    <div class="parallax bg-[url('images/miwusenlin.png')] z-10 flex items-center justify-center text-2xl font-medium"
-        :style="`transform: translate(${x * 0.7}px, ${y * 0.7}px)`">
-    </div>
-    <div class="parallax bg-[url('images/tree.png')] z-10 flex items-center justify-center text-2xl font-medium"
-        :style="`transform: translate(${x * 0.4}px, ${y * 0.4}px)`">
-    </div>
-
-    <div class="parallax z-50 z-30 flex flex-col items-center justify-end text-3xl md:text-5xl font-bold p-4 text-center h-[70%] text-[#4F321E]"
+    <div class="parallax z-50 z-30 flex flex-col items-center justify-end text-3xl md:text-5xl font-bold p-4 text-center text-[#4F321E]"
         :style="`transform: translate(${x * 0.4}px, ${y * 0.4}px)`">
         <div class="">A tale is unfolding in the mist... More to be revealed soon.</div>
         <div class="bouncing-container">
@@ -113,9 +111,9 @@
         </div>
     </div>
 
-    <footer class="w-full bg-[#543100] text-[#D0B68F] text-center p-4 absolute bottom-0">
+    <div class="w-full bg-[#543100] text-[#D0B68F] text-center p-4 absolute bottom-0">
         &copy; <span x-text="year"></span> Alchemeowww. All Rights Reserved.
-    </footer>
+    </div>
 
 </body>
 

@@ -76,8 +76,8 @@
     },
     updateGyro(event) {
         if (event.gamma && event.beta) {
-            this.x = event.gamma;
-            this.y = event.beta;
+            this.x = event.gamma * 2;
+            this.y = event.beta * 2;
         }
     }
 }" @mousemove="updateMouse" @deviceorientation.window="updateGyro">
@@ -104,9 +104,9 @@
         :style="`transform: translate(${x * 0.4}px, ${y * 0.4}px)`">
     </div>
 
-    <div class="parallax z-50 z-30 flex flex-col items-center justify-center text-3xl md:text-5xl font-bold p-4 text-center h-full text-[#4F321E]"
+    <div class="parallax z-50 z-30 flex flex-col items-center justify-end text-3xl md:text-5xl font-bold p-4 text-center h-[70%] text-[#4F321E]"
         :style="`transform: translate(${x * 0.4}px, ${y * 0.4}px)`">
-        <div class="mt-[350px] sm:mt-[500px]">A tale is unfolding in the mist... More to be revealed soon.</div>
+        <div class="">A tale is unfolding in the mist... More to be revealed soon.</div>
         <div class="bouncing-container">
             <div class="bouncing-ball ball-1"></div>
             <div class="bouncing-ball ball-2"></div>

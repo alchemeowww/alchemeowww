@@ -16,10 +16,11 @@
     <meta name="theme-color" content="#D0B68F">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Tangerine:wght@400;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        .font-play{
+            font-family: "Play";
+        }
         body {
             font-family: "Tangerine", cursive;
         }
@@ -31,6 +32,43 @@
             background-repeat: no-repeat;
             background-size: contain;
             transition: transform 0.1s linear;
+        }
+
+        .parallax:nth-child(1) { animation: bounce1 3s infinite ease-in-out; }
+        .parallax:nth-child(2) { animation: bounce2 3.5s infinite ease-in-out; }
+        .parallax:nth-child(3) { animation: bounce3 4s infinite ease-in-out; }
+        .parallax:nth-child(4) { animation: bounce4 4.5s infinite ease-in-out; }
+        .parallax:nth-child(5) { animation: bounce5 5s infinite ease-in-out; }
+        .parallax:nth-child(6) { animation: bounce6 5.5s infinite ease-in-out; }
+        .parallax:nth-child(7) { animation: bounce7 6s infinite ease-in-out; }
+        
+        @keyframes bounce1 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes bounce2 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-13px); }
+        }
+        @keyframes bounce3 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes bounce4 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes bounce5 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-18px); }
+        }
+        @keyframes bounce6 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes bounce7 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-16px); }
         }
         /* Bouncing Balls Animation */
         .bouncing-container {
@@ -61,34 +99,35 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+
+        @keyframes slideUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0; }
+        }
+
+        .slow-slide-out {
+            animation: slideUp 0.5s ease-in-out;
+        }
     </style>
 </head>
 
 <body class="w-full bg-[#D0B68F]
     " x-data="{
+    showButton: false,
     x: 0, y: 0, year: new Date().getFullYear(),
     updateMouse(event) {
         this.x = (event.clientX / window.innerWidth - 0.5) * 30;
         this.y = (event.clientY / window.innerHeight - 0.5) * 30;
     },
-    updateGyro(event) {
-        if (event.gamma && event.beta) {
-            this.x = event.gamma * 0.5;
-            this.y = event.beta * 0.5;
-        }
-    }
-}" @mousemove="updateMouse" @deviceorientation.window="updateGyro">
-    <div class="snap-y snap-mandatory">
-        <div class="flex flex-col h-screen w-full snap-start snap-always overflow-hidden">
+}" @mousemove="updateMouse" x-init="setTimeout(() => showButton = true, 2000)">
+    <div class="">
+        <div class="flex flex-col h-screen w-full overflow-hidden">
             <div class="relative h-[60%]">
                 <div class="parallax bg-[url('images/MIST;Y.png')] z-30 flex flex-col items-center justify-center text-4xl font-bold"
                     :style="`transform: translate(${x}px, ${y}px)`">
                 </div>
                 <div class="parallax bg-[url('images/FOREST.png')] z-20 flex items-center justify-center text-3xl font-semibold"
                     :style="`transform: translate(${x * 0.9}px, ${y * 0.9}px)`">
-                </div>
-                <div class="parallax bg-[url('images/leave.png')] z-20 flex items-center justify-center text-3xl font-semibold"
-                    :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
                 </div>
                 <div class="parallax bg-[url('images/leave.png')] z-20 flex items-center justify-center text-3xl font-semibold"
                     :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
@@ -107,22 +146,29 @@
                 <div class="z-50 z-30 flex flex-col items-center text-3xl md:text-5xl font-bold p-4 text-center text-[#4F321E]"
                     :style="`transform: translate(${x * 0.4}px, ${y * 0.4}px)`">
                     <div class="">A tale is unfolding in the mist... More to be revealed soon.</div>
-                    <div class="bouncing-container">
-                        <div class="bouncing-ball ball-1"></div>
-                        <div class="bouncing-ball ball-2"></div>
-                        <div class="bouncing-ball ball-3"></div>
+                    <div class="relative flex justify-center items-center w-full h-[100px] mt-4">
+                        <div x-show="!showButton" class="absolute bouncing-container flex justify-center items-center"
+                            x-transition:leave="slow-slide-out">
+                            <div class="bouncing-ball ball-1"></div>
+                            <div class="bouncing-ball ball-2"></div>
+                            <div class="bouncing-ball ball-3"></div>
+                        </div>
+                    
+                        <button x-show="showButton"
+                            x-transition:enter="transition-transform transform translate-y-5 opacity-0 duration-[1500ms] ease-linear"
+                            x-transition:enter-start="translate-y-5 opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
+                            class="font-play absolute px-16 py-4 bg-[#4F321E] text-[#D0B68F] rounded-full transform transition-all 
+                                duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer shadow-xl text-2xl">
+                            Journey Start
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="h-screen w-full flex items-center justify-center bg-gray-600 text-white text-3xl font-semibold snap-start snap-always">
-            Page 2 Content Here
-        </div>
     </div>
 
     <div class="w-full bg-[#543100] text-[#D0B68F] text-center p-4">
-        &copy; <span x-text="year"></span> Alchemeowww. All Rights Reserved.
+        &copy; <span x-text="new Date().getFullYear()"></span> Alchemeowww. All Rights Reserved.
     </div>
 
 </body>

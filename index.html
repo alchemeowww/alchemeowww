@@ -43,8 +43,8 @@
         }
         .character { animation: bounceCharacter 3s infinite ease-in-out; }
         @keyframes bounceCharacter {
-            0%, 100% { transform: translateY(40px); }
-            50% { transform: translateY(60px); }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
         }
         .banner { animation: bounce2 2s infinite ease-in-out; }
 
@@ -127,7 +127,7 @@
 
 <body class="w-full bg-[#D0B68F]
     " x-data="{
-    page:2,
+    page:1,
     showButton: false,
     x: 0, y: 0, year: new Date().getFullYear(),
     updateMouse(event) {
@@ -172,9 +172,9 @@
                         <button x-show="showButton" @click="page = 2"
                             x-transition:enter="transition-transform transform translate-y-5 opacity-0 duration-[1500ms] ease-linear"
                             x-transition:enter-start="translate-y-5 opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
-                            class="font-play absolute px-16 py-4 bg-[#4F321E] text-[#D0B68F] rounded-full transform transition-all 
+                            class="font-play absolute px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full transform transition-all 
                                 duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer shadow-xl text-2xl">
-                            Journey Start
+                            Preview
                         </button>
                     </div>
                 </div>
@@ -184,19 +184,18 @@
             <div class="flex flex-col items-center justify-center grow text-[#D0B68F]">
                 <div class="flex overflow-x-auto snap-x snap-mandatory space-x-4 p-4 w-full h-screen items-center px-[10vw]">
                     <div
-                        class="snap-center flex-shrink-0  w-[90vw] md:w-[75vw] h-[70vh] bg-[#f9e4c6] text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg
-                        overflow-hidden">
+                        class="snap-center flex-shrink-0  w-[85vw] md:w-[75vw] h-[70vh] bg-[#f9e4c6] text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg">
                         <div class="flex flex-col">
-                            <div class="flex flex-row items-center justify-center font-play text-sm">
-                                <div class="w-[200px] items-center justify-center text-left">
+                            <div class="relative items-center justify-center font-play w-[90vw] md:w-[40vw] h-[55vh]">
+                                <div class="absolute w-[170px] md:w-[250px] text-left bg-white rounded-lg p-2 text-xs md:text-base">
                                     <p>Name: Koro (Korokke)</p>
                                     <p>Species: Cat (Oyen)</p>
                                     <p>Eyes colour: Green</p>
                                     <p>Fav food: Corn</p>
                                     <p>Hobby: Study alchemy about time</p>
                                 </div>
-                                <div class="character-img character bg-[url('images/characters/koro/koro.png')] w-[50vw] md:w-[30vw] h-[30vh] md:h-[50vh]"></div>
-                                <div class="w-[200px] items-center justify-center text-right">
+                                <div class="character-img character bg-[url('images/characters/koro/koro.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
+                                <div class="absolute right-0 bottom-10  w-[200px] items-center justify-center text-right bg-white rounded-lg p-2 text-xs hidden">
                                     <p>Koro is a time alchemist who lives in a small wooden house with grey rooftop</p>
                                     <p>He loves planting but bad in planting, thus most of the plants are dead in his garden</p>
                                     <p></p>
@@ -208,18 +207,18 @@
                         </div>
                     </div>
                     <div
-                        class="snap-center flex-shrink-0 w-[75vw] h-[70vh] bg-[#f9e4c6] flex items-center justify-center text-2xl font-bold rounded-lg overflow-hidden">
+                        class="snap-center flex-shrink-0  w-[85vw] md:w-[75vw] h-[70vh] bg-[#f9e4c6] text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg">
                         <div class="flex flex-col">
-                                <div class="flex flex-row items-center justify-center font-play text-sm">
-                                <div class="w-[200px] items-center justify-center text-left font-play">
+                            <div class="relative items-center justify-center font-play w-[90vw] md:w-[40vw] h-[55vh]">
+                                <div class="absolute w-[170px] md:w-[250px] text-left bg-white rounded-lg p-2 text-xs md:text-base">
                                     <p>Name: Sese (Sesame)</p>
                                     <p>Species: Cat (Tabby Siamese)</p>
                                     <p>Eyes colour: Blue</p>
                                     <p>Fav food: Tofu</p>
                                     <p>Hobby: Collect different kinds of leaves</p>
                                 </div>
-                                <div class="character-img character bg-[url('images/characters/sese/sese.png')] md:w-[30vw] h-[30vh] md:h-[50vh]"></div>
-                                <div class="w-[200px] items-center justify-center text-right">
+                                <div class="character-img character bg-[url('images/characters/sese/sese.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
+                                <div class="w-[200px] items-center justify-center text-right hidden">
                                     <p>Sese is a forest botanist and has been exploring many different forest</p>
                                     <p>However, he always get lost in the forest</p>
                                     <p></p>
@@ -230,10 +229,31 @@
                             <div class="character-img banner bg-[url('images/characters/sese/character_banner.png')] h-[20vh]"></div>
                         </div>
                     </div>
-                    <!-- <div
-                        class="snap-center flex-shrink-0 w-[75vw] h-[70vh] bg-[#f9e4c6] flex items-center justify-center text-2xl font-bold rounded-lg">
-                        Slide 3
-                    </div> -->
+                    <div
+                        class="snap-center flex-shrink-0  w-[85vw] md:w-[75vw] h-[70vh] bg-[#f9e4c6] text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg">
+                        <div class="flex flex-col">
+                            <div class="relative items-center justify-center font-play w-[90vw] md:w-[40vw] h-[55vh]">
+                                <div class="absolute w-[170px] md:w-[250px] text-left bg-white rounded-lg p-2 text-xs md:text-base">
+                                    <p>Name: Rye</p>
+                                    <p>Species: Cat (Tuxedo)</p>
+                                    <p>Eyes colour: Amber</p>
+                                    <p>Fav food: Cherry</p>
+                                    <p>Hobby: Reading novel from different places</p>
+                                </div>
+                                <div
+                                    class="character-img character bg-[url('images/characters/rye/rye.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 ">
+                                </div>
+                                <div class="w-[200px] items-center justify-center text-right hidden">
+                                    <p>Rye is an apprentice knight from Kingdom Tsavorite, he is travelling around to help people to solve problems</p>
+                                    <p>Under his scarf, there is a gold pendant underneath, seems like is secret of his identity</p>
+                                    <p></p>
+                                    <p>Rye has a serious face and looks very strong</p>
+                                    <p>But he actually is a coward</p>
+                                </div>
+                            </div>
+                            <div class="character-img banner bg-[url('images/characters/rye/character_banner.png')] h-[20vh]"></div>
+                        </div>
+                    </div>
                 </div>
 
 

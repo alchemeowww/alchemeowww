@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap Scrolling Example</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="h-screen overflow-y-scroll snap-y snap-mandatory">
+
+    <!-- Page 1 -->
+    <section class="h-screen flex items-center justify-center bg-blue-500 text-white text-4xl font-bold snap-start">
+        Page 1
+    </section>
+
+    <!-- Page 2 -->
+    <section class="h-screen flex items-center justify-center bg-green-500 text-white text-4xl font-bold snap-start">
+        Page 2
+    </section>
+
+    <!-- Page 3 -->
+    <section class="h-screen flex items-center justify-center bg-red-500 text-white text-4xl font-bold snap-start">
+        Page 3
+    </section>
+
+</body>
+
+</html>

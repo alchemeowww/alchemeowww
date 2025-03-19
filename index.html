@@ -135,7 +135,14 @@
         this.y = (event.clientY / window.innerHeight - 0.5) * 30;
     },
 }" @mousemove="updateMouse" x-init="setTimeout(() => showButton = true, 2000)" x-cloak>
-    <div class="flex flex-col h-screen w-full overflow-hidden">
+    <header class="sticky top-0 w-full text-white py-3 px-3 z-50">
+        <div class="flex items-center justify-between">
+            <a x-show="page != 1" @click="page > 1 ? page-- : page" class="w-10 h-10 bg-[#f9e4c6] text-[#4F321E] rounded-full flex items-center justify-center 
+                hover:bg-[#f9e4b7] transition duration-300 shadow-md "><span class="mt-1">⬅</span></a>
+        </div>
+    </header>
+
+    <div class="flex flex-col h-[90vh] w-full overflow-hidden">
         <div class="flex flex-col h-screen w-full overflow-hidden" x-show="page == 1">
             <div class="relative h-[60%]">
                 <div class="parallax bg-[url('images/MIST;Y.png')] z-30 flex flex-col items-center justify-center text-4xl font-bold"
@@ -180,7 +187,7 @@
                 </div>
             </div>
         </div>
-        <div x-show="page == 2">
+        <div x-show="page == 2" class="h-[80vh]">
             <div class="flex flex-col items-center justify-center grow text-[#D0B68F]">
                 <div class="flex overflow-x-auto snap-x snap-mandatory space-x-4 p-4 w-full h-screen items-center px-[10vw]">
                     <div

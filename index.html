@@ -127,7 +127,7 @@
 
 <body class="w-full bg-[#D0B68F]
     " x-data="{
-    page:1,
+    page:2,
     showButton: false,
     x: 0, y: 0, year: new Date().getFullYear(),
     updateMouse(event) {
@@ -138,13 +138,13 @@
     <header class="sticky top-0 w-full text-white py-3 px-3 z-50">
         <div class="flex items-center justify-between">
             <a x-show="page != 1" @click="page > 1 ? page-- : page" class="w-10 h-10 bg-[#f9e4c6] text-[#4F321E] rounded-full flex items-center justify-center 
-                hover:bg-[#f9e4b7] transition duration-300 shadow-md "><span class="mt-1">⬅</span></a>
+                hover:bg-[#f9e4b7] transition duration-300 shadow-md cursor-pointer"><span class="mt-1">⬅</span></a>
         </div>
     </header>
 
     <div class="flex flex-col h-[90vh] w-full overflow-hidden">
-        <div class="flex flex-col h-screen w-full overflow-hidden" x-show="page == 1">
-            <div class="relative h-[60%]">
+        <div class="flex flex-col grow w-full overflow-hidden" x-show="page == 1">
+            <div class="relative h-full">
                 <div class="parallax bg-[url('images/MIST;Y.png')] z-30 flex flex-col items-center justify-center text-4xl font-bold"
                     :style="`transform: translate(${x}px, ${y}px)`">
                 </div>
@@ -187,9 +187,9 @@
                 </div>
             </div>
         </div>
-        <div x-show="page == 2" class="h-[80vh]">
-            <div class="flex flex-col items-center justify-center grow text-[#D0B68F]">
-                <div class="flex overflow-x-auto snap-x snap-mandatory space-x-4 p-4 w-full h-screen items-center px-[10vw]">
+        <div x-show="page == 2" class="grow">
+            <div class="flex flex-col items-center justify-center grow text-[#D0B68F] h-full">
+                <div class="flex overflow-x-auto snap-x snap-mandatory space-x-4 p-4 w-full grow items-center px-[10vw]">
                     <div
                         class="snap-center flex-shrink-0  w-[85vw] md:w-[75vw] h-[70vh] bg-[#f9e4c6] text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg">
                         <div class="flex flex-col">
@@ -262,8 +262,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

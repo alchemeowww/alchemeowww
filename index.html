@@ -137,8 +137,9 @@
 }" @mousemove="updateMouse" x-init="setTimeout(() => showButton = true, 2000)" x-cloak>
     <header class="sticky top-0 w-full text-white py-3 px-3 z-50">
         <div class="flex items-center justify-between">
-            <a x-show="page != 1" @click="page > 1 ? page-- : page" class="w-10 h-10 bg-[#f9e4c6] text-[#4F321E] rounded-full flex items-center justify-center 
-                hover:bg-[#f9e4b7] transition duration-300 shadow-md cursor-pointer"><span class="mt-1">⬅</span></a>
+            <a x-show="page != 1" @click="page > 1 ? page-- : page" class="w-10 h-10 bg-[#4F321E] text-[#D0B68F] rounded-full flex items-center justify-center 
+                hover:bg-[#6A442A] transition duration-300 shadow-xl cursor-pointer transform transition-all
+                duration-100 ease-linear hover:scale-110"><span class="mt-1">⬅</span></a>
         </div>
     </header>
 

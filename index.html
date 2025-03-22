@@ -9,6 +9,9 @@
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
     <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
@@ -142,7 +145,7 @@
         <div class="flex items-center justify-between">
             <a x-show="page != 1" @click="page > 1 ? page-- : page" class="w-10 h-10 bg-[#4F321E] text-[#D0B68F] rounded-full flex items-center justify-center 
                 hover:bg-[#6A442A] transition duration-300 shadow-xl cursor-pointer transform transition-all
-                duration-100 ease-linear hover:scale-110"><span class="mt-1">⬅</span></a>
+                duration-100 ease-linear hover:scale-110"><i class="fa-solid fa-chevron-left"></i></a>
         </div>
     </header>
 

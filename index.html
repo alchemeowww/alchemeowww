@@ -31,10 +31,10 @@
         .parallax {
             position: absolute;
             width: 100%;
-            height: 80vh;
+            height: 100%;
             background-position: center;
             background-repeat: no-repeat;
-            background-size: contain;
+            background-size: inherit;
             transition: transform 0.1s linear;
         }
 
@@ -64,31 +64,31 @@
         
         @keyframes bounce1 {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-4px); }
         }
         @keyframes bounce2 {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-13px); }
+            50% { transform: translateY(-4px); }
         }
         @keyframes bounce3 {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-3px); }
         }
         @keyframes bounce4 {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-3px); }
         }
         @keyframes bounce5 {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-18px); }
+            50% { transform: translateY(-3px); }
         }
         @keyframes bounce6 {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-2px); }
         }
         @keyframes bounce7 {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-16px); }
+            50% { transform: translateY(-2px); }
         }
         /* Bouncing Balls Animation */
         .bouncing-container {
@@ -133,14 +133,58 @@
 
 <body class="w-full bg-[#D0B68F]
     " x-data="{
-    page:1,
+    page:2,
     showButton: false,
+    open: false,
+    selectedCharacter: null,
+    characters: {
+        Koro : {
+            name: 'Koro',
+            description: 'Koro is a time alchemist who lives in a small wooden house with grey rooftop. <br/>He loves planting but is bad at planting, thus most of the plants are dead in his garden. Koro is wearing an hourglass necklace which is inherited from his mom who was also a time alchemist. This hourglass has secret power.'
+        },
+        Sese : {
+            name: 'Sese',
+            description: `Sese is a forest botanist and has been exploring many different forests. However, he always gets lost in the forest. Sese is not a local person in MIST;Y FOREST, he came here to find the 'Legendary Leaf'. He believes that the leaf can fulfill his wish.`
+        },
+        Rye : {
+            name: 'Rye',
+            description: 'Rye is an apprentice knight from Kingdom Tsavorite. He is traveling around to help people solve problems. Under his scarf, there is a gold pendant underneath, which seems to be a secret of his identity. Rye has a serious face and looks very strong, but he is actually a coward.'
+        }
+    },
     x: 0, y: 0, year: new Date().getFullYear(),
     updateMouse(event) {
         this.x = (event.clientX / window.innerWidth - 0.5) * 30;
         this.y = (event.clientY / window.innerHeight - 0.5) * 30;
     },
 }" @mousemove="updateMouse" x-init="setTimeout(() => showButton = true, 2000)" x-cloak>
+
+    <div x-show="open" class="fixed inset-0 backdrop-blur-lg flex items-center justify-center transition-opacity z-100" @click="open = false"
+        x-transition:enter="duration-300 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="duration-300 ease-in" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    
+        <!-- Modal Box -->
+        <div class="bg-white w-[90vw] md:w-[50vw] p-6 rounded-lg shadow-lg relative  flex flex-col items-center text-2xl font-play" 
+            x-transition:enter="duration-300 ease-out transform" x-transition:enter-start="scale-90 opacity-0"
+            x-transition:enter-end="scale-100 opacity-100" x-transition:leave="duration-300 ease-in transform"
+            x-transition:leave-start="scale-100 opacity-100" x-transition:leave-end="scale-90 opacity-0">
+    
+            <!-- Modal Content -->
+            <h2 class="text-3xl font-bold text-[#4F321E] mb-4" x-text="characters[selectedCharacter]['name'] || ''"></h2>
+            <div>
+                <p x-html="characters[selectedCharacter]['description'] || ''"></p>
+            </div>
+    
+            <!-- Modal Action Buttons -->
+            <button @click="open = false"
+                x-transition:enter="duration-[1500ms] ease-linear"
+                class="font-play px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full transform transition-all mt-4
+                                            duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer shadow-xl text-2xl">
+                Close
+            </button>
+    
+        </div>
+    </div>
+
     <header class="sticky top-0 w-full text-white py-3 px-3 z-50">
         <div class="flex items-center justify-between">
             <a x-show="page != 1" @click="page > 1 ? page-- : page" class="w-10 h-10 bg-[#4F321E] text-[#D0B68F] rounded-full flex items-center justify-center 
@@ -149,9 +193,9 @@
         </div>
     </header>
 
-    <div class="flex flex-col h-[90vh] w-full overflow-hidden">
+    <div class="flex flex-col h-[100vh] w-full overflow-hidden">
         <div class="flex flex-col grow w-full overflow-hidden" x-show="page == 1">
-            <div class="relative h-full">
+            <div class="relative h-1/2 sm:h-3/5 bg-[auto_450px] sm:bg-[auto_650px]">
                 <div class="parallax bg-[url('images/MIST;Y.png')] z-30 flex flex-col items-center justify-center text-4xl font-bold"
                     :style="`transform: translate(${x}px, ${y}px)`">
                 </div>
@@ -210,15 +254,16 @@
                                     <p>Hobby: Study alchemy about time</p>
                                 </div>
                                 <div class="character-img character bg-[url('images/characters/koro/koro.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
-                                <div class="absolute right-0 bottom-10  w-[200px] items-center justify-center text-right bg-white rounded-lg p-2 text-xs hidden">
-                                    <p>Koro is a time alchemist who lives in a small wooden house with grey rooftop</p>
-                                    <p>He loves planting but bad in planting, thus most of the plants are dead in his garden</p>
-                                    <p></p>
-                                    <p>Koro is wearing a hourglass necklace which is inherited from his mom who also a time alchemist</p>
-                                    <p>This hourglass has secret power</p>
+                                <div class="absolute right-0 bottom-10  items-center justify-center text-right rounded-lg p-2 text-xs z-15 hidden">
+                                    <a @click="console.log('test')" class="w-10 h-10 bg-[#4F321E] text-[#D0B68F] rounded-full flex items-center justify-center 
+                                        hover:bg-[#6A442A] transition duration-300 shadow-xl cursor-pointer transform transition-all
+                                        duration-100 ease-linear hover:scale-110"><i class="fa-solid fa-image"></i></a>
                                 </div>
                             </div>
-                            <div class="character-img banner bg-[url('images/characters/koro/character_banner.png')] h-[20vh]"></div>
+                            <div @click="open = true; selectedCharacter='Koro'" class="cursor-pointer character-img banner bg-[url('images/characters/koro/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
+                                <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div
@@ -241,7 +286,10 @@
                                     <p>He believed that the leaf can fulfill his wish</p>
                                 </div>
                             </div>
-                            <div class="character-img banner bg-[url('images/characters/sese/character_banner.png')] h-[20vh]"></div>
+                            <div @click="open = true; selectedCharacter='Sese'" class="character-img banner bg-[url('images/characters/sese/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
+                                <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div
@@ -266,7 +314,10 @@
                                     <p>But he actually is a coward</p>
                                 </div>
                             </div>
-                            <div class="character-img banner bg-[url('images/characters/rye/character_banner.png')] h-[20vh]"></div>
+                            <div @click="open = true; selectedCharacter='Rye'" class="character-img banner bg-[url('images/characters/rye/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
+                                <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

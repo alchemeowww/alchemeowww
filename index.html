@@ -133,22 +133,25 @@
 
 <body class="w-full bg-[#D0B68F]
     " x-data="{
-    page:2,
+    page:1,
     showButton: false,
     open: false,
     selectedCharacter: null,
     characters: {
         Koro : {
             name: 'Koro',
-            description: 'Koro is a time alchemist who lives in a small wooden house with grey rooftop. <br/>He loves planting but is bad at planting, thus most of the plants are dead in his garden. Koro is wearing an hourglass necklace which is inherited from his mom who was also a time alchemist. This hourglass has secret power.'
+            description: `Koro is a <span class='font-bold'>time alchemist</span> who lives in a small wooden house with grey rooftop. <br/><br/>He loves planting but is bad at planting, thus most of the plants are dead in his garden. <br /><br />Koro is wearing an hourglass necklace which is inherited from his mom who was also a time alchemist. This hourglass has <span class='font-bold'>secret power</span>.`,
+            image: 'images/characters/koro/Art1.png',
         },
         Sese : {
             name: 'Sese',
-            description: `Sese is a forest botanist and has been exploring many different forests. However, he always gets lost in the forest. Sese is not a local person in MIST;Y FOREST, he came here to find the 'Legendary Leaf'. He believes that the leaf can fulfill his wish.`
+            description: `Sese is a <span class='font-bold'>forest botanist</span> and has been exploring many different forests. <br /><br />However, he always gets lost in the forest. <br /><br />Sese is not a local person in MIST;Y FOREST, he came here to find the <span class='font-bold'>'Legendary Leaf'</span>. <br /><br />He believes that the leaf can fulfill his wish.`,
+            image: 'images/characters/sese/Art1.png',
         },
         Rye : {
             name: 'Rye',
-            description: 'Rye is an apprentice knight from Kingdom Tsavorite. He is traveling around to help people solve problems. Under his scarf, there is a gold pendant underneath, which seems to be a secret of his identity. Rye has a serious face and looks very strong, but he is actually a coward.'
+            description: `Rye is an <span class='font-bold'>apprentice knight</span> from Kingdom Tsavorite. <br /><br />He is traveling around to help people solve problems. <br /><br />Under his scarf, there is a gold pendant underneath, which seems to be a secret of his identity. <br /><br />Rye has a serious face and looks very strong, but he is actually a <span class='font-bold'>coward</span>.`,
+            image: 'images/characters/rye/Art1.png',
         }
     },
     x: 0, y: 0, year: new Date().getFullYear(),
@@ -156,32 +159,36 @@
         this.x = (event.clientX / window.innerWidth - 0.5) * 30;
         this.y = (event.clientY / window.innerHeight - 0.5) * 30;
     },
+    scrollToTop() { 
+        $refs.panel.scrollTo({ top: 0 }) 
+    },
 }" @mousemove="updateMouse" x-init="setTimeout(() => showButton = true, 2000)" x-cloak>
 
-    <div x-show="open" class="fixed inset-0 backdrop-blur-lg flex items-center justify-center transition-opacity z-100" @click="open = false"
-        x-transition:enter="duration-300 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-        x-transition:leave="duration-300 ease-in" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    <div x-show="open" class="fixed inset-0 backdrop-blur-lg flex items-center justify-center transition-opacity z-100"
+        x-transition:enter="duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="duration-200 ease-in" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
     
         <!-- Modal Box -->
-        <div class="bg-white w-[90vw] md:w-[50vw] p-6 rounded-lg shadow-lg relative  flex flex-col items-center text-2xl font-play" 
-            x-transition:enter="duration-300 ease-out transform" x-transition:enter-start="scale-90 opacity-0"
-            x-transition:enter-end="scale-100 opacity-100" x-transition:leave="duration-300 ease-in transform"
-            x-transition:leave-start="scale-100 opacity-100" x-transition:leave-end="scale-90 opacity-0">
+        <div x-show="open" class="bg-white p-6 md:m-4 md:rounded-lg max-h-full shadow-lg relative flex flex-col items-center text-2xl font-play overflow-y-auto"
+            x-ref="panel" >
     
             <!-- Modal Content -->
             <h2 class="text-3xl font-bold text-[#4F321E] mb-4" x-text="characters[selectedCharacter]['name'] || ''"></h2>
-            <div>
-                <p x-html="characters[selectedCharacter]['description'] || ''"></p>
-            </div>
-    
-            <!-- Modal Action Buttons -->
-            <button @click="open = false"
-                x-transition:enter="duration-[1500ms] ease-linear"
-                class="font-play px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full transform transition-all mt-4
-                                            duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer shadow-xl text-2xl">
-                Close
-            </button>
-    
+            <div class="flex flex-col md:flex-row items-center gap-5 md:gap-10">
+                <div :class="`bg-[url('${characters[selectedCharacter]['image']}')]`"
+                    class="md:w-1/2 w-full h-[70vh] bg-center bg-no-repeat bg-[cover]
+                    rounded-lg">
+                </div>
+                <div class="md:max-w-1/2 flex flex-col items-center md:items-start">
+                    <p x-html="characters[selectedCharacter]['description'] || ''"></p>
+                    <!-- Modal Action Buttons -->
+                    <button @click="open = false; scrollToTop()" x-transition:enter="duration-[1500ms] ease-linear"
+                        class="font-play px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full transform transition-all mt-5
+                                                                duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer shadow-xl text-2xl">
+                        Close
+                    </button>
+                </div>
+            </div>    
         </div>
     </div>
 
@@ -195,6 +202,7 @@
 
     <div class="flex flex-col h-[100vh] w-full overflow-hidden">
         <div class="flex flex-col grow w-full overflow-hidden" x-show="page == 1">
+            <div class="h-[10vh]"></div>
             <div class="relative h-1/2 sm:h-3/5 bg-[auto_450px] sm:bg-[auto_650px]">
                 <div class="parallax bg-[url('images/MIST;Y.png')] z-30 flex flex-col items-center justify-center text-4xl font-bold"
                     :style="`transform: translate(${x}px, ${y}px)`">
@@ -260,7 +268,7 @@
                                         duration-100 ease-linear hover:scale-110"><i class="fa-solid fa-image"></i></a>
                                 </div>
                             </div>
-                            <div @click="open = true; selectedCharacter='Koro'" class="cursor-pointer character-img banner bg-[url('images/characters/koro/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
+                            <div @click="open = true; selectedCharacter='Koro';" class="cursor-pointer character-img banner bg-[url('images/characters/koro/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
                                 <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
                                 </div>
                             </div>
@@ -278,15 +286,8 @@
                                     <p>Hobby: Collect different kinds of leaves</p>
                                 </div>
                                 <div class="character-img character bg-[url('images/characters/sese/sese.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
-                                <div class="w-[200px] items-center justify-center text-right hidden">
-                                    <p>Sese is a forest botanist and has been exploring many different forest</p>
-                                    <p>However, he always get lost in the forest</p>
-                                    <p></p>
-                                    <p>Sese is not a local person in MIST;Y FOREST, he came here to find the "Legendary Leaf"</p>
-                                    <p>He believed that the leaf can fulfill his wish</p>
-                                </div>
                             </div>
-                            <div @click="open = true; selectedCharacter='Sese'" class="character-img banner bg-[url('images/characters/sese/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
+                            <div @click="open = true; selectedCharacter='Sese';" class="cursor-pointer character-img banner bg-[url('images/characters/sese/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
                                 <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
                                 </div>
                             </div>
@@ -306,15 +307,8 @@
                                 <div
                                     class="character-img character bg-[url('images/characters/rye/rye.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 ">
                                 </div>
-                                <div class="w-[200px] items-center justify-center text-right hidden">
-                                    <p>Rye is an apprentice knight from Kingdom Tsavorite, he is travelling around to help people to solve problems</p>
-                                    <p>Under his scarf, there is a gold pendant underneath, seems like is secret of his identity</p>
-                                    <p></p>
-                                    <p>Rye has a serious face and looks very strong</p>
-                                    <p>But he actually is a coward</p>
-                                </div>
                             </div>
-                            <div @click="open = true; selectedCharacter='Rye'" class="character-img banner bg-[url('images/characters/rye/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
+                            <div @click="open = true; selectedCharacter='Rye';" class="cursor-pointer character-img banner bg-[url('images/characters/rye/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
                                 <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
                                 </div>
                             </div>

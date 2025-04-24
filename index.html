@@ -261,12 +261,7 @@
                                     <p>Fav food: Corn</p>
                                     <p>Hobby: Study alchemy about time</p>
                                 </div>
-                                <div class="character-img character bg-[url('images/characters/koro/koro.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
-                                <div class="absolute right-0 bottom-10  items-center justify-center text-right rounded-lg p-2 text-xs z-15 hidden">
-                                    <a @click="console.log('test')" class="w-10 h-10 bg-[#4F321E] text-[#D0B68F] rounded-full flex items-center justify-center 
-                                        hover:bg-[#6A442A] transition duration-300 shadow-xl cursor-pointer transform transition-all
-                                        duration-100 ease-linear hover:scale-110"><i class="fa-solid fa-image"></i></a>
-                                </div>
+                                <div @click="open = true; selectedCharacter='Koro';"  class="cursor-pointer character-img character bg-[url('images/characters/koro/koro.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
                             </div>
                             <div @click="open = true; selectedCharacter='Koro';" class="cursor-pointer character-img banner bg-[url('images/characters/koro/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
                                 <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
@@ -285,7 +280,7 @@
                                     <p>Fav food: Tofu</p>
                                     <p>Hobby: Collect different kinds of leaves</p>
                                 </div>
-                                <div class="character-img character bg-[url('images/characters/sese/sese.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
+                                <div  @click="open = true; selectedCharacter='Sese';" class="cursor-pointer character-img character bg-[url('images/characters/sese/sese.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
                             </div>
                             <div @click="open = true; selectedCharacter='Sese';" class="cursor-pointer character-img banner bg-[url('images/characters/sese/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
                                 <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
@@ -304,8 +299,8 @@
                                     <p>Fav food: Cherry</p>
                                     <p>Hobby: Reading novel from different places</p>
                                 </div>
-                                <div
-                                    class="character-img character bg-[url('images/characters/rye/rye.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 ">
+                                <div @click="open = true; selectedCharacter='Rye';"
+                                    class="cursor-pointer character-img character bg-[url('images/characters/rye/rye.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 ">
                                 </div>
                             </div>
                             <div @click="open = true; selectedCharacter='Rye';" class="cursor-pointer character-img banner bg-[url('images/characters/rye/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">

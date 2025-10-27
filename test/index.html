@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whack-a-Mole</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen" >
+    <div class="text-center" x-data="whackAMole">
+        <h1 class="text-4xl font-bold mb-4">Whack-a-Mole</h1>
+        <div class="grid grid-cols-3 gap-4">
+            <div class="mole bg-green-500 h-24 w-24" x-ref="mole0" @click="whackMole('mole0')"></div>
+            <div class="mole bg-green-500 h-24 w-24" x-ref="mole1" @click="whackMole('mole1')"></div>
+            <div class="mole bg-green-500 h-24 w-24" x-ref="mole2" @click="whackMole('mole2')"></div>
+            <div class="mole bg-green-500 h-24 w-24" x-ref="mole3" @click="whackMole('mole3')"></div>
+            <div class="mole bg-green-500 h-24 w-24" x-ref="mole4" @click="whackMole('mole4')"></div>
+            <div class="mole bg-green-500 h-24 w-24" x-ref="mole5" @click="whackMole('mole5')"></div>
+            <div class="mole bg-green-500 h-24 w-24" x-ref="mole6" @click="whackMole('mole6')"></div>
+            <div class="mole bg-green-500 h-24 w-24" x-ref="mole7" @click="whackMole('mole7')"></div>
+            <div class="mole bg-green-500 h-24 w-24" x-ref="mole8" @click="whackMole('mole8')"></div>
+        </div>
+        <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" @click="startGame">Start Game</button>
+        <div class="mt-4 text-2xl">Score: <span x-text="score">0</span></div>
+    </div>
+
+    <script defer>
+
+document.addEventListener('alpine:init', () => {
+    Alpine.data('whackAMole', () => ({
+        score: 0,
+        activeMole: null,
+        startGame() {
+            this.score = 0;
+            this.activeMole = null;
+            this.nextMole();
+        },
+        nextMole() {
+            if (this.activeMole !== null) {
+                this.$refs[this.activeMole].classList.remove('bg-red-500');
+                this.$refs[this.activeMole].classList.add('bg-green-500');
+            }
+            const moleIndex = Math.floor(Math.random() * 9);
+            this.activeMole = `mole${moleIndex}`;
+            this.$refs[this.activeMole].classList.remove('bg-green-500');
+            this.$refs[this.activeMole].classList.add('bg-red-500');
+            setTimeout(() => this.nextMole(), 1000);
+        },
+        whackMole(mole) {
+            if (mole === this.activeMole) {
+                this.score++;
+                this.$refs[mole].classList.remove('bg-red-500');
+                this.$refs[mole].classList.add('bg-green-500');
+                this.activeMole = null;
+            }
+        }
+    }));
+});
+
+    </script>
+</body>
+</html>

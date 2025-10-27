@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Memory Game Levels</title>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+
+<body class="flex items-start justify-center h-screen bg-gray-100 w-full">
+  <div x-data="memoryGame()" class="flex flex-col items-center gap-4 w-full md:max-w-[50%] p-4 h-full grow">
+    <!-- Header -->
+    <div class="flex flex-row justify-between items-center w-full">
+      <div class="text-start flex flex-col gap-1">
+        <h1 class="text-2xl font-bold flex flex-row items-center gap-1">
+          <span class="material-symbols-outlined">pets</span> Match the cat
+        </h1>
+      </div>
+      <button @click="restart()" class="bg-indigo-600 text-white rounded-full shadow hover:bg-indigo-700">
+        <span class="material-symbols-outlined p-2">restart_alt</span>
+      </button>
+    </div>
+
+    <!-- Timer + Score -->
+    <div class="text-gray-500 flex flex-row items-center justify-center gap-8 w-full text-4xl mt-8">
+      <div class="flex flex-col items-center grow gap-1">
+        <span class="material-symbols-outlined">leaderboard</span>
+        <span x-text="level"></span>
+      </div>
+      <div class="flex flex-col items-center grow gap-1">
+        <span class="material-symbols-outlined">timer</span>
+        <span x-text="timer"></span>
+      </div>
+      <div class="flex flex-col items-center grow gap-1">
+        <span class="material-symbols-outlined">social_leaderboard</span>
+        <span x-text="pairsMatched"></span>
+      </div>
+    </div>
+
+    <!-- Game Grid -->
+    <div class="grow h-full flex flex-col items-center justify-center w-full relative">
+      <div class="grid gap-4 items-center" :class="gridClass">
+        <template x-for="(card, index) in cards" :key="index + '|' + level">
+          <div class="relative size-16 md:size-28 [transform-style:preserve-3d] transition-transform duration-500"
+            :class="card.flipped || card.matched ? '[transform:rotateY(180deg)]' : ''" @click="flipCard(index)">
+
+            <!-- Front (flipped with image) -->
+            <div
+              class="absolute inset-0 flex items-center justify-center rounded shadow text-xl font-bold overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)]"
+              :class="{
+                'bg-green-300': card.matched, 
+                'bg-blue-200': card.flipped && !card.matched
+              }">
+              <img class="" :src="catImageBaseUrl + catImages[card.value - 1]" alt="cat" />
+            </div>
+
+            <!-- Back -->
+            <div
+              class="absolute inset-0 flex items-center bg-white justify-center rounded shadow text-xl font-bold [backface-visibility:hidden]">
+              <span class="material-symbols-outlined">question_mark</span>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <template x-if="gameOver">
+      <div class="absolute inset-0 bg-black/60 backdrop-blur-md flex flex-col items-center justify-center text-white text-center">
+        <h2 class="text-3xl font-bold mb-2">⏰ Time’s up!</h2>
+        <p class="text-lg mb-4">
+          You reached level <span x-text="level"></span> with
+          <span x-text="pairsMatched"></span> pairs matched.
+        </p>
+        <button @click="restart()" class="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700">
+          Restart
+        </button>
+      </div>
+    </template>
+  </div>
+
+  <script>
+    function memoryGame() {
+      return {
+        level: 1,
+        levelSize: [0, 2, 4, 6, 8, 10],
+        colSize: [0, 2, 4, 4, 4, 4],
+        catImageBaseUrl: 'images/cat_head/',
+        catImages: [
+          'cat1.png', 'cat2.png', 'cat3.png', 'cat4.png', 'cat5.png',
+          'cat6.png', 'cat7.png', 'cat8.png', 'cat9.png', 'cat10.png',
+          'cat11.png', 'cat12.png', 'cat13.png', 'cat14.png', 'cat15.png',
+          'cat16.png', 'cat17.png',
+        ],
+        cards: [],
+        flippedCards: [],
+        gridClass: "grid-cols-2",
+        timer: 60,
+        timerInterval: null,
+        gameOver: false,
+        pairsMatched: 0,
+        timerStarted: false,
+
+        init() {
+          this.startLevel();
+        },
+
+        startLevel() {
+          let size = this.levelSize[this.level] || this.levelSize[this.levelSize.length - 1];
+          this.gridClass = `grid-cols-${(this.colSize[this.level] || this.colSize[this.colSize.length - 1])}`;
+          const pairs = size;
+
+          let values = Array.from({ length: pairs }, (_, i) => i + 1);
+          values = [...values, ...values];
+          this.cards = values
+            .sort(() => Math.random() - 0.5)
+            .map(v => ({ value: v, flipped: false, matched: false }));
+          this.flippedCards = [];
+        },
+
+        startTimer() {
+          if (this.timerStarted) return;
+          this.timerStarted = true;
+          this.timerInterval = setInterval(() => {
+            if (this.timer > 0) {
+              this.timer--;
+            } else {
+              clearInterval(this.timerInterval);
+              this.gameOver = true;
+            }
+          }, 1000);
+        },
+
+        flipCard(index) {
+          if (this.gameOver) return;
+          const card = this.cards[index];
+          if (card.flipped || card.matched || this.flippedCards.length === 2) return;
+
+          if (!this.timerStarted) this.startTimer();
+
+          card.flipped = true;
+          this.flippedCards.push(index);
+
+          if (this.flippedCards.length === 2) {
+            const [i1, i2] = this.flippedCards;
+            if (this.cards[i1].value === this.cards[i2].value) {
+              this.cards[i1].matched = true;
+              this.cards[i2].matched = true;
+              this.flippedCards = [];
+              this.pairsMatched++;
+              this.checkWin();
+            } else {
+              setTimeout(() => {
+                this.cards[i1].flipped = false;
+                this.cards[i2].flipped = false;
+                this.flippedCards = [];
+              }, 800);
+            }
+          }
+        },
+
+        checkWin() {
+          if (this.cards.every(c => c.matched)) {
+            setTimeout(() => {
+              this.level++;
+              this.startLevel();
+            }, 1000);
+          }
+        },
+
+        restart() {
+          clearInterval(this.timerInterval);
+          this.level = 1;
+          this.pairsMatched = 0;
+          this.timer = 60;
+          this.gameOver = false;
+          this.timerStarted = false;
+          this.startLevel();
+        }
+      };
+    }
+  </script>
+</body>
+
+</html>

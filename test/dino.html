@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dino Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.2/dist/cdn.min.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen" x-data="dinoGame()">
+    <div class="text-center w-full m-8">
+        <h1 class="text-4xl font-bold mb-4">Dino Game</h1>
+        <div class="relative  h-48 bg-white border border-gray-300 overflow-hidden" @click="jump">
+            <div class="absolute bottom-0 left-0 h-12 w-6 bg-green-500 ml-8" x-ref="dino"></div>
+            <div class="absolute bottom-0 right-0 h-6 w-6 bg-red-500" x-ref="obstacle"></div>
+        </div>
+        <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" @click="startGame">Start Game</button>
+        <div class="mt-4 text-2xl">Score: <span x-text="score">0</span></div>
+    </div>
+
+    <script defer>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('dinoGame', () => ({
+            score: 0,
+            dino: null,
+            obstacle: null,
+            gameInterval: null,
+            jumpInterval: null,
+            isJumping: false,
+            startGame() {
+                this.score = 0;
+                this.dino = this.$refs.dino;
+                this.obstacle = this.$refs.obstacle;
+                this.obstacle.style.right = '0px';
+                this.gameInterval = setInterval(() => this.gameLoop(), 20);
+            },
+            gameLoop() {
+                this.moveObstacle();
+                this.checkCollision();
+            },
+            moveObstacle() {
+                let obstacleRight = parseInt(this.obstacle.style.right);
+                obstacleRight += 5;
+                if (obstacleRight > window.innerWidth) {
+                    obstacleRight = 0;
+                    this.score++;
+                }
+                this.obstacle.style.right = obstacleRight + 'px';
+            },
+            checkCollision() {
+                const dinoRect = this.dino.getBoundingClientRect();
+                const obstacleRect = this.obstacle.getBoundingClientRect();
+                if (
+                    dinoRect.right > obstacleRect.left &&
+                    dinoRect.left < obstacleRect.right &&
+                    dinoRect.bottom > obstacleRect.top
+                ) {
+                    clearInterval(this.gameInterval);
+                    alert('Game Over! Your score: ' + this.score);
+                }
+            },
+            jump() {
+                if (this.isJumping) return;
+                this.isJumping = true;
+                let jumpHeight = 0;
+                this.jumpInterval = setInterval(() => {
+                    if (jumpHeight >= 100) {
+                        clearInterval(this.jumpInterval);
+                        this.fall();
+                    } else {
+                        jumpHeight += 5;
+                        this.dino.style.bottom = jumpHeight + 'px';
+                    }
+                }, 20);
+            },
+            fall() {
+                let fallHeight = parseInt(this.dino.style.bottom);
+                this.jumpInterval = setInterval(() => {
+                    if (fallHeight <= 0) {
+                        clearInterval(this.jumpInterval);
+                        this.isJumping = false;
+                    } else {
+                        fallHeight -= 5;
+                        this.dino.style.bottom = fallHeight + 'px';
+                    }
+                }, 20);
+            }
+        }));
+    });
+    
+    </script>
+</body>
+</html>

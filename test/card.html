@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fan Deck - Flip Reveal</title>
+    <title>Fan Deck - Smooth Shuffle + Spread</title>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
         .card {
             transform-style: preserve-3d;
@@ -29,43 +30,137 @@
         .card-back {
             transform: rotateY(180deg);
         }
+
+        .card-enter {
+            opacity: 0;
+            transform: translateY(60px) scale(0.9);
+        }
+
+        .card-enter-active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: all 0.6s ease-out;
+        }
+
+        .smooth-transform {
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
     </style>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center">
+<body class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex flex-col items-center justify-center gap-6"
+    x-data="deckController" x-init="init()">
 
-    <div x-data="{
-      cards: Array.from({ length: 20 }, (_, i) => i + 1),
-      activeCard: null,
-      toggleCard(id) {
-        this.activeCard = this.activeCard === id ? null : id;
-      }
-    }" class="relative w-[900px] h-[300px] flex items-end justify-center">
-        <template x-for="(card, index) in cards" :key="card">
-            <div class="card absolute bottom-0 w-32 h-48 rounded-xl shadow-lg border border-gray-200 transition-transform duration-500 cursor-pointer"
-                :class="{'flipped': activeCard === card}" :style="`
-          transform: 
-            rotate(${(index - cards.length / 2) * 4}deg)
-            translateX(${(index - cards.length / 2) * 22}px)
-            translateY(${activeCard === card ? '-80px' : '0px'});
-          z-index: ${activeCard === card ? 99 : index};
-        `" @click="toggleCard(card)">
+    <!-- Deck -->
+    <div x-ref="deck" class="relative w-[900px] h-[300px] flex items-end justify-center">
+        <template x-for="(card, index) in cards" :key="card.id">
+            <div x-init="$el.classList.add('card-enter'); setTimeout(() => $el.classList.add('card-enter-active'), index * 80 + 200)"
+                class="card absolute bottom-0 w-32 h-48 rounded-xl shadow-lg border border-gray-200 smooth-transform cursor-pointer"
+                :class="{'flipped': activeCard === card.id}" :style="getStyle(index, card.id)"
+                @click="toggleCard(card.id)">
                 <div class="card-inner w-full h-full relative">
                     <!-- Front -->
                     <div
                         class="card-face absolute inset-0 bg-white rounded-xl flex items-center justify-center text-gray-700 text-xl font-semibold">
-                        Card <span x-text="card"></span>
+                        </span>
                     </div>
 
                     <!-- Back -->
                     <div
                         class="card-face card-back absolute inset-0 bg-blue-500 rounded-xl flex items-center justify-center text-white text-lg font-semibold">
-                        Revealed <span x-text="card"></span>
+                        Revealed <span x-text="card.id"></span>
                     </div>
                 </div>
             </div>
         </template>
     </div>
+
+    <!-- Toggle Button -->
+    <button class="px-6 py-2 mt-10 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-md transition"
+        @click="toggleSpread()">
+        🃏 shuffle
+    </button>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('deckController', () => ({
+                cards: Array.from({ length: 15 }, (_, i) => ({ id: i + 1, order: i })),
+                activeCard: null,
+                spread: false,
+                animating: false,
+
+                init() {
+                    // initial spread animation
+                    setTimeout(() => this.spread = true, 300);
+                },
+
+                toggleCard(id) {
+                    if (this.animating) return; // prevent flipping mid-animation
+                    this.activeCard = this.activeCard === id ? null : id;
+                },
+
+                async toggleSpread() {
+                    if (this.animating) return;
+                    this.animating = true;
+                    this.activeCard = null;
+
+                    if (this.spread) {
+                        // collapse first
+                        this.spread = false;
+                        await this.wait(600);
+                        this.shuffleCards();
+                        await this.wait(400);
+                        this.spread = true;
+                    } else {
+                        this.shuffleCards();
+                        await this.wait(300);
+                        this.spread = true;
+                    }
+
+                    await this.wait(900);
+                    this.animating = false;
+                },
+
+                shuffleCards() {
+                    // Fisher-Yates shuffle
+                    for (let i = this.cards.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+                    }
+                },
+
+                wait(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                },
+
+                getStyle(index, id) {
+                    const card = this.cards[index];
+                    if (!this.spread) {
+                        return `
+                            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                            transform:
+                                rotate(0deg)
+                                translateX(0px)
+                                translateY(${this.activeCard === id ? '-80px' : '0px'});
+                            z-index: ${this.activeCard === id ? 99 : index};
+                            `;
+                    }
+
+                    // Fan spread positioning
+                    const rotation = ((index - this.cards.length / 2) * 2);
+                    const offset = ((index - this.cards.length / 2) * 24);
+
+                    return `
+                        transform:
+                        rotate(${rotation}deg)
+                        translateX(${offset}px)
+                        translateY(${this.activeCard === id ? '-120px' : '0px'});
+                        z-index: ${this.activeCard === id ? 99 : index};
+                    `;
+                }
+            }));
+        });
+    </script>
 
 </body>
 

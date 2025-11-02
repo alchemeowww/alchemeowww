@@ -83,13 +83,13 @@
                 <div class="card-inner w-full h-full relative">
                     <!-- Front -->
                     <div
-                        class="card-face absolute inset-0 bg-white rounded-xl flex items-center justify-center text-gray-700 text-xl font-semibold">
+                        class="card-face absolute inset-0 bg-gradient-to-br from-[#D0B68F]/50 to-[#D0B68F]/80 rounded-xl flex items-center justify-center text-gray-700 text-xl font-semibold">
                     </div>
 
                     <!-- Back -->
                     <div
                         class="card-face card-back absolute inset-0 bg-[#f9e4c6] rounded-xl flex items-center justify-center text-white text-sm font-semibold">
-                        Revealed <span x-text="card.id"></span>
+                        <img class="" :src="catImageBaseUrl + catImages[card.id]" alt="cat" />
                     </div>
                 </div>
             </div>
@@ -108,13 +108,22 @@
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('deckController', () => ({
-                cards: Array.from({ length: 20 }, (_, i) => ({ id: i + 1 })),
+                cards: Array.from({ length: 17 }, (_, i) => ({ id: i })),
+
+                catImageBaseUrl: 'images/cat_head/',
+                catImages: [
+                    'cat1.png', 'cat2.png', 'cat3.png', 'cat4.png', 'cat5.png',
+                    'cat6.png', 'cat7.png', 'cat8.png', 'cat9.png', 'cat10.png',
+                    'cat11.png', 'cat12.png', 'cat13.png', 'cat14.png', 'cat15.png',
+                    'cat16.png', 'cat17.png',
+                ],
                 activeCard: null,
                 spread: false,
                 animating: false,
 
                 init() {
                     // initial spread animation
+                    this.shuffleCards();
                     setTimeout(() => this.spread = true, 300);
                 },
 
@@ -209,7 +218,7 @@
                     const spacing = Math.min(preferredSpacing, maxSpacing);
 
                     const offset = (index - centerIndex) * spacing;
-                    const rotation = ((index - total / 2) * 2)
+                    const rotation = ((index - total / 2) * 2);
 
                     return `
                         left: 50%;

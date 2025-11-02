@@ -11,7 +11,7 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 
-<body class="flex items-start justify-center h-screen bg-[#D0B68F] w-full">
+<body class="flex items-start justify-center h-screen bg-[#D0B68F]/80 w-full">
   <div x-data="memoryGame()" class="flex flex-col items-center gap-4 w-full md:max-w-[50%] p-4 h-full grow">
     <!-- Header -->
     <div class="flex flex-row justify-between items-center w-full">
@@ -20,7 +20,7 @@
           <span class="material-symbols-outlined">pets</span> Purfect Match
         </h1>
       </div>
-      <button @click="restart()" class="bg-indigo-600 text-white rounded-full shadow hover:bg-indigo-700">
+      <button @click="restart()" class="bg-[#4F321E] hover:bg-[#4F321E] text-white rounded-full shadow">
         <span class="material-symbols-outlined p-2">restart_alt</span>
       </button>
     </div>
@@ -45,22 +45,23 @@
     <div class="grow h-full flex flex-col items-center justify-center w-full relative">
       <div class="grid gap-4 items-center" :class="gridClass">
         <template x-for="(card, index) in cards" :key="index + '|' + level">
-          <div class="relative size-16 md:size-28 [transform-style:preserve-3d] transition-transform duration-500"
+          <div class="relative size-16 md:size-28 [transform-style:preserve-3d] transition-transform 
+            duration-500 rounded-lg shadow-lg cursor-pointer"
             :class="card.flipped || card.matched ? '[transform:rotateY(180deg)]' : ''" @click="flipCard(index)">
 
             <!-- Front (flipped with image) -->
             <div
-              class="absolute inset-0 flex items-center justify-center rounded shadow text-xl font-bold overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)]"
+              class="absolute inset-0 flex items-center justify-center rounded-lg shadow text-xl font-bold overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)]"
               :class="{
-                'bg-green-300': card.matched, 
-                'bg-blue-200': card.flipped && !card.matched
+                'to-[#4F321E]/80': card.matched, 
+                'bg-[#f9e4c6]': card.flipped && !card.matched
               }">
               <img class="" :src="catImageBaseUrl + catImages[card.value - 1]" alt="cat" />
             </div>
 
             <!-- Back -->
             <div
-              class="absolute inset-0 flex items-center bg-white justify-center rounded shadow text-xl font-bold [backface-visibility:hidden]">
+              class="absolute inset-0 flex items-center bg-[#f9e4c6] justify-center rounded-lg shadow text-xl font-bold [backface-visibility:hidden]">
               <span class="material-symbols-outlined">question_mark</span>
             </div>
           </div>
@@ -76,7 +77,7 @@
           You reached level <span x-text="level"></span> with
           <span x-text="pairsMatched"></span> pairs matched.
         </p>
-        <button @click="restart()" class="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700">
+        <button @click="restart()" class="px-4 py-2 bg-[#4F321E] rounded-lg hover:bg-[#4F321E]/80">
           Restart
         </button>
       </div>

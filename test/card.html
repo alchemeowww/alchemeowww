@@ -72,7 +72,7 @@
 
     <div x-show="activeCard" x-transition.opacity class="fixed inset-0 bg-black/10 backdrop-blur-sm z-50" @click="removeCard()"></div>
     <!-- Deck -->
-    <div x-ref="deck" class="relative w-full h-[30vh] max-h-full flex items-end justify-center">
+    <div x-ref="deck" class="relative w-full h-[20vh] max-h-full flex items-end justify-center">
         <template x-for="(card, index) in cards" :key="card.id">
             <div x-init="$el.classList.add('card-enter'); setTimeout(() => $el.classList.add('card-enter-active'), index * 80 + 200)"
                 class="card absolute bottom-0 rounded-xl shadow-lg border border-gray-200 smooth-transform cursor-pointer"
@@ -180,7 +180,7 @@
                             position: fixed;
                             top: 50%;
                             left: 50%;
-                            transform: translate(-50%, -80%) scale(2);
+                            transform: translate(-50%, -80%) scale(2.8);
                             z-index: 100;
                             transition: all 0.8s ease-in-out;
                             border: 0px;

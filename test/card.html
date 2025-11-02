@@ -176,11 +176,24 @@
 
                     // If modal view (active card)
                     if (isActive) {
+                        // compute scale so the active card occupies ~60% of the viewport
+                        const deckEl = this.$refs.deck;
+                        const sampleCard = deckEl ? deckEl.querySelector('.card') : null;
+                        const rawCardW = sampleCard ? sampleCard.offsetWidth : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--card-w')) || 80;
+                        const rawCardH = sampleCard ? sampleCard.offsetHeight : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--card-h')) || (rawCardW * 1.5);
+
+                        const desiredW = window.innerWidth * 0.7;
+                        const desiredH = window.innerHeight * 0.7;
+                        const scaleX = desiredW / rawCardW;
+                        const scaleY = desiredH / rawCardH;
+                        // choose the smaller scale so the card fits both dimensions
+                        const scale = Math.max(0.7, Math.min(scaleX, scaleY));
+
                         return `
                             position: fixed;
                             top: 50%;
                             left: 50%;
-                            transform: translate(-50%, -80%) scale(2.8);
+                            transform: translate(-50%, -50%) scale(${scale});
                             z-index: 100;
                             transition: all 0.8s ease-in-out;
                             border: 0px;

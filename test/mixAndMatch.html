@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mix & Match — 3 Stacked Layers</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fan Deck - Smooth Shuffle + Spread</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        /* small helper to show the stacking nicely */
+        .stack-container {
+            position: relative;
+            /* keep a square that scales with the viewport: use vmin so both width/height are based on the smaller viewport dimension */
+            width: min(70vmin, 620px);
+            aspect-ratio: 1 / 1;
+            height: auto;
+            border-radius: 14px;
+            perspective: 1000px;
+        }
+
+        .layer {
+            position: absolute;
+            padding: 16px;
+            inset: 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: 700;
+            transition: transform 0.15s cubic-bezier(.2,.9,.2,1), box-shadow 0.15s ease, opacity 0.15s ease;
+            user-select: none;
+        }
+
+        /* Slight offsets so layers are visible as a stack */
+        .layer-1 { z-index: 30; box-shadow: 0 8px 20px rgba(0,0,0,0.18); }
+        .layer-2 { z-index: 20; box-shadow: 0 12px 30px rgba(0,0,0,0.14); }
+        .layer-3 { z-index: 10; box-shadow: 0 18px 40px rgba(0,0,0,0.12); }
+
+    /* animation helper classes for sliding */
+    .slide-right { transform: translateX(120%); opacity: 0; }
+    .off-left { transform: translateX(-120%); opacity: 0; }
+    .slide-left { transform: translateX(-120%); opacity: 0; }
+    .off-right { transform: translateX(120%); opacity: 0; }
+
+        .label { font-size: clamp(2rem, 6vw, 4rem); letter-spacing: -0.02em; }
+
+        /* small controls area */
+        .controls { max-width: min(90vw,900px); margin-top: 18px; display:flex; gap:8px; align-items:center; }
+        .btn { padding: .5rem .9rem; border-radius: 10px; background:#111827; color:white; font-weight:600; cursor:pointer }
+    </style>
+</head>
+
+<body class="max-h-screen max-w-screen h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col items-center justify-center p-6" x-data="mixController()">
+
+    <div class="flex flex-row gap-4 items-stretch w-full">
+        <div class="flex flex-col items-center gap-4 grow self-stretch justify-center">
+            <button type="button" class="material-symbols-outlined rounded-full text-4xl" @click="decrementLayer(1)" :disabled="animating[1]" :class="{'opacity-40 pointer-events-none': animating[1]}" aria-label="decrease layer 1">
+                chevron_backward
+            </button>
+            <button type="button" class="material-symbols-outlined rounded-full text-4xl" @click="decrementLayer(2)" :disabled="animating[2]" :class="{'opacity-40 pointer-events-none': animating[2]}" aria-label="decrease layer 2">
+                chevron_backward
+            </button>
+            <button type="button" class="material-symbols-outlined rounded-full text-4xl" @click="decrementLayer(3)" :disabled="animating[3]" :class="{'opacity-40 pointer-events-none': animating[3]}" aria-label="decrease layer 3">
+                chevron_backward
+            </button>
+        </div>
+        <div class="stack-container mx-auto">
+            <div class="layer layer-1 flex flex-row items-center">
+                <img :src="`images/mixAndMatch/eye/${layer1}.png`" alt="eye" />
+            </div>
+            <div class="layer layer-2 flex flex-row items-center">
+                <img :src="`images/mixAndMatch/nose/${layer2}.png`" alt="nose" />
+            </div>
+            <div class="layer layer-3 flex flex-row items-center">
+                <img :src="`images/mixAndMatch/face/${layer3}.png`" alt="face" />
+            </div>
+        </div>
+        <div class="flex flex-col items-center gap-4 grow self-stretch justify-center text-4xl">
+            <button type="button" class="material-symbols-outlined rounded-full text-4xl" @click="incrementLayer(1)" :disabled="animating[1]" :class="{'opacity-40 pointer-events-none': animating[1]}" aria-label="increase layer 1">
+                chevron_forward
+            </button>
+            <button type="button" class="material-symbols-outlined rounded-full text-4xl" @click="incrementLayer(2)" :disabled="animating[2]" :class="{'opacity-40 pointer-events-none': animating[2]}" aria-label="increase layer 2">
+                chevron_forward
+            </button>
+            <button type="button" class="material-symbols-outlined rounded-full text-4xl" @click="incrementLayer(3)" :disabled="animating[3]" :class="{'opacity-40 pointer-events-none': animating[3]}" aria-label="increase layer 3">
+                chevron_forward
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('mixController', () => ({
+                    // layer counters
+                    layer1: 1,
+                    layer2: 1,
+                    layer3: 1,
+
+                    // per-layer animating flags to disable controls while animating
+                    animating: { 1: false, 2: false, 3: false },
+
+                    // small helper for delays
+                    wait(ms) { return new Promise(r => setTimeout(r, ms)); },
+
+                    // animate forward: slide out to right, update value, then enter from left
+                    async forwardAnimate(n) {
+                        if (this.animating[n]) return;
+                        this.animating[n] = true;
+
+                        const el = document.querySelector(`.layer-${n}`);
+                        if (!el) { this.animating[n] = false; return; }
+
+                        // slide out to right
+                        el.classList.add('slide-right');
+                        // wait for the transition to finish
+                        await this.wait(150);
+
+                        // update the value while hidden
+                        const key = `layer${n}`;
+                        this[key] = (this[key] || 0) + 1;
+
+                        // prepare enter from left
+                        el.classList.remove('slide-right');
+                        el.classList.add('off-left');
+                        await this.wait(150);
+
+                        // force reflow so the next removal triggers the transition
+                        void el.offsetWidth;
+
+                        // remove off-left to animate to center
+                        el.classList.remove('off-left');
+                        await this.wait(150);
+
+                        this.animating[n] = false;
+                    },
+
+                    // increment now calls forwardAnimate (so it animates)
+                    incrementLayer(n) {
+                        this.forwardAnimate(n);
+                    },
+
+                    // animate backward: slide out to left, update value, then enter from right
+                    async backwardAnimate(n) {
+                        if (this.animating[n]) return;
+                        this.animating[n] = true;
+
+                        const el = document.querySelector(`.layer-${n}`);
+                        if (!el) { this.animating[n] = false; return; }
+
+                        // slide out to left
+                        el.classList.add('slide-left');
+                        await this.wait(150);
+
+                        // update value while hidden
+                        const key = `layer${n}`;
+                        this[key] = Math.max(0, (this[key] || 0) - 1);
+
+                        // prepare enter from right
+                        el.classList.remove('slide-left');
+                        el.classList.add('off-right');
+                        await this.wait(150);
+                        // force reflow
+                        void el.offsetWidth;
+
+                        // remove off-right to animate to center
+                        el.classList.remove('off-right');
+                        await this.wait(150);
+
+                        this.animating[n] = false;
+                    },
+
+                    decrementLayer(n) {
+                        this.backwardAnimate(n);
+                    }
+                }));
+        });
+    </script>
+
+</body>
+
+</html>

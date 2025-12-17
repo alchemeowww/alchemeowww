@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alchemeowww</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="https://alchemeowww.github.io/alchemeowww/images/favicon/site.webmanifest">
+    <meta name="theme-color" content="#D0B68F">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Tangerine:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        /* Make viewport sizing strict: ensure page never exceeds screen size */
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
+            overflow: hidden;
+        }
+
+        .font-play{
+            font-family: "Play";
+        }
+
+        /* Card sizing scales with viewport while staying within reasonable bounds */
+        :root {
+            --card-w: clamp(5rem, 20vw, 10rem);
+            --card-h: calc(var(--card-w) * 1.4);
+        }
+
+        .card {
+            width: var(--card-w);
+            height: var(--card-h);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card-div{
+            height: calc(var(--card-h) + 10px);
+        }
+    
+        .card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+    
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+    
+        .card-face {
+            backface-visibility: hidden;
+        }
+    
+        .card-back {
+            transform: rotateY(180deg);
+        }
+    
+        .card-enter {
+            opacity: 0;
+            transform: translateY(60px) scale(0.9);
+        }
+    
+        .card-enter-active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: all 0.3s ease-out;
+        }
+    
+        .smooth-transform {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+
+    <body class="font-play w-screen h-screen bg-gradient-to-br from-[#f9e4c6] to-[#D0B68F]/50 flex flex-col items-center justify-center gap-6 overflow-hidden"
+    x-data="deckController" x-init="init()">
+
+    <div x-show="activeCard" x-transition.opacity class="fixed inset-0 bg-black/10 backdrop-blur-sm z-50" @click="removeCard()"></div>
+    <!-- Deck -->
+    <div class="font-play text-2xl" 
+        x-text="cardType === 'trap' ? 'Trap Cards' : 'Alchemy Cards'"></div>
+    <div x-ref="deck" class="relative w-full card-div max-h-full flex items-end justify-center">
+        <template x-for="(card, index) in cards" :key="card.id">
+            <div x-init="$el.classList.add('card-enter'); setTimeout(() => $el.classList.add('card-enter-active'), index * 80 + 200)"
+                class="card absolute bottom-0 rounded-xl shadow-lg border border-gray-200 smooth-transform cursor-pointer"
+                :class="{'flipped': activeCard === card.id}" :style="getStyle(index, card.id)"
+                @mouseenter="activeCard === card.id ? $el.style : $el.style.transform += ' translateY(-15px) scale(1.05)'" 
+                @mouseleave="$el.style = getStyle(index, card.id)"
+                @click="toggleCard(card.id)">
+                <div class="card-inner w-full h-full relative">
+                    <!-- Front -->
+                    <div
+                        class="card-face absolute inset-0 bg-gradient-to-br from-[#D0B68F]/50 to-[#D0B68F]/80 rounded-xl flex items-center justify-center text-gray-700 text-xl font-semibold">
+                    </div>
+
+                    <!-- Back -->
+                    <div
+                        class="card-face card-back absolute inset-0 bg-[#f9e4c6] rounded-xl flex items-center justify-center text-white text-sm font-semibold">
+                        <img class="" :src="catImageBaseUrl + catImages[cardType][card.id]" alt="cat" />
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Toggle Button -->
+    <div class="flex flex-col items-center">
+        <button class="cursor-pointer px-6 py-2 mt-10 bg-[#4F321E] hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition
+            flex flex-row items-center gap-2"
+            @click="toggleSpread()">
+            <span class="material-symbols-outlined">
+                shuffle
+            </span> shuffle
+        </button>
+        <div class="flex flex-row gap-4">
+            <button class="cursor-pointer px-6 py-2 mt-10 bg-[#4F321E]/70 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition
+                        flex flex-row items-center gap-2" @click="cardType = 'trap'; toggleSpread()">
+                <span class="material-symbols-outlined">
+                    bomb
+                </span> Trap Card
+            </button>
+            <button class="cursor-pointer px-6 py-2 mt-10 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition
+                        flex flex-row items-center gap-2" @click="cardType = 'alchemy'; toggleSpread()">
+                <span class="material-symbols-outlined">
+                    wand_shine
+                </span> Alchemy Card
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('deckController', () => ({
+                cards: Array.from({ length: 17 }, (_, i) => ({ id: i })),
+                cardType: 'trap', // 'trap' or 'alchemy'
+                catImageBaseUrl: 'images/cat_head/',
+                catImages: {
+                    trap: [
+                        'cat1.png', 'cat2.png', 'cat3.png', 'cat4.png', 'cat5.png',
+                        'cat6.png', 'cat7.png', 'cat8.png', 'cat9.png', 'cat10.png',
+                        'cat11.png', 'cat12.png', 'cat13.png', 'cat14.png', 'cat15.png',
+                        'cat16.png', 'cat17.png',
+                    ],
+                    alchemy: [
+                        // Add alchemy cat images here
+                    ]
+                },
+                activeCard: null,
+                spread: false,
+                animating: false,
+
+                init() {
+                    // initial spread animation
+                    this.shuffleCards();
+                    setTimeout(() => this.spread = true, 300);
+                },
+
+                removeCard(){
+                    this.activeCard = null;
+                },
+
+                toggleCard(id) {
+                    if (this.animating) return;
+                    // If same card clicked, close it
+                    this.activeCard = this.activeCard === id ? null : id;
+                },
+
+                async toggleSpread() {
+                    if (this.animating) return;
+                    this.animating = true;
+                    this.activeCard = null;
+
+                    if (this.spread) {
+                        this.spread = false;
+                        await this.wait(600);
+                        this.shuffleCards();
+                        await this.wait(400);
+                        this.spread = true;
+                    } else {
+                        this.shuffleCards();
+                        await this.wait(300);
+                        this.spread = true;
+                    }
+
+                    await this.wait(900);
+                    this.animating = false;
+                },
+
+                shuffleCards() {
+                    // Fisher-Yates shuffle
+                    for (let i = this.cards.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+                    }
+                },
+
+                wait(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                },
+
+                getStyle(index, id) {
+                    const isActive = this.activeCard === id;
+                    const total = this.cards.length;
+
+                    // If modal view (active card)
+                    if (isActive) {
+                        // compute width/height so the active card occupies ~60% of the viewport
+                        const deckEl = this.$refs.deck;
+                        const sampleCard = deckEl ? deckEl.querySelector('.card') : null;
+                        const rawCardW = sampleCard ? sampleCard.offsetWidth : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--card-w')) || 80;
+                        const rawCardH = sampleCard ? sampleCard.offsetHeight : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--card-h')) || (rawCardW * 1.5);
+
+                        const maxW = window.innerWidth * 0.6; // target 60% of viewport width
+                        const maxH = window.innerHeight * 0.6; // target 60% of viewport height
+
+                        // compute scale that would fit both dimensions, choose the smaller so we don't overflow
+                        const scaleX = maxW / rawCardW;
+                        const scaleY = maxH / rawCardH;
+                        const usedScale = Math.min(scaleX, scaleY);
+
+                        const finalW = Math.round(rawCardW * usedScale);
+                        const finalH = Math.round(rawCardH * usedScale);
+
+                        return `
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            width: ${finalW}px;
+                            height: ${finalH}px;
+                            transform: translate(-50%, -50%);
+                            z-index: 100;
+                            transition: all 0.28s ease-in-out;
+                            border: 0px;
+                            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                        `;
+                    }
+
+                    // Normal deck mode
+                    if (!this.spread) {
+                        return `
+                            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                            transform:
+                                rotate(0deg)
+                                translateX(0px)
+                                translateY(0px);
+                            z-index: ${index};
+                            transition: transform 0.6s ease-in-out;
+                        `;
+                    }
+
+                    // Fan spread positioning — compute spacing based on deck width so the fan is centered
+                    const deckEl = this.$refs.deck;
+                    const deckW = Math.min((deckEl ? deckEl.clientWidth : window.innerWidth) - 32, 440);
+                    const sampleCard = deckEl ? deckEl.querySelector('.card') : null;
+                    const cardW = sampleCard ? sampleCard.offsetWidth : (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--card-w')) || 80);
+
+                    // center index (works for even/odd counts)
+                    const centerIndex = (total - 1) / 2;
+
+                    // maximum spacing that still fits inside the deck (so cards don't overflow)
+                    const maxSpacing = total > 1 ? Math.max(10, (deckW - cardW) / (total - 1)) : cardW;
+
+                    // preferred spacing (slightly overlapping cards) but never exceed maxSpacing
+                    const preferredSpacing = cardW * 0.85;
+                    const spacing = Math.min(preferredSpacing, maxSpacing);
+
+                    const offset = (index - centerIndex) * spacing;
+                    const rotation = ((index - total / 2) * 2);
+
+                    return `
+                        left: 50%;
+                        transform:
+                            translateX(calc(-50% + ${offset}px))
+                            rotate(${rotation}deg)
+                            translateY(0px);
+                        z-index: ${index};
+                        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+                    `;
+                }
+            }));
+        });
+    </script>
+
+
+</body>
+
+</html>

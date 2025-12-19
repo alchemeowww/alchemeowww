@@ -70,9 +70,13 @@
             font-size: calc(var(--card-h) * 0.08);
         }
 
+        .koro-size{
+            width: calc(var(--card-w) * 0.6);
+            height: auto;
+        }
 
         .card-description-text{
-            font-size: calc(var(--card-h) * 0.1);
+            font-size: calc(var(--card-h) * 0.15);
         }
     
         .card-inner {
@@ -137,8 +141,11 @@
                     <div
                         class="p-1 card-face card-back absolute inset-0 bg-[#f9e4c6] rounded-xl flex items-center justify-center text-white text-sm font-semibold overflow-hidden">
                         <div class="flex flex-col items-center justify-center w-full h-full bg-center bg-no-repeat bg-cover bg-[url('../images/Frame%204.png')]">
-                            <div class="card-description-text text-black font-young-serif" 
-                                x-text="cardDescriptions[cardType][card.id]"></div>
+                            <div class="card-description-text text-black font-young-serif grow h-full w-full pt-14 px-8 pb-4
+                                text-center flex flex-col justify-center">
+                                <div x-text="cardDescriptions[cardType][card.id] || 'Coming Soon'"></div>
+                            </div>
+                            <img class="koro-size self-end mr-2 mb-2 md:mr-4 md:mb-4" :src="'../images/koro.png'" alt="koro" />
                         </div>
                     </div>
                 </div>
@@ -178,10 +185,10 @@
                 cardType: 'trap', // 'trap' or 'alchemy'
                 cardDescriptions: {
                     trap: [
-                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+                        // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
                     ],
                     alchemy: [
-                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+                        // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
                     ]
                 },
                 activeCard: null,

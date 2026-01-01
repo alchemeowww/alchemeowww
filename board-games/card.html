@@ -26,6 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
 
     <style>
+        [x-cloak] { display: none !important; }
         /* Make viewport sizing strict: ensure page never exceeds screen size */
         html, body {
             width: 100vw;
@@ -116,6 +117,38 @@
     <body class="font-play w-screen h-screen bg-gradient-to-br from-[#f9e4c6] to-[#D0B68F]/50 flex flex-col items-center justify-center gap-6 overflow-hidden"
     x-data="deckController" x-init="init()">
 
+    <div class="flex flex-row">   
+        <button class="cursor-pointer px-6 py-2 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition
+                    flex flex-row items-center gap-2" @click="openInstruction = true">
+            <span class="material-symbols-outlined">info</span> Instruction
+        </button>
+
+        <div x-cloak x-show="openInstruction" class="fixed inset-0 backdrop-blur-lg flex items-center justify-center transition-opacity z-100"
+            x-transition:enter="duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:leave="duration-200 ease-in" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+        
+            <!-- Modal Box -->
+            <div x-show="openInstruction" class="max-h-full w-full md:w-1/2 relative flex flex-col items-center text-2xl font-play overflow-hidden"
+                x-ref="panel" >
+        
+                <!-- Modal Content -->
+                <div class="flex flex-col items-center w-full">
+                    <div 
+                        class="w-full bg-center bg-no-repeat bg-[cover]">
+                        <img class="w-full" :src="'../images/GameInstruction.png'" />
+                    </div>
+                    <div class="md:max-w-1/2 flex flex-col items-center">
+                        <!-- Modal Action Buttons -->
+                        <button class="cursor-pointer px-6 py-2 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition
+                                    flex flex-row items-center gap-2" @click="openInstruction = false">
+                            close
+                        </button>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+
     <div x-show="activeCard" x-transition.opacity class="fixed inset-0 bg-black/10 backdrop-blur-sm z-50" @click="removeCard()"></div>
     <!-- Deck -->
     <div class="font-young-serif text-2xl" 
@@ -183,6 +216,7 @@
             Alpine.data('deckController', () => ({
                 cards: Array.from({ length: 15 }, (_, i) => ({ id: i })),
                 cardType: 'trap', // 'trap' or 'alchemy'
+                openInstruction: false,
                 cardDescriptions: {
                     trap: [
                         'Fall into trap.Skip 1 round.',

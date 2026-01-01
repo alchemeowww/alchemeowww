@@ -114,40 +114,51 @@
     </style>
 </head>
 
-    <body class="font-play w-screen h-screen bg-gradient-to-br from-[#f9e4c6] to-[#D0B68F]/50 flex flex-col items-center justify-center gap-6 overflow-hidden"
+    <body class="font-play w-screen h-screen bg-gradient-to-br from-[#f9e4c6] to-[#D0B68F]/50 flex flex-col items-start gap-6 overflow-hidden"
     x-data="deckController" x-init="init()">
 
-    <div class="flex flex-row">   
-        <button class="cursor-pointer px-6 py-2 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition
-                    flex flex-row items-center gap-2" @click="openInstruction = true">
-            <span class="material-symbols-outlined">info</span> Instruction
-        </button>
-
-        <div x-cloak x-show="openInstruction" class="fixed inset-0 backdrop-blur-lg flex items-center justify-center transition-opacity z-100"
-            x-transition:enter="duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-            x-transition:leave="duration-200 ease-in" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-        
-            <!-- Modal Box -->
-            <div x-show="openInstruction" class="w-full h-full md:w-1/2 relative flex flex-col items-center text-2xl font-play overflow-hidden"
-                x-ref="panel" >
-        
-                <!-- Modal Content -->
-                <div class="flex flex-col items-center justify-center w-full h-full">
-                    <div 
-                        class="w-full max-h-4/5 flex items-center justify-center">
-                        <img class="max-h-full" :src="'../images/GameInstruction.png'" />
-                    </div>
-                    <div class="md:max-w-1/2 flex flex-col items-center">
-                        <!-- Modal Action Buttons -->
+    <header class="sticky top-0 w-full text-white py-3 px-3 z-50">
+        <div class="flex items-center justify-between">
+            <a href="../index.html" class="w-10 h-10 bg-[#4F321E] text-[#D0B68F] rounded-full flex items-center justify-center 
+                    hover:bg-[#6A442A] transition duration-300 shadow-xl cursor-pointer transform transition-all
+                    duration-100 ease-linear hover:scale-110" style=""><i class="fa-solid fa-chevron-left"></i></a>
+                    <div class="flex flex-row">
                         <button class="cursor-pointer px-6 py-2 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition
-                                    flex flex-row items-center gap-2" @click="openInstruction = false">
-                            close
+                                        flex flex-row items-center gap-2" @click="openInstruction = true">
+                            <span class="material-symbols-outlined">info</span> Instruction
                         </button>
+                    
+                        <div x-cloak x-show="openInstruction"
+                            class="fixed inset-0 backdrop-blur-lg flex items-center justify-center transition-opacity z-100"
+                            x-transition:enter="duration-200 ease-out" x-transition:enter-start="opacity-0"
+                            x-transition:enter-end="opacity-100" x-transition:leave="duration-200 ease-in"
+                            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                    
+                            <!-- Modal Box -->
+                            <div x-show="openInstruction"
+                                class="w-full h-full md:w-1/2 relative flex flex-col items-center text-2xl font-play overflow-hidden"
+                                x-ref="panel">
+                    
+                                <!-- Modal Content -->
+                                <div class="flex flex-col items-center justify-center w-full h-full">
+                                    <div class="w-full max-h-4/5 flex items-center justify-center">
+                                        <img class="max-h-full" :src="'../images/GameInstruction.png'" />
+                                    </div>
+                                    <div class="md:max-w-1/2 flex flex-col items-center">
+                                        <!-- Modal Action Buttons -->
+                                        <button class="cursor-pointer px-6 py-2 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition
+                                                        flex flex-row items-center gap-2" @click="openInstruction = false">
+                                            close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>    
-            </div>
         </div>
-    </div>
+    </header>
+    <div class="flex flex-col items-center justify-center gap-6 grow w-full">
+    
 
     <div x-show="activeCard" x-transition.opacity class="fixed inset-0 bg-black/10 backdrop-blur-sm z-50" @click="removeCard()"></div>
     <!-- Deck -->
@@ -209,6 +220,7 @@
                 </span> Alchemy Card
             </button>
         </div>
+    </div>
     </div>
 
     <script>

@@ -12,9 +12,9 @@
     <link href="../fonts/fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
     <link href="../fonts/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
     <link href="../fonts/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
-    <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
     <link rel="manifest" href="https://alchemeowww.github.io/alchemeowww/images/favicon/site.webmanifest">
     <meta name="theme-color" content="#D0B68F">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,7 +142,7 @@
                                 <!-- Modal Content -->
                                 <div class="flex flex-col items-center justify-center w-full h-full">
                                     <div class="w-full max-h-4/5 flex items-center justify-center">
-                                        <img class="max-h-full" :src="'../images/GameInstruction.png'" />
+                                        <img class="max-h-full" :src="'images/GameInstruction.png'" />
                                     </div>
                                     <div class="md:max-w-1/2 flex flex-col items-center">
                                         <!-- Modal Action Buttons -->
@@ -176,7 +176,7 @@
                     <!-- Front -->
                     <div
                         class="card-face p-1 gap-2 absolute inset-0 bg-[#D0B68F] rounded-xl flex flex-col items-center justify-center text-gray-700 text-xl font-semibold">
-                        <img class="" :src="'../images/MIST;Y FOREST.png'" />
+                        <img class="" :src="'images/MIST;Y FOREST.png'" />
                         <div class="align-items-center text-center card-text px-2 font-young-serif"
                             x-html="cardType === 'trap' ? 'Trap Card' : 'Alchemy Card'"></div>
                     </div>
@@ -184,12 +184,12 @@
                     <!-- Back -->
                     <div
                         class="p-1 card-face card-back absolute inset-0 bg-[#f9e4c6] rounded-xl flex items-center justify-center text-white text-sm font-semibold overflow-hidden">
-                        <div class="flex flex-col items-center justify-center w-full h-full bg-center bg-no-repeat bg-cover bg-[url('../images/Frame%204.png')]">
+                        <div class="flex flex-col items-center justify-center w-full h-full bg-center bg-no-repeat bg-cover bg-[url('images/Frame%204.png')]">
                             <div class="card-description-text text-black font-young-serif grow h-full w-full pt-14 px-8 pb-4
                                 text-center flex flex-col justify-center">
                                 <div x-text="cardDescriptions[cardType][card.id] || 'Coming Soon'"></div>
                             </div>
-                            <img class="koro-size self-end mr-2 mb-2 md:mr-4 md:mb-4" :src="'../images/koro.png'" alt="koro" />
+                            <img class="koro-size self-end mr-2 mb-2 md:mr-4 md:mb-4" :src="'images/koro.png'" alt="koro" />
                         </div>
                     </div>
                 </div>

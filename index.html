@@ -105,7 +105,7 @@
             </div>
         </div>
     </div>
-    <div class=" snap-start md:min-h-screen md:h-screen shrink-0 bg-[#C7BAA8] flex flex-col justify-center" id="projects">
+    <div class=" snap-start md:min-h-screen shrink-0 bg-[#C7BAA8] flex flex-col justify-center overflow-hidden" id="projects">
         <div class="container mx-auto flex flex-col md:flex-row justify-center items-start gap-8 py-16 md:py-8 p-8">
             <div class="w-full flex flex-col md:flex-row gap-8">
                 <div class="flex flex-col flex-nowrap gap-8 items-end justify-end">
@@ -124,43 +124,58 @@
                             Explore
                         </a>
                     </div>
-                    <div data-aos="fade-left" class="w-full md:w-[350px] h-[300px] md:h-[250px] shrink-0  flex flex-col items-center justify-center shadow-sm rounded-xl bg-[#f9e4c6]
+                    <div data-aos="fade-left" class="w-full md:w-[350px] h-[350px] md:h-[250px] shrink-0  flex flex-col items-center justify-center shadow-sm rounded-xl bg-[#f9e4c6]
                         bg-center bg-no-repeat bg-cover bg-[url('mistiy-forest/images/characters/sese/Art1.png')]"></div>
-                    <div data-aos="fade-left" data-aos-delay="200" data-aos-anchor-placement="bottom-bottom" class="w-full md:w-[500px] h-[320px] shrink-0 flex flex-col items-center justify-center shadow-sm rounded-xl 
+                    <div data-aos="fade-left" data-aos-delay="200" class="w-full md:w-[500px] h-[350px] shrink-0 flex flex-col items-center justify-center shadow-sm rounded-xl 
                         bg-center bg-no-repeat bg-cover bg-[url('mistiy-forest/images/characters/rye/Art1.png')]"></div>
                 </div>
-                <div data-aos="fade-left" data-aos-delay="100" data-aos-anchor-placement="center-bottom" class="h-[320px] md:h-auto md:self-stretch w-full md:w-[380px] shrink-0 flex flex-col items-center justify-center shadow-sm rounded-xl
-                    bg-center bg-no-repeat bg-cover bg-[url('mistiy-forest/images/characters/koro/Art1.png')]">
+                <div data-aos="fade-left" data-aos-delay="100" data-aos-anchor-placement="center-bottom" class="h-[350px] md:h-auto md:self-stretch w-full md:w-[380px] shrink-0 flex flex-col items-center justify-center shadow-sm rounded-xl
+                     bg-bottom md:bg-center bg-no-repeat bg-cover bg-[url('mistiy-forest/images/characters/koro/Art1.png')]">
                 </div>
             </div>
         </div>
     </div>
-    <div class=" snap-start md:min-h-screen h-screen shrink-0 " id="merchandises">
-        <div class="container mx-auto flex flex-col gap-4 justify-center h-full items-center py-16 md:py-8 p-8">
+    <div class=" snap-start md:min-h-screen md:h-100 shrink-0 " id="merchandises">
+        <div class="container mx-auto flex flex-col gap-4 justify-center h-full items-center py-16 p-8">
             <h1 class="font-rye text-5xl md:text-7xl font-bold mb-6 text-[#8F3F1A] drop-shadow-lg">
                 Merchandises
             </h1>
-            <div class="flex flex-col md:flex-row gap-8 md:gap-4 h-2/3 w-full">
-                <div data-aos="fade-down" data-aos-anchor-placement="center-bottom" class="w-full md:w-1/5 h-2/3 relative shadow-xl rounded-2xl bg-[#f9e4c6]">
-                    <span class="font-rye text-[#8F3F1A] absolute -top-[15px] left-[15px] text-shadow-lg text-2xl">NFC</span>
+            <div class="flex flex-col sm:flex-row gap-8 md:h-2/3 w-full">
+                <div data-aos="fade-down" data-aos-anchor-placement="center-bottom" class="w-full sm:w-1/2 md:w-1/3 h-[500px] sm:h-auto relative shadow-xl rounded-2xl bg-white self-stretch
+                    bg-center bg-no-repeat bg-cover bg-[url('images/products/sticker-sheets.png')]">
+                    <div class="absolute bottom-[15px] left-[15px] text-shadow-lg flex flex-col gap-1">
+                        <div class="font-rye text-2xl text-[#8F3F1A]">Sticker</div>
+                        <div class="">Customizable cat in box</div>
+                    </div>
                 </div>
-                <div data-aos="fade-down" data-aos-delay="100" data-aos-anchor-placement="center-bottom" class="w-full md:w-1/5 h-2/3 relative shadow-xl rounded-2xl bg-[#f9e4c6] self-center">
-                    <span class="font-rye text-[#8F3F1A] absolute -top-[15px] left-[15px] text-shadow-lg text-2xl">Keychain</span>
-                </div>
-                <div data-aos="fade-down" data-aos-delay="200" data-aos-anchor-placement="center-bottom" class="w-full md:w-1/5 h-2/3 relative shadow-xl rounded-2xl bg-[#f9e4c6] self-end">
-                    <span class="font-rye text-[#8F3F1A] absolute -top-[15px] left-[15px] text-shadow-lg text-2xl">Board Game</span>
-                </div>
-                <div data-aos="fade-down" data-aos-delay="100" data-aos-anchor-placement="center-bottom" class="w-full md:w-1/5 h-2/3 relative shadow-xl rounded-2xl bg-[#f9e4c6] self-center">
-                    <span class="font-rye text-[#8F3F1A] absolute -top-[15px] left-[15px] text-shadow-lg text-2xl">Card Holder</span>
-                </div>
-                <div data-aos="fade-down" data-aos-anchor-placement="center-bottom" class="w-full md:w-1/5 h-2/3 relative shadow-xl rounded-2xl bg-[#f9e4c6]">
-                    <span class="font-rye text-[#8F3F1A] absolute -top-[15px] left-[15px] text-shadow-lg text-2xl">Sticker</span>
+                <div class="flex flex-col sm:w-1/2 md:w-2/3 gap-8 md:h-full">
+                    <div data-aos="fade-down" data-aos-delay="200" data-aos-anchor-placement="center-bottom" class="overflow-hidden w-full h-[400px] md:h-1/2 relative shadow-xl rounded-2xl bg-white">
+                        <div class="absolute w-full h-full top-0
+                            bg-top-right bg-no-repeat bg-contain bg-[url('images/products/board-game-map.png')]">
+                        </div>
+                        <div class="absolute w-full h-full md:right-10 
+                            bg-right bg-no-repeat bg-contain bg-[url('images/products/board-game-standee.png')]">
+                        </div>
+                        <div class="absolute bottom-[15px] left-[15px] text-shadow-lg flex flex-col gap-1">
+                            <div class="font-rye text-2xl text-[#8F3F1A]">Board Game</div>
+                            <div class="">Journey into the fog-veiled MIST;Y FOREST</div>
+                        </div>
+                    </div>
+                    <div data-aos="fade-down" data-aos-delay="300" data-aos-anchor-placement="center-bottom" class="overflow-hidden w-full h-[380px] sm:h-[350px] md:h-1/2 relative shadow-xl rounded-2xl bg-white">
+                        <div class="absolute top-5 md:top-0 md:right-10 w-full h-2/3 md:h-full
+                            bg-center md:bg-right bg-no-repeat bg-contain bg-[url('images/products/interactive-standee.png')]">
+                        </div>
+                        <div class="absolute bottom-[15px] left-[15px] text-shadow-lg flex flex-col gap-1 md:w-1/2">
+                            <div class="font-rye text-2xl text-[#8F3F1A]">Interactive Standee & Keychain</div>
+                            <div class="">Fancy lil labbish that has lil usage</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class=" snap-start md:min-h-screen md:h-screen shrink-0 flex flex-col justify-center bg-[#C7BAA8]" id="events">
-        <div class="container h-screen mx-auto flex flex-col md:flex-row justify-center items-center gap-12 w-full py-16 md:py-8 p-8">
+    <div class=" snap-start md:min-h-screen shrink-0 flex flex-col justify-center bg-[#C7BAA8]" id="events">
+        <div class="container mx-auto flex flex-col md:flex-row justify-center items-center gap-12 w-full py-16 p-8 grow">
             <div class="flex flex-col md:flex-row justify-center gap-12 w-full">
                 <div data-aos="flip-down" class="text-center w-full md:w-1/3 md:text-start">
                     <h1 class="font-rye text-5xl md:text-7xl font-bold mb-6 text-[#8F3F1A] drop-shadow-lg self-start">

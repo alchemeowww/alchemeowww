@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Cryptic Calendar (Web Decoder)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --hole-size: 16px;
+            --gap: 8px;
+            --grid-cols: 3;
+            --grid-rows: 5;
+            --frame-bg: #111;
+            --hole-bg: #fff;
+            --card-bg: #111;
+            /* same as frame to "hide" covered holes */
+            --accent: #0ea5e9;
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            background: #0b0b0b;
+            color: #eaeaea;
+            margin: 0;
+        }
+
+        header {
+            padding: 1rem;
+            background: var(--accent);
+            color: #fff;
+        }
+
+        main {
+            padding: 1rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: .75rem;
+            align-items: end;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: .9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: .6rem .7rem;
+            border-radius: .5rem;
+            border: 1px solid #2a2a2a;
+            background: #161616;
+            color: #eee;
+        }
+
+        button {
+            padding: .6rem .9rem;
+            border-radius: .5rem;
+            border: none;
+            cursor: pointer;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .frame {
+            width: max-content;
+            padding: 14px;
+            border-radius: 12px;
+            background: var(--frame-bg);
+            box-shadow:
+                0 2px 6px rgba(0, 0, 0, .35),
+                inset 0 1px 0 rgba(255, 255, 255, .04);
+        }
+
+        .row {
+            display: flex;
+            gap: 22px;
+            /* spacing between letter grids */
+            margin-bottom: 18px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(var(--grid-cols), var(--hole-size));
+            grid-template-rows: repeat(var(--grid-rows), var(--hole-size));
+            gap: var(--gap);
+            align-items: center;
+            justify-items: center;
+            position: relative;
+        }
+
+        .hole {
+            width: var(--hole-size);
+            height: var(--hole-size);
+            border-radius: 999px;
+            background: var(--hole-bg);
+            transition: transform .2s ease, opacity .2s ease;
+            box-shadow:
+                0 1px 2px rgba(255, 255, 255, .06) inset,
+                0 2px 7px rgba(0, 0, 0, .55);
+        }
+
+        /* Covered holes (by the “card”) appear invisible */
+        .hole.covered {
+            opacity: 0;
+            transform: scale(.7);
+        }
+
+        /* Card face tint (for demo) */
+        .card-tint {
+            position: absolute;
+            inset: -8px;
+            border-radius: 10px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(0, 0, 0, .2));
+            pointer-events: none;
+        }
+
+        .hint {
+            color: #9aa0a6;
+            font-size: .9rem;
+        }
+
+        .legend {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+        }
+
+        .legend .swatch {
+            width: 14px;
+            height: 14px;
+            border-radius: 999px;
+            display: inline-block;
+        }
+
+        .swatch.hole {
+            background: var(--hole-bg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+        }
+
+        .swatch.cover {
+            background: var(--frame-bg);
+            outline: 1px solid #333;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Cryptic Calendar (Web Decoder)</h1>
+        <p class="hint">Enter a month (3 letters) and day (2 digits). The decoder reveals them through 3×5 hole grids.
+        </p>
+    </header>
+
+    <main>
+        <div class="controls">
+            <div>
+                <label for="month">Month (JAN…DEC)</label>
+                <input id="month" placeholder="JAN" maxlength="3" value="JAN" />
+            </div>
+            <div>
+                <label for="day">Day (01–31)</label>
+                <input id="day" placeholder="01" maxlength="2" value="07" />
+            </div>
+            <button id="render">Reveal</button>
+        </div>
+
+        <div class="legend">
+            <span><i class="swatch hole"></i> Visible hole (part of letter)</span>
+            <span><i class="swatch cover"></i> Covered hole (hidden by card)</span>
+        </div>
+
+        <section class="frame" id="frame">
+            <!-- Top row: 3 grids for month -->
+            <div class="row" id="row-month"></div>
+            <!-- Bottom row: 2 grids for day -->
+            <div class="row" id="row-day"></div>
+        </section>
+    </main>
+
+    <script>
+        // 3×5 font for uppercase letters and digits (1 = visible hole, 0 = covered)
+        // Each pattern is 15 chars (rows top->bottom, 3 cols per row).
+        const FONT3x5 = {
+            // Letters used in months
+            A: "111101111101101", B: "110101110101110", C: "111100100100111",
+            D: "110101101101110", E: "111100111100111", F: "111100111100100",
+            G: "111100101101111", H: "101101111101101", I: "111010010010111",
+            J: "111010010110110", K: "101101110101101", L: "100100100100111",
+            M: "101111101101101", N: "101111111101101", O: "111101101101111",
+            P: "111101111100100", R: "111101111101101", S: "111100111001111",
+            T: "111010010010010", U: "101101101101111", V: "101101101101010",
+            Y: "101101010010010",
+            // Digits
+            "0": "111101101101111", "1": "010110010010111", "2": "111001111100111",
+            "3": "111001111001111", "4": "101101111001001", "5": "111100111001111",
+            "6": "111100111101111", "7": "111001001001001", "8": "111101111101111",
+            "9": "111101111001111"
+        };
+
+        const rowMonth = document.getElementById('row-month');
+        const rowDay = document.getElementById('row-day');
+        const monthEl = document.getElementById('month');
+        const dayEl = document.getElementById('day');
+        const renderBtn = document.getElementById('render');
+
+        function makeGrid(pattern) {
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+            // Tint overlay to suggest a "card" is inserted
+            const tint = document.createElement('div');
+            tint.className = 'card-tint';
+            grid.appendChild(tint);
+
+            for (let i = 0; i < 15; i++) {
+                const hole = document.createElement('div');
+                hole.className = 'hole';
+
+                const bit = pattern?.[i] === '1';
+                if (!bit) hole.classList.add('covered');
+
+                grid.appendChild(hole);
+            }
+            return grid;
+        }
+
+        function normalizeMonth(m) {
+            const s = (m || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
+            return s.padEnd(3, ' ');
+        }
+        function normalizeDay(d) {
+            const s = (d || '').replace(/[^0-9]/g, '').slice(0, 2);
+            return s.padStart(2, '0');
+        }
+
+        function resolvePattern(char) {
+            if (char === ' ') return "000000000000000";
+            const p = FONT3x5[char];
+            if (!p) return "000000000000000";
+            return p;
+        }
+
+        function render() {
+            rowMonth.innerHTML = '';
+            rowDay.innerHTML = '';
+
+            const m = normalizeMonth(monthEl.value);
+            const d = normalizeDay(dayEl.value);
+
+            // Top row: 3 letters for month
+            for (let i = 0; i < 3; i++) {
+                rowMonth.appendChild(makeGrid(resolvePattern(m[i])));
+            }
+            // Bottom row: 2 digits for day
+            for (let i = 0; i < 2; i++) {
+                rowDay.appendChild(makeGrid(resolvePattern(d[i])));
+            }
+        }
+
+        renderBtn.addEventListener('click', render);
+        render(); // initial
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alchemeowww</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="../fonts/fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="../fonts/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
+    <link href="../fonts/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="https://alchemeowww.github.io/alchemeowww/images/favicon/site.webmanifest">
+    <meta name="theme-color" content="#D0B68F">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        [x-cloak] { display: none !important; }
+        .font-play{
+            font-family: "Play";
+        }
+        body {
+            font-family: "Tangerine", cursive;
+        }
+        .parallax {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: inherit;
+            transition: transform 0.1s linear;
+        }
+
+        .character-img {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            transition: transform 0.1s linear;
+        }
+        .character { animation: bounceCharacter 3s infinite ease-in-out; }
+        @keyframes bounceCharacter {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+        .banner { animation: bounce2 2s infinite ease-in-out; }
+        .character-description { 
+            animation: bounce2 5s infinite ease-in-out; 
+        }
+
+        .parallax:nth-child(1) { animation: bounce1 3s infinite ease-in-out; }
+        .parallax:nth-child(2) { animation: bounce2 3.5s infinite ease-in-out; }
+        .parallax:nth-child(3) { animation: bounce3 4s infinite ease-in-out; }
+        .parallax:nth-child(4) { animation: bounce4 4.5s infinite ease-in-out; }
+        .parallax:nth-child(5) { animation: bounce5 5s infinite ease-in-out; }
+        .parallax:nth-child(6) { animation: bounce6 5.5s infinite ease-in-out; }
+        .parallax:nth-child(7) { animation: bounce7 6s infinite ease-in-out; }
+        
+        @keyframes bounce1 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        @keyframes bounce2 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        @keyframes bounce3 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        @keyframes bounce4 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        @keyframes bounce5 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        @keyframes bounce6 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+        @keyframes bounce7 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+        /* Bouncing Balls Animation */
+        .bouncing-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .bouncing-ball {
+            width: 1vh;
+            height: 1vh;
+            background-color: #7C5B38;
+            border-radius: 50%;
+            position: relative;
+        }
+        .ball-1 { animation: bounce1 1s infinite ease-in-out; }
+        .ball-2 { animation: bounce2 1.3s infinite ease-in-out; }
+        .ball-3 { animation: bounce3 1.6s infinite ease-in-out; }
+        
+        @keyframes bounce1 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes bounce2 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes bounce3 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0; }
+        }
+
+        .slow-slide-out {
+            animation: slideUp 0.5s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="w-full bg-[#D0B68F]
+    " x-data="{
+    page:1,
+    showButton: true,
+    open: false,
+    selectedCharacter: null,
+    characters: {
+        Koro : {
+            name: 'Koro',
+            description: `Koro is a <span class='font-bold'>time alchemist</span> who lives in a small wooden house with grey rooftop. <br/><br/>He loves planting but is bad at planting, thus most of the plants are dead in his garden. <br /><br />Koro is wearing an hourglass necklace which is inherited from his mom who was also a time alchemist. This hourglass has <span class='font-bold'>secret power</span>.`,
+            image: 'images/characters/koro/Art1.png',
+        },
+        Sese : {
+            name: 'Sese',
+            description: `Sese is a <span class='font-bold'>forest botanist</span> and has been exploring many different forests. <br /><br />However, he always gets lost in the forest. <br /><br />Sese is not a local person in MIST;Y FOREST, he came here to find the <span class='font-bold'>'Legendary Leaf'</span>. <br /><br />He believes that the leaf can fulfill his wish.`,
+            image: 'images/characters/sese/Art1.png',
+        },
+        Rye : {
+            name: 'Rye',
+            description: `Rye is an <span class='font-bold'>apprentice knight</span> from Kingdom Tsavorite. <br /><br />He is traveling around to help people solve problems. <br /><br />Under his scarf, there is a gold pendant underneath, which seems to be a secret of his identity. <br /><br />Rye has a serious face and looks very strong, but he is actually a <span class='font-bold'>coward</span>.`,
+            image: 'images/characters/rye/Art1.png',
+        }
+    },
+    x: 0, y: 0, year: new Date().getFullYear(),
+    updateMouse(event) {
+        this.x = (event.clientX / window.innerWidth - 0.5) * 30;
+        this.y = (event.clientY / window.innerHeight - 0.5) * 30;
+    },
+    scrollToTop() { 
+        $refs.panel.scrollTo({ top: 0 }) 
+    },
+}" @mousemove="updateMouse" x-init="setTimeout(() => showButton = true, 2000)" x-cloak>
+
+    <div x-show="open" class="fixed inset-0 backdrop-blur-lg flex items-center justify-center transition-opacity z-100"
+        x-transition:enter="duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="duration-200 ease-in" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+    
+        <!-- Modal Box -->
+        <div x-show="open" class="bg-white p-6 md:m-4 md:rounded-lg max-h-full shadow-lg relative flex flex-col items-center text-2xl font-play overflow-y-auto"
+            x-ref="panel" >
+    
+            <!-- Modal Content -->
+            <h2 class="text-3xl font-bold text-[#4F321E] mb-4" x-text="characters[selectedCharacter]['name'] || ''"></h2>
+            <div class="flex flex-col md:flex-row items-center gap-5 md:gap-10">
+                <div :class="`bg-[url('${characters[selectedCharacter]['image']}')]`"
+                    class="md:w-1/2 w-full h-[70vh] bg-center bg-no-repeat bg-[cover]
+                    rounded-lg">
+                </div>
+                <div class="md:max-w-1/2 flex flex-col items-center md:items-start">
+                    <p x-html="characters[selectedCharacter]['description'] || ''"></p>
+                    <!-- Modal Action Buttons -->
+                    <button @click="open = false; scrollToTop()" x-transition:enter="duration-[1500ms] ease-linear"
+                        class="font-play px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full transform transition-all mt-5
+                                                                duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer shadow-xl text-2xl">
+                        Close
+                    </button>
+                </div>
+            </div>    
+        </div>
+    </div>
+
+    <header class="sticky top-0 w-full text-white py-3 px-3 z-50">
+        <div class="flex items-center justify-between">
+            <a x-show="page != 1" @click="page > 1 ? page-- : page" class="w-10 h-10 bg-[#4F321E] text-[#D0B68F] rounded-full flex items-center justify-center 
+                hover:bg-[#6A442A] transition duration-300 shadow-xl cursor-pointer transform transition-all
+                duration-100 ease-linear hover:scale-110"><i class="fa-solid fa-chevron-left"></i></a>
+        </div>
+    </header>
+
+    <div class="flex flex-col h-[100vh] w-full overflow-hidden">
+        <div class="flex flex-col grow w-full overflow-hidden" x-show="page == 1">
+            <div class="h-[10vh]"></div>
+            <div class="relative h-1/2 sm:h-3/5 bg-[auto_450px] sm:bg-[auto_650px]">
+                <div class="parallax bg-[url('images/MIST;Y.png')] z-30 flex flex-col items-center justify-center text-4xl font-bold"
+                    :style="`transform: translate(${x}px, ${y}px)`">
+                </div>
+                <div class="parallax bg-[url('images/FOREST.png')] z-20 flex items-center justify-center text-3xl font-semibold"
+                    :style="`transform: translate(${x * 0.9}px, ${y * 0.9}px)`">
+                </div>
+                <div class="parallax bg-[url('images/leave.png')] z-20 flex items-center justify-center text-3xl font-semibold"
+                    :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
+                </div>
+                <div class="parallax bg-[url('images/Mist.gif')] z-20 flex items-center justify-center text-3xl font-semibold"
+                    :style="`transform: translate(${x * 0.8}px, ${y * 0.8}px)`">
+                </div>
+                <div class="parallax bg-[url('images/Miwusenlin.gif')] z-10 flex items-center justify-center text-2xl font-medium"
+                    :style="`transform: translate(${x * 0.7}px, ${y * 0.7}px)`">
+                </div>
+                <div class="parallax bg-[url('images/tree.png')] z-10 flex items-center justify-center text-2xl font-medium"
+                    :style="`transform: translate(${x * 0.4}px, ${y * 0.4}px)`">
+                </div>
+            </div>
+            <div class="flex items-center justify-center">
+                <div class="z-50 z-30 flex flex-col items-center text-3xl md:text-5xl font-bold p-4 text-center text-[#4F321E]"
+                    :style="`transform: translate(${x * 0.4}px, ${y * 0.4}px)`">
+                    <div class="">A tale is unfolding in the mist... More to be revealed soon.</div>
+                    <div class="relative flex justify-center items-center w-full h-[100px] mt-4">
+                        <div x-show="!showButton" class="absolute bouncing-container flex justify-center items-center"
+                            x-transition:leave="slow-slide-out">
+                            <div class="bouncing-ball ball-1"></div>
+                            <div class="bouncing-ball ball-2"></div>
+                            <div class="bouncing-ball ball-3"></div>
+                        </div>
+                    
+                        <div x-show="showButton" 
+                            x-transition:enter="transition-transform transform translate-y-5 opacity-0 duration-[1500ms] ease-linear"
+                            x-transition:enter-start="translate-y-5 opacity-0" x-transition:enter-end="translate-y-0 opacity-100"
+                            class="flex flex-col md:flex-row gap-4">
+                        <button  @click="page = 2"
+                            class="font-play px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full transform transition-all 
+                                duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer shadow-xl text-2xl">
+                            Characters
+                        </button>
+                        <a href="card.html"
+                            class="font-play px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full transform transition-all 
+                                duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer shadow-xl text-2xl">
+                            Board Game
+                        </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div x-show="page == 2" class="grow">
+            <div class="flex flex-col items-center justify-center grow text-[#D0B68F] h-full">
+                <div class="flex overflow-x-auto snap-x snap-mandatory space-x-4 p-4 w-full grow items-center px-[10vw]">
+                    <div
+                        class="snap-center flex-shrink-0  w-[85vw] md:w-[75vw] h-[70vh] bg-[#f9e4c6] text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg">
+                        <div class="flex flex-col">
+                            <div class="relative items-center justify-center font-play w-[90vw] md:w-[40vw] h-[55vh]">
+                                <div class="absolute w-[170px] md:w-[250px] text-left bg-white rounded-lg p-2 text-xs md:text-base
+                                    character-description">
+                                    <p>Name: Koro (Korokke)</p>
+                                    <p>Species: Cat (Oyen)</p>
+                                    <p>Eyes colour: Green</p>
+                                    <p>Fav food: Corn</p>
+                                    <p>Hobby: Study alchemy about time</p>
+                                </div>
+                                <div @click="open = true; selectedCharacter='Koro';"  class="cursor-pointer character-img character bg-[url('images/characters/koro/koro.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
+                            </div>
+                            <div @click="open = true; selectedCharacter='Koro';" class="cursor-pointer character-img banner bg-[url('images/characters/koro/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
+                                <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="snap-center flex-shrink-0  w-[85vw] md:w-[75vw] h-[70vh] bg-[#f9e4c6] text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg">
+                        <div class="flex flex-col">
+                            <div class="relative items-center justify-center font-play w-[90vw] md:w-[40vw] h-[55vh]">
+                                <div class="absolute w-[170px] md:w-[250px] text-left bg-white rounded-lg p-2 text-xs md:text-base character-description">
+                                    <p>Name: Sese (Sesame)</p>
+                                    <p>Species: Cat (Tabby Siamese)</p>
+                                    <p>Eyes colour: Blue</p>
+                                    <p>Fav food: Tofu</p>
+                                    <p>Hobby: Collect different kinds of leaves</p>
+                                </div>
+                                <div  @click="open = true; selectedCharacter='Sese';" class="cursor-pointer character-img character bg-[url('images/characters/sese/sese.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 "></div>
+                            </div>
+                            <div @click="open = true; selectedCharacter='Sese';" class="cursor-pointer character-img banner bg-[url('images/characters/sese/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
+                                <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="snap-center flex-shrink-0  w-[85vw] md:w-[75vw] h-[70vh] bg-[#f9e4c6] text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg">
+                        <div class="flex flex-col">
+                            <div class="relative items-center justify-center font-play w-[90vw] md:w-[40vw] h-[55vh]">
+                                <div class="absolute w-[170px] md:w-[250px] text-left bg-white rounded-lg p-2 text-xs md:text-base character-description">
+                                    <p>Name: Rye</p>
+                                    <p>Species: Cat (Tuxedo)</p>
+                                    <p>Eyes colour: Amber</p>
+                                    <p>Fav food: Cherry</p>
+                                    <p>Hobby: Reading novel from different places</p>
+                                </div>
+                                <div @click="open = true; selectedCharacter='Rye';"
+                                    class="cursor-pointer character-img character bg-[url('images/characters/rye/rye.png')] absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] md:h-[50vh] z-10 ">
+                                </div>
+                            </div>
+                            <div @click="open = true; selectedCharacter='Rye';" class="cursor-pointer character-img banner bg-[url('images/characters/rye/character_banner.png')] h-[20vh] flex flex-row items-center justify-center">
+                                <div class="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping flex items-center justify-center">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full bg-[#543100] text-[#D0B68F] text-center p-4">
+        <span x-text="year"></span> &copy; Alchemeowww. All Rights Reserved.
+    </div>
+
+</body>
+
+</html>

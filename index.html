@@ -32,8 +32,15 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#8e3f1a",
+                        "primary": "#8F3F1A",
                         "secondary": "#4F321E",
+                        "accent": "#A3371D",
+                        "cream": "#E4DDD3",
+                        "light-cream": "#f9e4c6",
+                        "brown": "#8F3F1A",
+                        "light-brown": "#C7BAA8",
+                        "dark-brown": "#4F321E",
+                        "text-dark": "#2F232F",
                         "background-light": "#E4DDD3",
                         "background-dark": "#201612",
                     },
@@ -72,7 +79,7 @@
     </style>
 </head>
 
-<body class="w-full bg-[#E4DDD3] relative texture min-w-[360px] flex flex-col grow h-full" 
+<body class="w-full bg-cream relative texture min-w-[360px] flex flex-col grow h-full" 
     x-data="{
         year: new Date().getFullYear(),
     }" x-cloak>
@@ -102,16 +109,16 @@
                     <span class="material-symbols-outlined text-secondary dark:text-background-light">menu</span>
                 </div>
                 <div id="mobile-menu"
-                    class="fixed inset-0 bg-[#E4DDD3] z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+                    class="fixed inset-0 bg-cream z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
                     <div class="flex justify-end p-6">
-                        <button id="menu-close" class="text-[#8F3F1A] focus:outline-none">
+                        <button id="menu-close" class="text-brown focus:outline-none">
                             <span class="material-symbols-outlined text-secondary dark:text-background-light">close</span>
                         </button>
                     </div>
                 
                     <div class="flex flex-col items-center justify-start gap-8 h-full">
-                        <a href="index.html" class="font-rye text-3xl text-[#4F321E]">Home</a>
-                        <a href="about.html" class="font-rye text-3xl text-[#4F321E]">About</a>
+                        <a href="index.html" class="font-rye text-3xl text-dark-brown">Home</a>
+                        <a href="about.html" class="font-rye text-3xl text-dark-brown">About</a>
                     </div>
                 </div>
                 <script>
@@ -139,24 +146,24 @@
             </div>
             <div class="flex flex-col gap-6 justify-center items-center md:items-start">
                 <h1 data-aos="fade-up" data-aos-delay="300" data-aos-once="true"
-                    class="font-rye text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#8F3F1A] drop-shadow-md text-center md:text-left">
-                    Welcome to Alchemeowww
+                    class="font-rye text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-secondary drop-shadow-md text-center md:text-left">
+                    Welcome to <span class="text-primary">Alchemeowww</span>
                 </h1>
                 <p data-aos="fade-up" data-aos-delay="400" data-aos-once="true"
-                    class="font-play text-lg md:text-2xl text-[#2F232F] drop-shadow-md text-center md:text-left">
+                    class="font-play text-lg md:text-2xl text-text-dark drop-shadow-md text-center md:text-left">
                     Random Alchemist who always make fancy lil labbish
                 </p>
                 <!-- <a data-aos="fade-up" data-aos-delay="500" data-aos-once="true"
                     href="mistiy-forest.html"
-                    class="font-play px-12 py-2 bg-[#4F321E] text-white rounded-full transform transition-all 
-                        duration-100 ease-linear hover:scale-110 hover:bg-[#A3371D] cursor-pointer shadow-xl text-2xl">
+                    class="font-play px-12 py-2 bg-dark-brown text-white rounded-full transform transition-all 
+                        duration-100 ease-linear hover:scale-110 hover:bg-accent cursor-pointer shadow-xl text-2xl">
                     Explore
                 </a> -->
             </div>
-            <div class="absolute bottom-18 md:bottom-8 flex flex-col items-center text-[#8F3F1A] animate-bounce" data-aos="fade-up" 
+            <div class="absolute bottom-18 md:bottom-8 flex flex-col items-center text-brown animate-bounce" data-aos="fade-up" 
                 data-aos-anchor-placement="top-bottom"
                 data-aos-delay="300" data-aos-once="true">
-                <a href="#projects" class="rounded-full bg-[#C7BAA8] p-2 w-10 h-10 shadow-lg flex flex-col items-center">
+                <a href="#projects" class="rounded-full bg-light-brown p-2 w-10 h-10 shadow-lg flex flex-col items-center">
                     <div class="block md:hidden">
                         <span class="material-symbols-outlined">
                             swipe_down
@@ -171,12 +178,12 @@
             </div>
         </div>
     </div>
-    <div class=" snap-start snap-always md:min-h-screen shrink-0 bg-[#C7BAA8] flex flex-col justify-center overflow-hidden" id="projects">
+    <div class=" snap-start snap-always md:min-h-screen shrink-0 bg-light-brown flex flex-col justify-center overflow-hidden" id="projects">
         <div class="lg:container lg:mx-auto flex flex-col justify-center items-center gap-8 py-16 p-8 h-full grow">
             <div class="w-full flex flex-col md:flex-row gap-8 grow h-full">
                 <div class="flex flex-col gap-8 items-end justify-start grow h-full w-full md:w-1/2 lg:w-auto">
                     <div class="flex flex-col gap-8 justify-center items-center md:items-start">
-                        <h1 class="font-rye text-5xl md:text-6xl font-bold text-[#8F3F1A] drop-shadow-lg text-center md:text-left">
+                        <h1 class="font-rye text-5xl md:text-6xl font-bold text-brown drop-shadow-lg text-center md:text-left">
                             MIST;Y FOREST
                         </h1>
                         <p class="font-play text-lg md:text-3xl text-[#4F321E] drop-shadow-md text-center md:text-left">
@@ -193,7 +200,7 @@
                         </div>
                     </div>
                     <div class="flex flex-col grow h-full gap-8 w-full items-end justify-end">
-                        <div data-aos="fade-left" class="w-full md:w-2/3 lg:w-1/3 h-[380px] md:h-1/2 max-w-full flex flex-col items-center justify-center shadow-sm rounded-xl bg-[#f9e4c6]
+                        <div data-aos="fade-left" class="w-full md:w-2/3 lg:w-1/3 h-[380px] md:h-1/2 max-w-full flex flex-col items-center justify-center shadow-sm rounded-xl bg-light-cream
                             bg-center bg-no-repeat bg-cover bg-[url('mistiy-forest/images/characters/sese/Art1.png')]">
                         </div>
                         <div data-aos="fade-left" data-aos-delay="200" class="w-full h-[300px] md:h-1/2 max-w-full lg:w-2/3 shrink-0 flex flex-col items-center justify-center shadow-sm rounded-xl 
@@ -209,7 +216,7 @@
     </div>
     <div class=" snap-start snap-always md:min-h-screen md:h-100 flex flex-col shrink-0 " id="merchandises">
         <div class="lg:container lg:mx-auto flex flex-col gap-4 justify-center h-full items-center py-16 p-8">
-            <h1 class="font-rye text-5xl md:text-6xl font-bold mb-6 text-[#8F3F1A] drop-shadow-lg">
+            <h1 class="font-rye text-5xl md:text-6xl font-bold mb-6 text-brown drop-shadow-lg">
                 Merchandises
             </h1>
             <div class="flex flex-col gap-8 md:h-4/5 w-full text-shadow-lg text-shadow-white">
@@ -217,7 +224,7 @@
                     <div data-aos="fade-down" data-aos-anchor-placement="center-bottom" class="w-full sm:w-1/2 md:w-1/3 h-[500px] sm:h-auto relative shadow-xl rounded-2xl bg-white self-stretch
                         bg-center bg-no-repeat bg-cover bg-[url('images/products/sticker-sheets.png')]">
                         <div class="absolute bottom-[15px] px-5 flex flex-col gap-1">
-                            <div class="font-rye text-2xl text-[#8F3F1A]">Sticker</div>
+                            <div class="font-rye text-2xl text-brown">Sticker</div>
                             <div class="">Customizable cat in box</div>
                         </div>
                     </div>
@@ -231,7 +238,7 @@
                                 bg-right bg-no-repeat bg-contain bg-[url('images/products/board-game-standee.png')]">
                             </div>
                             <div class="absolute bottom-[15px] px-5 flex flex-col gap-1">
-                                <div class="font-rye text-2xl text-[#8F3F1A]">Board Game</div>
+                                <div class="font-rye text-2xl text-brown">Board Game</div>
                                 <div class="">Journey into the fog-veiled MIST;Y FOREST</div>
                             </div>
                         </div>
@@ -243,7 +250,7 @@
                                     bg-center md:bg-right bg-no-repeat bg-contain bg-[url('images/products/interactive-standee.png')]">
                                 </div>
                                 <div class="absolute bottom-[15px] px-5 flex flex-col gap-1 md:w-1/2">
-                                    <div class="font-rye text-2xl text-[#8F3F1A]">Interactive Standee</div>
+                                    <div class="font-rye text-2xl text-brown">Interactive Standee</div>
                                     <div class="">Fancy lil labbish that has lil usage</div>
                                 </div>
                             </div>
@@ -258,7 +265,7 @@
                             bg-top-right bg-no-repeat bg-contain bg-[url('images/products/keychain.png')]">
                         </div>
                         <div class="absolute bottom-[15px] px-5 flex flex-col gap-1">
-                            <div class="font-rye text-2xl text-[#8F3F1A]">Keychain</div>
+                            <div class="font-rye text-2xl text-brown">Keychain</div>
                             <div class="">Fancy lil labbish that brings you happiness</div>
                         </div>
                     </div>
@@ -269,7 +276,7 @@
                                 bg-contain bg-top-right bg-no-repeat bg-contain bg-[url('images/products/card-holder.png')]">
                         </div>
                         <div class="absolute bottom-[15px] px-5 flex flex-col gap-1">
-                            <div class="font-rye text-2xl text-[#8F3F1A]">Card Holder</div>
+                            <div class="font-rye text-2xl text-brown">Card Holder</div>
                             <div class="">Layered wooden cardholder that lights</div>
                         </div>
                     </div>
@@ -279,7 +286,7 @@
                             bg-top-right bg-no-repeat bg-contain bg-[url('images/products/nfc.png')]">
                         </div>
                         <div class="absolute bottom-[15px] px-5 flex flex-col gap-1">
-                            <div class="font-rye text-2xl text-[#8F3F1A]">NFC & TnGo</div>
+                            <div class="font-rye text-2xl text-brown">NFC & TnGo</div>
                             <div class="">Lights up your life with fancy NFC light</div>
                         </div>
                     </div>
@@ -287,11 +294,11 @@
             </div>
         </div>
     </div>
-    <div class=" snap-start snap-always md:min-h-screen shrink-0 flex flex-col justify-center bg-[#C7BAA8]" id="events">
+    <div class=" snap-start snap-always md:min-h-screen shrink-0 flex flex-col justify-center bg-light-brown" id="events">
         <div class="lg:container lg:mx-auto flex flex-col md:flex-row justify-center items-center gap-12 w-full py-16 p-8 grow">
             <div class="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-12 w-full">
                 <div data-aos="flip-down" class="text-center w-full lg:w-1/3 lg:text-start">
-                    <h1 class="font-rye text-5xl md:text-6xl font-bold mb-6 text-[#8F3F1A] drop-shadow-lg self-start">
+                    <h1 class="font-rye text-5xl md:text-6xl font-bold mb-6 text-brown drop-shadow-lg self-start">
                         Past Events & Markets
                     </h1>
                 </div>
@@ -302,7 +309,7 @@
                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                             </div>
                             <div data-aos="fade-down" data-aos-delay="100"
-                                class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-[#8F3F1A] text-white relative z-10 title-font font-medium text-sm">
+                                class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-brown text-white relative z-10 title-font font-medium text-sm">
                             </div>
                             <div data-aos="fade-down" data-aos-delay="100" class="flex-grow md:pl-12 w-full pl-6 flex items-center flex-row gap-4 sm:gap-12">
                                 <div style=""
@@ -321,7 +328,7 @@
                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                             </div>
                             <div data-aos="fade-down" data-aos-delay="200"
-                                class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-[#8F3F1A] text-white relative z-10 title-font font-medium text-sm">
+                                class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-brown text-white relative z-10 title-font font-medium text-sm">
                             </div>
                             <div data-aos="fade-down" class="flex-grow md:pl-12 w-full pl-6 flex items-center flex-row gap-4 sm:gap-12">
                                 <div style=""
@@ -340,7 +347,7 @@
                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                             </div>
                             <div data-aos="fade-down" data-aos-delay="300"
-                                class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-[#8F3F1A] text-white relative z-10 title-font font-medium text-sm">
+                                class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-brown text-white relative z-10 title-font font-medium text-sm">
                             </div>
                             <div data-aos="fade-down" data-aos-delay="300" class="flex-grow md:pl-12 w-full pl-6 flex items-center flex-row gap-4 sm:gap-12">
                                 <div style=""
@@ -359,7 +366,7 @@
                                 <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
                             </div>
                             <div data-aos="fade-down" data-aos-delay="400"
-                                class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-[#8F3F1A] text-white relative z-10 title-font font-medium text-sm">
+                                class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-brown text-white relative z-10 title-font font-medium text-sm">
                             </div>
                             <div data-aos="fade-down" data-aos-delay="400"
                                 class="flex-grow md:pl-12 w-full pl-6 flex items-center flex-row gap-4 sm:gap-12">
@@ -385,7 +392,7 @@
                 </section>
             </div>
         </div>
-        <div class="w-full bg-[#8F3F1A] text-white text-center p-4 font-semibold">
+        <div class="w-full bg-brown text-white text-center p-4 font-semibold">
             <span x-text="year"></span> &copy; Alchemeowww. All Rights Reserved.
         </div>
     </div>

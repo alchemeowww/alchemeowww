@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" class="h-screen md:snap-y md:snap-mandatory overflow-y-scroll scrollbar-hide">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alchemeowww</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="https://alchemeowww.github.io/alchemeowww/images/favicon/site.webmanifest">
+    <meta name="theme-color" content="#E4DDD3">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Rye&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/aos.css" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8e3f1a",
+                        "secondary": "#4F321E",
+                        "background-light": "#E4DDD3",
+                        "background-dark": "#201612",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "rye": ["Rye", "cursive"],
+                        "lato": ["Lato", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #E4DDD3;
+        }
+        .font-rye { font-family: 'Rye', serif; }
+        .font-lato { font-family: 'Lato', sans-serif; }
+        html { scroll-behavior: smooth; }
+        [x-cloak] {display: none !important;}
+        .scrollbar-hide { -ms-overflow-style: none; /* IE and Edge */ scrollbar-width: none; /* Firefox */ } 
+        .scrollbar-hide::-webkit-scrollbar { display: none; /* Chrome, Safari, Opera */ }
+
+        .my-div {
+            background: #f9f9f9;
+            box-shadow: 
+                inset 5px 0 10px -5px gray,   /* left side */
+                inset -5px 0 10px -5px gray;  /* right side */
+        }
+
+        .texture::after { content: ""; position: absolute; inset: 0; background-image: url('images/texture.png'); /* small noise texture */ opacity: 0.2; pointer-events: none; }
+
+    </style>
+
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-secondary dark:text-background-light">
+    <!-- Navigation -->
+    <div class="w-full top-0 z-10 h-0">
+        <div class="px-4 flex justify-center py-5">
+            <header
+                class="flex w-full max-w-[1536px] items-center justify-between whitespace-nowrap border-b border-solid border-secondary/10 px-4 md:px-10 py-3">
+                <div class="flex items-center gap-4 text-primary">
+                    <h2
+                        class="hidden font-rye text-secondary dark:text-background-light text-lg font-bold leading-tight tracking-[-0.015em] font-display">
+                        Alchemeowww</h2>
+                </div>
+                <div class="hidden md:flex flex-1 justify-end gap-8">
+                    <div class="flex items-center gap-9">
+                        <a class="text-secondary dark:text-background-light text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="index.html">Home</a>
+                        <a class="text-primary text-sm font-bold leading-normal" href="about.html">About</a>
+                    </div>
+                    <a href="#contact"
+                        class="hidden flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span>Let's Talk</span>
+                    </a>
+                </div>
+                <!-- Mobile Menu Icon -->
+                <div id="menu-open" class="md:hidden">
+                    <span class="material-symbols-outlined text-secondary dark:text-background-light">menu</span>
+                </div>
+                <div id="mobile-menu"
+                    class="fixed inset-0 bg-[#E4DDD3] z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+                    <div class="flex justify-end p-6">
+                        <button id="menu-close" class="text-[#8F3F1A] focus:outline-none">
+                            <span class="material-symbols-outlined text-secondary dark:text-background-light">close</span>
+                        </button>
+                    </div>
+    
+                    <div class="flex flex-col items-center justify-start gap-8 h-full">
+                        <a href="index.html" class="font-rye text-3xl text-[#4F321E]">Home</a>
+                        <a href="about.html" class="font-rye text-3xl text-[#4F321E]">About</a>
+                    </div>
+                </div>
+                <script>
+                    const menuOpenBtn = document.getElementById('menu-open');
+                    const menuCloseBtn = document.getElementById('menu-close');
+                    const mobileMenu = document.getElementById('mobile-menu');
+
+                    menuOpenBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-full');
+                        mobileMenu.classList.add('translate-x-0');
+                    });
+
+                    menuCloseBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-0');
+                        mobileMenu.classList.add('translate-x-full');
+                    });
+                </script>
+            </header>
+        </div>
+    </div>
+    <!-- Hero Section / Profile Header -->
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center py-5 mt-[95px]">
+        <div class="w-full max-w-[960px] flex flex-col gap-8 md:flex-row items-center md:items-start p-4">
+            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl w-full max-w-[320px] md:w-64 md:h-64 shadow-xl border-4 border-white dark:border-secondary/30"
+                data-alt="A professional portrait of an artist in their sunny studio"
+                style='background-image: url("images/owner.png");'>
+            </div>
+            <div class="flex flex-col flex-1 gap-4 text-center md:text-left">
+                <h1 class="text-primary font-rye text-4xl md:text-4xl lg:text-5xl leading-tight">ALCHEMIST | ARTIST</h1>
+                <p class="text-secondary/80 dark:text-background-light/80 text-xl font-bold font-lato">Halo! I'm Kyatto, the brand owner of Alchemeowww!</p>
+                <p class="text-secondary dark:text-background-light/90 text-lg font-normal leading-relaxed font-lato">
+                    You can call me Kyatto (Cat キャット) or 仙草 xiān cǎo (Grass Jelly - the BEST topping in milk tea).
+                </p>
+                <p class="text-secondary dark:text-background-light/90 text-lg font-normal leading-relaxed font-lato">
+                    I initially started as a resin crafter in my first brand in 2016, but due to change of obsession, I move over to doodle
+                    after the pandemic.
+                    I enjoy design fancy lil glowing labbish using my art.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center md:justify-start pt-4 hidden">
+                    <button
+                        class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span class="truncate">View My Work</span>
+                    </button>
+                    <button
+                        class="flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-secondary/10 text-secondary dark:text-background-light border border-secondary/20 text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span class="truncate">Download CV</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Story Section -->
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center py-10 bg-secondary/5">
+        <div class="w-full max-w-[960px] flex flex-col">
+            <h2
+                class="text-secondary dark:text-background-light text-[28px] font-bold leading-tight tracking-[-0.015em] px-4 pb-6 pt-5 font-lato border-l-4 border-primary">
+                The Story Behind <span class="font-rye text-primary">Alchemeowww</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
+                <div class="flex flex-col gap-4">
+                    <p
+                        class="text-secondary dark:text-background-light text-base font-normal leading-relaxed font-lato">
+                        In Alchemeowww, I design interesting and fancy glowing merchandise.
+                    </p>
+                    <p
+                        class="text-secondary dark:text-background-light text-base font-normal leading-relaxed font-lato">
+                        I started with drawing some cute cats art then I found out that normal prints, stickers nor flat keychains are just way
+                        too boring. So I decided to explore more fancy technologies.
+                    </p>
+                    <p class="text-secondary dark:text-background-light text-base font-normal leading-relaxed font-lato">
+                        I have created interactive merchandise like spinnable keychain, standee, NFC glowing charms and even I remake Tng into
+                        my keychain!
+                    </p>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <p class="text-secondary dark:text-background-light text-base font-normal leading-relaxed font-lato">
+                        Other than that, I have introduced my board game MIST;Y FOREST in 2025. It has characters, storyline, instructions, and it needs to
+                        interact with my game website.
+                    </p>
+                    <div class="bg-primary/5 rounded-lg p-6 border border-primary/20 italic text-primary/80">
+                        "Alchemeowww 錬金術喵 is a combination of Alchemist + Cat. It is pronounced as "Al" + "K" + "Meow". Yes, the "Che" is
+                        pronounced as Chemistry's "Che" not Cherry's "Che" or "奧客喵" in hokkien ฅ/ᐠ. ̫ .ᐟ\ฅ"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Workspace Gallery Section -->
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center py-10 bg-secondary/5 hidden">
+        <div class="w-full max-w-[960px] flex flex-col">
+            <h3
+                class="text-secondary dark:text-background-light tracking-light text-2xl font-bold leading-tight px-4 text-left pb-8 font-lato">
+                My Workspace &amp; Tools</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+                <div class="flex flex-col gap-2">
+                    <div class="bg-center bg-no-repeat aspect-[4/5] bg-cover rounded-lg shadow-sm"
+                        data-alt="An organized artist desk with watercolors and a digital tablet"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDVv4KGCvWgWVrMd8nh1R-dx5mkf3u9g5lnAZXT88EOzGRMIV0GuBDziysr1YRknId_UyMzgT0uWmogLp3GM2Wm-JAkk_Zh2IS45ucbwXovzkYcKWXWis5LKe5FLIP8GClkp1nzGLA8wlQOOhD3rrXAt3Hj-dIhu1P8r8TFrFuReQs_uOX4H5z3XrxIg2OAV7KL1aTzAQg_2UF9nA27aBfb1-4MOoLWV-gr46whe0J5ON7mbtwIaXl1311DDHIY2pvGHfLXV3RVZnrZ");'>
+                    </div>
+                    <p class="text-secondary/60 text-sm italic font-lato">The morning setup: where the light is best.
+                    </p>
+                </div>
+                <div class="flex flex-col gap-2 md:mt-8">
+                    <div class="bg-center bg-no-repeat aspect-[4/5] bg-cover rounded-lg shadow-sm"
+                        data-alt="Close up of paint brushes and mixed watercolor pigments"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCN10nSEYdqwhP_ovX7aHu18c2TaDRbP3_O1LZ9doz1ZuKuLJXedYYoqy0WEUl2aSLg1i2gzEti4BmUxdNnVp-gLuqyegLkHNWzEQd9qW8NdePVv73UwjDeCLZkz3LhOOCFle1-F13q_Zh64M4b2kdAhwiGCwSv4gKeqvXe1gqzyUktw9ylceD-JBv_0G9aYmJ9FhHfrTpmkA39OBIyYb4nEDn-_1eKgjbl6leIrK7vIP5zx-4tyEKaiCGWsP1Marnx1PEirCkm-NFr");'>
+                    </div>
+                    <p class="text-secondary/60 text-sm italic font-lato">Natural pigments and heritage brushes.</p>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <div class="bg-center bg-no-repeat aspect-[4/5] bg-cover rounded-lg shadow-sm"
+                        data-alt="Finished illustration sketches hanging on a studio wall"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAosDkpnz7uSzPnCt-Iqzw5RpYLT4zwD0G1JJKWkq7zxPILCQDfwd8Wh2VyZ5AHTbOe-U9k1MMeUzPpUtYhyNCkvP5eyNvmV3-dDFBa00JKIrWCUnP2lyijB-vXsmd7AxiBl3w5_zngYrSII8LYBnX5qQKD1j83zwOiJKxdIoFZiZkJA_h_40ZAwRVLQVXewtjICBUUxFuuQmtZ-XOSfxVrh3ez-BfnyxtjVl4IHoY4-iBWl-Evw4CmspJdGq3WfzfkLjW2Wm5m9HBw");'>
+                    </div>
+                    <p class="text-secondary/60 text-sm italic font-lato">Current WIPs and inspiration boards.</p>
+                </div>
+            </div>
+            <!-- List of Tools -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 py-12">
+                <div class="flex items-center gap-3 p-3 rounded-lg border border-secondary/10 bg-white/50">
+                    <span class="material-symbols-outlined text-primary">edit</span>
+                    <span class="font-bold text-sm">Fine Liners</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-lg border border-secondary/10 bg-white/50">
+                    <span class="material-symbols-outlined text-primary">palette</span>
+                    <span class="font-bold text-sm">Gouache</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-lg border border-secondary/10 bg-white/50">
+                    <span class="material-symbols-outlined text-primary">tablet_mac</span>
+                    <span class="font-bold text-sm">iPad Pro</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-lg border border-secondary/10 bg-white/50">
+                    <span class="material-symbols-outlined text-primary">camera</span>
+                    <span class="font-bold text-sm">Macro Lens</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact CTA -->
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center py-20 " id="contact">
+        <div
+            class="w-full max-w-[960px] flex flex-col items-center text-center px-4 py-16 bg-primary rounded-xl text-white">
+            <h2 class="font-rye text-3xl md:text-5xl mb-6">Drop me some messages!</h2>
+            <p class="max-w-[600px] text-lg mb-8 opacity-90 font-lato">
+                As you know time flies, we do not want to live without leaving anything. I ain't good in speech, also bad in writing, but thanks God I still have my chubby fingers to make something else so I ain't gonna waste them. Every baby I made are with my full love. 
+                Hope they are touching your hearts ฅ/ᐠ. ̫ .ᐟ\ฅ"
+            </p>
+            <div class="flex gap-4">
+                <a href="https://ig.me/m/alchemeowww" target="_blank"
+                    class="bg-white text-primary px-8 py-3 rounded-xl font-bold hover:bg-background-light transition-colors">
+                    Send a Message
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="w-full bg-[#8F3F1A] text-white text-center p-4 font-semibold">
+        <span x-text="year"></span> &copy; Alchemeowww. All Rights Reserved.
+    </div>
+</body>
+
+</html>

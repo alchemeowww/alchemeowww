@@ -25,6 +25,33 @@
         href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Rye&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/aos.css" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8e3f1a",
+                        "secondary": "#4F321E",
+                        "background-light": "#E4DDD3",
+                        "background-dark": "#201612",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "rye": ["Rye", "cursive"],
+                        "lato": ["Lato", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
     <style>
         html { scroll-behavior: smooth; }
         [x-cloak] {display: none !important;}
@@ -50,22 +77,61 @@
         year: new Date().getFullYear(),
     }" x-cloak>
 
-    <header class="w-full sticky top-0 z-10 h-0 px-4 hidden">
-        <div class="flex flex-row items-center w-full justify-between h-16 gap-4 lg:container lg:mx-auto">
-            <div><a class="justify-self-start"></a></div>
-            <div class="md:hidden text-[#8F3F1A] font-bold">
-                <a href="#"><span class="material-symbols-outlined">
-                    menu
-                </span></a>
-            </div>
-            <div class="flex flex-col md:flex-row hidden md:flex gap-8 text-[#2F232F] font-bold text-2xl">
-                <a href="#projects">Projects</a>
-                <a href="#merchandises">Merchandises</a>
-                <a href="#events">Events</a>
-                <!-- <a href="#">About us</a> -->
-            </div>
+    <div class="w-full top-0 z-10 h-0">
+        <div class="px-4 flex justify-center py-5">
+            <header
+                class="flex w-full max-w-[1536px] items-center justify-between whitespace-nowrap border-b border-solid md:border-none border-secondary/10 px-4 md:px-10 py-3">
+                <div class="flex items-center gap-4 text-primary">
+                    <h2
+                        class="hidden font-rye text-secondary dark:text-background-light text-lg font-bold leading-tight tracking-[-0.015em] font-display">
+                        Alchemeowww</h2>
+                </div>
+                <div class="hidden md:flex flex-1 justify-end gap-8">
+                    <div class="flex items-center gap-9">
+                        <a class="text-primary text-sm font-bold leading-normal" href="index.html">Home</a>
+                        <a class="text-secondary dark:text-background-light text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="about.html">About</a>
+                    </div>
+                    <a href="#contact"
+                        class="hidden flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span>Let's Talk</span>
+                    </a>
+                </div>
+                <!-- Mobile Menu Icon -->
+                <div id="menu-open" class="md:hidden">
+                    <span class="material-symbols-outlined text-secondary dark:text-background-light">menu</span>
+                </div>
+                <div id="mobile-menu"
+                    class="fixed inset-0 bg-[#E4DDD3] z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+                    <div class="flex justify-end p-6">
+                        <button id="menu-close" class="text-[#8F3F1A] focus:outline-none">
+                            <span class="material-symbols-outlined text-secondary dark:text-background-light">close</span>
+                        </button>
+                    </div>
+                
+                    <div class="flex flex-col items-center justify-start gap-8 h-full">
+                        <a href="index.html" class="font-rye text-3xl text-[#4F321E]">Home</a>
+                        <a href="about.html" class="font-rye text-3xl text-[#4F321E]">About</a>
+                    </div>
+                </div>
+                <script>
+                    const menuOpenBtn = document.getElementById('menu-open');
+                    const menuCloseBtn = document.getElementById('menu-close');
+                    const mobileMenu = document.getElementById('mobile-menu');
+
+                    menuOpenBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-full');
+                        mobileMenu.classList.add('translate-x-0');
+                    });
+
+                    menuCloseBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-0');
+                        mobileMenu.classList.add('translate-x-full');
+                    });
+                </script>
+            </header>
         </div>
-    </header>
+    </div>
     <div class=" snap-start snap-always md:min-h-screen h-screen shrink-0 ">
         <div class="lg:container lg:mx-auto px-4 py-8 h-full flex flex-col md:flex-row justify-center items-center gap-8 relative">
             <div class="shrink-0" data-aos="fade-up" data-aos-delay="300" data-aos-once="true">

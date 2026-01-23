@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" class="h-screen md:snap-y md:snap-mandatory overflow-y-scroll scrollbar-hide">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=no">
+    <title>Alchemeowww</title>
+    <script src="js/alpinejs@3.min.js" defer></script>
+    <script src="js/tailwind@4.js" defer></script>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
+    <link href="fonts/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="https://alchemeowww.github.io/alchemeowww/images/favicon/site.webmanifest">
+    <meta name="theme-color" content="#E4DDD3">
+    <link rel="stylesheet" href="css/material-icon.css" />
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Welcome to Alchemeowww - Random Alchemist who creates fancy little labbish. Explore MIST;Y FOREST adventures, unique merchandises like board games, interactive standees, keychains, card holders, and NFC lights. Check out past events and markets.">
+    <meta name="keywords"
+        content="alchemist, art, merchandise, board games, interactive standee, keychain, card holder, NFC, events, comic fiesta, cosmic, animangaki, design fiesta, MIST;Y FOREST, Alchemeowww, Alchemeow">
+    <meta name="author" content="Alchemeowww">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://alchemeowww.com/">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alchemeowww.com/">
+    <meta property="og:title" content="Alchemeowww - Random Alchemist">
+    <meta property="og:description"
+        content="Random Alchemist who always make fancy lil labbish. Explore MIST;Y FOREST, merchandises, and past events.">
+    <meta property="og:image" content="https://alchemeowww.com/images/alchemeowww-logo.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://alchemeowww.com/">
+    <meta property="twitter:title" content="Alchemeowww - Random Alchemist">
+    <meta property="twitter:description"
+        content="Random Alchemist who always make fancy lil labbish. Explore MIST;Y FOREST, merchandises, and past events.">
+    <meta property="twitter:image" content="https://alchemeowww.com/images/alchemeowww-logo.png">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Alchemeowww",
+        "description": "Random Alchemist who creates fancy little labbish",
+        "url": "https://alchemeowww.com/",
+        "image": "https://alchemeowww.com/images/alchemeowww-logo.png",
+        "sameAs": [
+            "https://github.com/alchemeowww"
+        ],
+        "knowsAbout": [
+            "Art",
+            "Board Games",
+            "Interactive Design",
+            "Merchandise",
+            "Alchemist"
+        ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="css/font.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/aos.css" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8F3F1A",
+                        "secondary": "#4F321E",
+                        "accent": "#A3371D",
+                        "cream": "#E4DDD3",
+                        "light-cream": "#f9e4c6",
+                        "brown": "#8F3F1A",
+                        "light-brown": "#C7BAA8",
+                        "dark-brown": "#4F321E",
+                        "text-dark": "#2F232F",
+                        "background-light": "#E4DDD3",
+                        "background-dark": "#201612",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "rye": ["Rye", "cursive"],
+                        "lato": ["Lato", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .font-rye {
+            font-family: "Rye", serif;
+        }
+
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, Opera */
+        }
+
+        .my-div {
+            background: #f9f9f9;
+            box-shadow:
+                inset 5px 0 10px -5px gray,
+                /* left side */
+                inset -5px 0 10px -5px gray;
+            /* right side */
+        }
+
+        .texture::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('images/texture.png');
+            /* small noise texture */
+            opacity: 0.2;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-secondary dark:text-background-light">
+    <!-- Navigation -->
+    <div class="w-full top-0 z-10 h-0">
+        <div class="px-4 flex justify-center py-5">
+            <header
+                class="flex w-full max-w-[1536px] items-center justify-between whitespace-nowrap border-b border-solid border-secondary/10 px-4 md:px-10 py-3">
+                <div class="flex items-center gap-4 text-primary">
+                    <h2
+                        class="hidden font-rye text-secondary dark:text-background-light text-lg font-bold leading-tight tracking-[-0.015em] font-display">
+                        Alchemeowww</h2>
+                </div>
+                <div class="hidden md:flex flex-1 justify-end gap-8">
+                    <div class="flex items-center gap-9">
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="index.html">Home</a>
+                        <a class="text-primary text-sm font-bold leading-normal" href="events.html">Events</a>
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="about.html">About</a>
+                    </div>
+                    <a href="#contact"
+                        class="hidden flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span>Let's Talk</span>
+                    </a>
+                </div>
+                <!-- Mobile Menu Icon -->
+                <div id="menu-open" class="md:hidden">
+                    <span class="material-symbols-outlined text-secondary dark:text-background-light">menu</span>
+                </div>
+                <div id="mobile-menu"
+                    class="fixed inset-0 bg-[#E4DDD3] z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+                    <div class="flex justify-end p-6">
+                        <button id="menu-close" class="text-[#8F3F1A] focus:outline-none">
+                            <span
+                                class="material-symbols-outlined text-secondary dark:text-background-light">close</span>
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col items-center justify-start gap-8 h-full">
+                        <a href="index.html" class="font-rye text-3xl text-[#4F321E]">Home</a>
+                        <a href="events.html" class="font-rye text-3xl text-dark-brown">Events</a>
+                        <a href="about.html" class="font-rye text-3xl text-[#4F321E]">About</a>
+                    </div>
+                </div>
+                <script>
+                    const menuOpenBtn = document.getElementById('menu-open');
+                    const menuCloseBtn = document.getElementById('menu-close');
+                    const mobileMenu = document.getElementById('mobile-menu');
+
+                    menuOpenBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-full');
+                        mobileMenu.classList.add('translate-x-0');
+                    });
+
+                    menuCloseBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-0');
+                        mobileMenu.classList.add('translate-x-full');
+                    });
+                </script>
+            </header>
+        </div>
+    </div>
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden mt-[95px]">
+        <div class="layout-container flex h-full grow flex-col">
+            <!-- Section Content -->
+            <div class="flex flex-1 justify-center py-12 px-4 sm:px-8 lg:px-40">
+                <div class="layout-content-container flex flex-col w-full max-w-[1024px] flex-1 gap-8">
+                    <!-- Header Group -->
+                    <div class="flex flex-col items-center text-center gap-2">
+                        <h2
+                            class="font-rye text-3xl md:text-4xl font-extrabold leading-tight tracking-tight text-primary dark:text-[#cc6a3d]">
+                            Past Exhibitions &amp; Markets
+                        </h2>
+                        <p
+                            class="text-secondary dark:text-[#d0c0b8] text-base md:text-lg font-normal leading-relaxed max-w-2xl">
+                            A curated collection of fairs, gallery shows, and pop-up events where my work has been featured.
+                            Explore the journey through the years.
+                        </p>
+                    </div>
+                    <!-- Filter Chips -->
+                    <div class="flex justify-center w-full hidden ">
+                        <div class="flex gap-3 flex-wrap justify-center py-2">
+                            <!-- Active Chip -->
+                            <button
+                                class="flex h-10 items-center justify-center gap-x-2 rounded-full bg-primary text-white px-6 transition-all hover:bg-primary/90 shadow-sm">
+                                <span class="text-sm font-semibold leading-normal">All Events</span>
+                            </button>
+                            <!-- Inactive Chips -->
+                            <button
+                                class="flex h-10 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-card-dark border border-[#e5e7eb] dark:border-[#44352f] px-6 text-secondary dark:text-[#d0c0b8] transition-all hover:bg-[#f2ebe8] dark:hover:bg-[#3a2d28]">
+                                <span class="text-sm font-medium leading-normal">Exhibitions</span>
+                            </button>
+                            <button
+                                class="flex h-10 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-card-dark border border-[#e5e7eb] dark:border-[#44352f] px-6 text-secondary dark:text-[#d0c0b8] transition-all hover:bg-[#f2ebe8] dark:hover:bg-[#3a2d28]">
+                                <span class="text-sm font-medium leading-normal">Markets</span>
+                            </button>
+                            <button
+                                class="flex h-10 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-card-dark border border-[#e5e7eb] dark:border-[#44352f] px-6 text-secondary dark:text-[#d0c0b8] transition-all hover:bg-[#f2ebe8] dark:hover:bg-[#3a2d28]">
+                                <span class="text-sm font-medium leading-normal">Pop-ups</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Events Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
+                        <!-- Event Card 1 -->
+                        <article
+                            class="group flex flex-col h-full bg-white/30 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-primary/20">
+                            <div class="relative aspect-[4/3] overflow-hidden bg-gray-200">
+                                <img alt="Art fair booth display with paintings"
+                                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    data-alt="Art fair booth display with colorful paintings"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3x0kodRMIj6f-Ylnha6D57eD6b9qHsC7JeD4Nhr1vQJJjLPbPW_uJACC9KQCg4DeKaggwrRw2zjASkWlqMa_JGMFHOrWytexxVlA_JL8lfKsYRIZ5kIsEm7ecAI8WeEJ0gMouEhWyJoj3gsz8Ore1bb8rqooXPwcoPdeWEXzyY5UJNB0WljPRxMNxOa-QRhQzxMkBzFwMPh3govJ7qY1ZpjfhGQAXA8bqlS6YNjVWB_gg5kShdWqLrBoz-O5UL3wc3Yhl3yTduDtf" />
+                                <div
+                                    class="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm">
+                                    <p class="text-primary font-bold text-xs uppercase tracking-wider">Oct 2023</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col flex-1 p-5 gap-3">
+                                <div class="flex flex-col gap-1">
+                                    <h3
+                                        class="text-xl font-bold text-[#1a120f] dark:text-white group-hover:text-primary transition-colors">
+                                        Autumn Art Fair</h3>
+                                    <div class="flex items-center gap-1.5 text-secondary dark:text-[#a09088]">
+                                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                        <span class="text-sm font-medium">Convention Center, NY</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="mt-auto pt-3 border-t border-gray-100 dark:border-[#3a2d28] flex justify-between items-center">
+                                    <span
+                                        class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Cosplay Events</span>
+                                    <a class="hidden inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline decoration-2 underline-offset-4"
+                                        href="#">
+                                        View Details
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Event Card 2 -->
+                        <article
+                            class="group flex flex-col h-full bg-white/30 dark:bg-card-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-primary/20 dark:border-[#3a2d28]">
+                            <div class="relative aspect-[4/3] overflow-hidden bg-gray-200">
+                                <img alt="Brightly lit gallery wall with framed art"
+                                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    data-alt="Brightly lit gallery wall with framed art pieces"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGCMrgc0wYSO7GfZXzy395rJSIN8pr7itJOH7mBaCwLNF-5TwNpRaikcdiBph5i2FjUoqrXreSFPwEJFi3E2fijgp7pH-6TANfsM7_3aHennTIAn_tVp-UiEC8HGzlNEZ9nP-qwbuPX7_81g4UnANMs8cisER2xjhPAra5Nw7xVBiJp_vlFabFw1MpJD4ZDaR8R-x_m0kAKyQmepxpwdaJB65zOZyDzuN4rLmB4L7UzvfjboV_wKsWT_ySNMcxUh3KVacyO0hLZ3_8" />
+                                <div
+                                    class="absolute top-3 left-3 bg-white/95 dark:bg-[#201612]/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm">
+                                    <p class="text-primary font-bold text-xs uppercase tracking-wider">Aug 2023</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col flex-1 p-5 gap-3">
+                                <div class="flex flex-col gap-1">
+                                    <h3
+                                        class="text-xl font-bold text-[#1a120f] dark:text-white group-hover:text-primary transition-colors">
+                                        City Gallery Showcase</h3>
+                                    <div class="flex items-center gap-1.5 text-secondary dark:text-[#a09088]">
+                                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                        <span class="text-sm font-medium">SoHo Arts District</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="mt-auto pt-3 border-t border-gray-100 dark:border-[#3a2d28] flex justify-between items-center">
+                                    <span class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Gallery
+                                        Show</span>
+                                    <a class="inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline decoration-2 underline-offset-4"
+                                        href="#">
+                                        View Details
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Event Card 3 -->
+                        <article
+                            class="group flex flex-col h-full bg-white/30 dark:bg-card-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-primary/20 dark:border-[#3a2d28]">
+                            <div class="relative aspect-[4/3] overflow-hidden bg-gray-200">
+                                <img alt="Outdoor craft market stalls on a sunny day"
+                                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    data-alt="Outdoor craft market stalls on a sunny day"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYtWi4mqR1VLBbVtN-ygyDmqc6UPQqtJthlCpCcRtIvMCinG5xvtkiBouZpmg7Tic6TMgU89RbnfexA3WJ49WmGgZpWhX7IkpLsFfdmHH0bUFgDYZHewfbsXz5Ej1gg6Hie-vDPWLSt5VG0Uut2seF9E50IB5an7ObzNUuTBx49oTyXzcdRapPlQTUiCQ4fqlQVsdAn1ddcBjOSEofuYWjVI9S90O216D19Wm-LwM7XnbQpkVIBRMn9VW6ROBa9jbyPQobpkWuhm6q" />
+                                <div
+                                    class="absolute top-3 left-3 bg-white/95 dark:bg-[#201612]/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm">
+                                    <p class="text-primary font-bold text-xs uppercase tracking-wider">May 2023</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col flex-1 p-5 gap-3">
+                                <div class="flex flex-col gap-1">
+                                    <h3
+                                        class="text-xl font-bold text-[#1a120f] dark:text-white group-hover:text-primary transition-colors">
+                                        Spring Craft Market</h3>
+                                    <div class="flex items-center gap-1.5 text-secondary dark:text-[#a09088]">
+                                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                        <span class="text-sm font-medium">Riverside Park</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="mt-auto pt-3 border-t border-gray-100 dark:border-[#3a2d28] flex justify-between items-center">
+                                    <span
+                                        class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Market</span>
+                                    <a class="inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline decoration-2 underline-offset-4"
+                                        href="#">
+                                        View Details
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Event Card 4 -->
+                        <article
+                            class="group flex flex-col h-full bg-white/30 dark:bg-card-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-primary/20 dark:border-[#3a2d28]">
+                            <div class="relative aspect-[4/3] overflow-hidden bg-gray-200">
+                                <img alt="Close up of illustration prints on a table"
+                                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    data-alt="Close up of illustration prints on a table"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLrCgWjDqDQe5_BWAIYxrvlRRstiUyC0keD3B3zx8d7YtueHfDM_qCCbbzdI6wY4nZ43G9ny80k8BTUuJX-f-BnJ-2aBoV6MsN-7S2xrGw_emOKBmDA6MAUoFxz3L0J1REaLqX3nnkrg4GcmChob5_6A6DjAsA3m6ocbyWcDrw-IFuEFvGzFWCjr8mJdYmVKzhitMznqQUTku08SxpS8w4NqhZC32IUjr0Ihh1ICBXj2PUXD6uuGn_TaVf0dbaK2guDPvsVkCnKOjK" />
+                                <div
+                                    class="absolute top-3 left-3 bg-white/95 dark:bg-[#201612]/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm">
+                                    <p class="text-primary font-bold text-xs uppercase tracking-wider">Feb 2023</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col flex-1 p-5 gap-3">
+                                <div class="flex flex-col gap-1">
+                                    <h3
+                                        class="text-xl font-bold text-[#1a120f] dark:text-white group-hover:text-primary transition-colors">
+                                        Illustration Expo</h3>
+                                    <div class="flex items-center gap-1.5 text-secondary dark:text-[#a09088]">
+                                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                        <span class="text-sm font-medium">Design Hub, Berlin</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="mt-auto pt-3 border-t border-gray-100 dark:border-[#3a2d28] flex justify-between items-center">
+                                    <span
+                                        class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Expo</span>
+                                    <a class="inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline decoration-2 underline-offset-4"
+                                        href="#">
+                                        View Details
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Event Card 5 -->
+                        <article
+                            class="group flex flex-col h-full bg-white/30 dark:bg-card-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-primary/20 dark:border-[#3a2d28]">
+                            <div class="relative aspect-[4/3] overflow-hidden bg-gray-200">
+                                <img alt="People gathered at an outdoor event during summer"
+                                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    data-alt="People gathered at an outdoor event during summer"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt8QyH4ojgQbX6nCdqzbaMD5g-Z7C3oS34O6IY_Jsv_3P35DUBQRjrBJZQlm2yce0GmAQ7PkDzlmlDdwltSwMdnf3A4Ek7e5MM2ubs60BoUixVNbC-GDTzvXFSYgoChrUCTpl4Vtisp5rlX-DkCs5SJPVe7Clvh4Y5j3UxzcKKbpIlrJkkbNwYCUGGV4PnIZo2In9SIQwf6QOQ1LucG26vuBE35xRjzzTnM8-4JO7EUAIA8XQPnun2TCKrCgzqHQR7W5G6R0q-ZvWW" />
+                                <div
+                                    class="absolute top-3 left-3 bg-white/95 dark:bg-[#201612]/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm">
+                                    <p class="text-primary font-bold text-xs uppercase tracking-wider">Jul 2022</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col flex-1 p-5 gap-3">
+                                <div class="flex flex-col gap-1">
+                                    <h3
+                                        class="text-xl font-bold text-[#1a120f] dark:text-white group-hover:text-primary transition-colors">
+                                        Summer Pop-up</h3>
+                                    <div class="flex items-center gap-1.5 text-secondary dark:text-[#a09088]">
+                                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                        <span class="text-sm font-medium">Main Street Collective</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="mt-auto pt-3 border-t border-gray-100 dark:border-[#3a2d28] flex justify-between items-center">
+                                    <span
+                                        class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Pop-up</span>
+                                    <a class="inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline decoration-2 underline-offset-4"
+                                        href="#">
+                                        View Details
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Event Card 6 -->
+                        <article
+                            class="group flex flex-col h-full bg-white/30 dark:bg-card-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-primary/20 dark:border-[#3a2d28]">
+                            <div class="relative aspect-[4/3] overflow-hidden bg-gray-200">
+                                <img alt="Winter themed design festival with lights"
+                                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    data-alt="Winter themed design festival with lights"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfnkw-U-F0hfmqyre-BUa1xLH_Mk9dt_Dv1bKWfgNQa_Q2dbnbRvTB7T6JyVEKp326aYONPAG9CDJ2fYFGdmElVzpLGqGW9fDvp3ntKHVh9Fgr2MbOR_bqtpv4_abdtRNqIP-SI94s4Vgxv84vrU6EJA-qhl-VHdNVJ0Y-04EMQBi1-fOnHQ5YbEBctT3eAz4m1zLQnHD6-WBF6nuGmgsBgt_kuR17uhBMvT1nAaJcQnlcUfPmumkdItkWyiga-IlzC13a6amq_uFH" />
+                                <div
+                                    class="absolute top-3 left-3 bg-white/95 dark:bg-[#201612]/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm">
+                                    <p class="text-primary font-bold text-xs uppercase tracking-wider">Dec 2021</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col flex-1 p-5 gap-3">
+                                <div class="flex flex-col gap-1">
+                                    <h3
+                                        class="text-xl font-bold text-[#1a120f] dark:text-white group-hover:text-primary transition-colors">
+                                        Winter Design Fest</h3>
+                                    <div class="flex items-center gap-1.5 text-secondary dark:text-[#a09088]">
+                                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                        <span class="text-sm font-medium">Grand Hall, Toronto</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="mt-auto pt-3 border-t border-gray-100 dark:border-[#3a2d28] flex justify-between items-center">
+                                    <span
+                                        class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">Festival</span>
+                                    <a class="inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline decoration-2 underline-offset-4"
+                                        href="#">
+                                        View Details
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-center p-4 mt-4">
+                        <nav aria-label="Pagination" class="flex items-center gap-1">
+                            <a class="group flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-[#3a2d28] transition-colors"
+                                href="#">
+                                <span
+                                    class="material-symbols-outlined text-[#1a120f] dark:text-white group-hover:text-primary"
+                                    style="font-size: 20px;">chevron_left</span>
+                            </a>
+                            <a class="flex size-10 items-center justify-center text-sm font-bold leading-normal text-white rounded-full bg-primary shadow-md"
+                                href="#">1</a>
+                            <a class="flex size-10 items-center justify-center text-sm font-normal leading-normal text-secondary dark:text-[#d0c0b8] rounded-full hover:bg-gray-100 dark:hover:bg-[#3a2d28] transition-colors"
+                                href="#">2</a>
+                            <a class="group flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-[#3a2d28] transition-colors"
+                                href="#">
+                                <span
+                                    class="material-symbols-outlined text-[#1a120f] dark:text-white group-hover:text-primary"
+                                    style="font-size: 20px;">chevron_right</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="w-full bg-brown text-white text-center p-4 font-semibold" x-data="{
+        year: new Date().getFullYear(),
+    }">
+        <span x-text="year"></span> &copy; Alchemeowww. All Rights Reserved.
+    </footer>
+</body>
+
+</html>

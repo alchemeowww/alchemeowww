@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" class="h-screen md:snap-y md:snap-mandatory overflow-y-scroll scrollbar-hide">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=no">
+    <title>How to Write Your Own NFC Tag - Step-by-Step Guide | Alchemeowww</title>
+    <script src="../js/alpinejs@3.min.js" defer></script>
+    <script src="../js/tailwind@4.js" defer></script>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="../fonts/fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="../fonts/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
+    <link href="../fonts/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../images/favicon/site.webmanifest">
+    <meta name="theme-color" content="#E4DDD3">
+    <link rel="stylesheet" href="../css/material-icon.css" />
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Learn how to program and write your own NFC tags with this step-by-step guide. Discover three simple steps to erase, add records, and write to NFC tags using NFC Tools app. Perfect for personalizing physical art with digital experiences.">
+    <meta name="keywords"
+        content="NFC, Near Field Communication, write NFC tag, program NFC, NFC programming, NFC Tools app, erase NFC tag, add NFC record, write to NFC, digital business card, NFC merchandise, interactive NFC, NFC guide, Alchemeowww">
+    <meta name="author" content="Alchemeowww">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://alchemeowww.com/nfc/guide.html">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alchemeowww.com/nfc/guide.html">
+    <meta property="og:title" content="How to Write Your Own NFC Tag - Step-by-Step Guide | Alchemeowww">
+    <meta property="og:description"
+        content="Learn how to program and write your own NFC tags with this step-by-step guide. Discover three simple steps to erase, add records, and write to NFC tags using NFC Tools app.">
+    <meta property="og:image" content="https://alchemeowww.com/images/alchemeowww-logo.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://alchemeowww.com/nfc/guide.html">
+    <meta property="twitter:title" content="How to Write Your Own NFC Tag - Step-by-Step Guide | Alchemeowww">
+    <meta property="twitter:description"
+        content="Learn how to program and write your own NFC tags with this step-by-step guide. Discover three simple steps to erase, add records, and write to NFC tags using NFC Tools app.">
+    <meta property="twitter:image" content="https://alchemeowww.com/images/alchemeowww-logo.png">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Write Your Own NFC Tag",
+        "description": "Step-by-step guide to program and write your own NFC tags using NFC Tools app",
+        "url": "https://alchemeowww.com/nfc/guide.html",
+        "image": "https://alchemeowww.com/images/alchemeowww-logo.png",
+        "author": {
+            "@type": "Person",
+            "name": "Alchemeowww",
+            "description": "Random Alchemist who creates fancy little labbish",
+            "sameAs": [
+                "https://github.com/alchemeowww"
+            ]
+        },
+        "supply": [
+            {
+                "@type": "HowToSupply",
+                "name": "NFC Tags"
+            },
+            {
+                "@type": "HowToSupply",
+                "name": "NFC Tools App"
+            }
+        ],
+        "tool": [
+            {
+                "@type": "HowToTool",
+                "name": "Smartphone with NFC capability"
+            }
+        ],
+        "step": [
+            {
+                "@type": "HowToStep",
+                "name": "Erase the Tag",
+                "text": "Open NFC Tools, go to Other tab, and select Erase Tag. Tap the tag to your phone sensor to ensure it's fresh and ready.",
+                "position": 1
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Add a Record",
+                "text": "Tap Write tab, then Add a record. Choose 'URL' to link a website, or 'Social Network' for your profiles. Enter your information and click OK.",
+                "position": 2
+            },
+            {
+                "@type": "HowToStep",
+                "name": "Write to Tag",
+                "text": "Press the Write button and place the NFC tag to your phone. Hold it until you see the 'Write Complete!' success checkmark.",
+                "position": 3
+            }
+        ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="../css/font.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/aos.css" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8F3F1A",
+                        "secondary": "#4F321E",
+                        "accent": "#A3371D",
+                        "cream": "#E4DDD3",
+                        "light-cream": "#f9e4c6",
+                        "brown": "#8F3F1A",
+                        "light-brown": "#C7BAA8",
+                        "dark-brown": "#4F321E",
+                        "text-dark": "#2F232F",
+                        "background-light": "#E4DDD3",
+                        "background-dark": "#201612",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "rye": ["Rye", "cursive"],
+                        "lato": ["Lato", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    keyframes: {
+                        'soft-pulse': {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                            '50%': { transform: 'scale(1.15)', opacity: '0.8' },
+                        }
+                    },
+                    animation: {
+                        'soft-pulse': 'soft-pulse 2s ease-in-out infinite',
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        html {
+            scroll-behavior: smooth;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .font-rye {
+            font-family: "Rye", serif;
+        }
+
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, Opera */
+        }
+
+        .my-div {
+            background: #f9f9f9;
+            box-shadow:
+                inset 5px 0 10px -5px gray,
+                /* left side */
+                inset -5px 0 10px -5px gray;
+            /* right side */
+        }
+
+        .texture::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('../images/texture.png');
+            /* small noise texture */
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .demo-indicator {
+            @apply absolute top-3 right-3 text-[#8F3F1A] cursor-pointer transition-colors hover:text-[#4F321E];
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-secondary dark:text-background-light">
+    <!-- Navigation -->
+    <div class="w-full top-0 z-10 h-0">
+        <div class="px-4 flex justify-center py-5">
+            <header
+                class="flex w-full max-w-[1536px] items-center justify-between whitespace-nowrap border-b border-solid border-secondary/10 px-4 md:px-10 py-3">
+                <div class="flex items-center gap-4 text-primary">
+                    <h2
+                        class="hidden font-rye text-secondary dark:text-background-light text-lg font-bold leading-tight tracking-[-0.015em] font-display">
+                        Alchemeowww</h2>
+                </div>
+                <div class="hidden md:flex flex-1 justify-end gap-8">
+                    <div class="flex items-center gap-9">
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="../index.html">Home</a>
+                        <a class="text-primary text-sm font-bold leading-normal" href="../nfc/index.html">NFC</a>
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="../events.html">Events</a>
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="../about.html">About</a>
+                    </div>
+                    <a href="#contact"
+                        class="hidden flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span>Let's Talk</span>
+                    </a>
+                </div>
+                <!-- Mobile Menu Icon -->
+                <div id="menu-open" class="md:hidden">
+                    <span class="material-symbols-outlined text-secondary dark:text-background-light">menu</span>
+                </div>
+                <div id="mobile-menu"
+                    class="fixed inset-0 bg-[#E4DDD3] z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+                    <div class="flex justify-end p-6">
+                        <button id="menu-close" class="text-[#8F3F1A] focus:outline-none">
+                            <span
+                                class="material-symbols-outlined text-secondary dark:text-background-light">close</span>
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col items-center justify-start gap-8 h-full">
+                        <a href="../index.html" class="font-rye text-3xl text-[#4F321E]">Home</a>
+                        <a href="../nfc/index.html" class="font-rye text-3xl text-dark-brown">NFC</a>
+                        <a href="../events.html" class="font-rye text-3xl text-dark-brown">Events</a>
+                        <a href="../about.html" class="font-rye text-3xl text-[#4F321E]">About</a>
+                    </div>
+                </div>
+                <script>
+                    const menuOpenBtn = document.getElementById('menu-open');
+                    const menuCloseBtn = document.getElementById('menu-close');
+                    const mobileMenu = document.getElementById('mobile-menu');
+
+                    menuOpenBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-full');
+                        mobileMenu.classList.add('translate-x-0');
+                    });
+
+                    menuCloseBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-0');
+                        mobileMenu.classList.add('translate-x-full');
+                    });
+                </script>
+            </header>
+        </div>
+    </div>
+    <main class="px-4 md:px-20 lg:px-40 flex justify-center py-5 mt-[95px]">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="text-center py-10">
+                <h1 class="font-rye text-4xl md:text-5xl lg:text-6xl text-accent-dark dark:text-background-light mb-4">Write Your Own
+                    NFC Tag</h1>
+                <p class="text-lg md:text-xl text-accent-dark/70 dark:text-background-light/70 max-w-2xl mx-auto">
+                    Personalize your physical art with digital treasures. Follow this step-by-step guide to program your
+                    tags.
+                </p>
+            </div>
+            <div
+                class="bg-primary/10 border-2 border-primary rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 mb-16 shadow-sm">
+                <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-white text-4xl">download</span>
+                </div>
+                <div class="flex-1 text-center md:text-left">
+                    <h3 class="font-rye text-primary text-xl font-bold mb-1">Recommended App: NFC Tools</h3>
+                    <p class="text-accent-dark/80 dark:text-background-light/80 text-sm md:text-base leading-relaxed">
+                        For the best experience, we recommend using the <strong class="text-primary">NFC Tools</strong> app
+                        (available on <a href="https://apps.apple.com/sg/app/nfc-tools/id1252962749" target="_blank"
+                            class="text-primary underline">iOS</a> and <a
+                            href="https://play.google.com/store/apps/details?id=com.wakdev.wdnfc"
+                            target="_blank" class="text-primary underline">Android</a>). It offers a user-friendly interface
+                        various types of records.
+                    </p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                <div class="flex flex-col items-center text-center group">
+                    <div class="relative mb-6">
+                        <div
+                            class="w-24 h-24 bg-white/30 rounded-full flex items-center justify-center border-2 border-primary/20 group-hover:border-primary transition-colors">
+                            <span class="material-symbols-outlined text-primary text-4xl">auto_fix_normal</span>
+                        </div>
+                        <div
+                            class="absolute -top-2 -left-2 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-rye text-xl shadow-md">
+                            1</div>
+                    </div>
+                    <h3 class="text-xl mb-3 font-rye">Erase the Tag</h3>
+                    <p class="text-sm text-accent-dark/70 dark:text-background-light/70 leading-relaxed">
+                        Open NFC Tools, go to <span class="font-bold">Other</span> tab, and select <span class="font-bold">Erase
+                            Tag</span>. Tap the tag to your phone sensor to ensure it's fresh and ready.
+                    </p>
+                </div>
+                <div class="flex flex-col items-center text-center group">
+                    <div class="relative mb-6">
+                        <div
+                            class="w-24 h-24 bg-white/30 rounded-full flex items-center justify-center border-2 border-primary/20 group-hover:border-primary transition-colors">
+                            <span class="material-symbols-outlined text-primary text-4xl">add_circle</span>
+                        </div>
+                        <div
+                            class="absolute -top-2 -left-2 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-rye text-xl shadow-md">
+                            2</div>
+                    </div>
+                    <h3 class="text-xl mb-3 font-rye">Add a Record</h3>
+                    <p class="text-sm text-accent-dark/70 dark:text-background-light/70 leading-relaxed">
+                        Tap <span class="font-bold">Write</span> tab, then <span class="font-bold">Add a record</span>. Choose
+                        'URL' to link a website, or 'Social Network' for your profiles. Enter your information and click OK. You
+                        may choose other options as needed.
+                    </p>
+                </div>
+                <div class="flex flex-col items-center text-center group">
+                    <div class="relative mb-6">
+                        <div
+                            class="w-24 h-24 bg-white/30 rounded-full flex items-center justify-center border-2 border-primary/20 group-hover:border-primary transition-colors">
+                            <span class="material-symbols-outlined text-primary text-4xl">sensors</span>
+                        </div>
+                        <div
+                            class="absolute -top-2 -left-2 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-rye text-xl shadow-md">
+                            3</div>
+                    </div>
+                    <h3 class="text-xl mb-3 font-rye">Write to Tag</h3>
+                    <p class="text-sm text-accent-dark/70 dark:text-background-light/70 leading-relaxed">
+                        Press the <span class="font-bold">Write</span> button and place the NFC tag to your phone.
+                        Hold it until you see the 'Write Complete!' success checkmark.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-white/30 rounded-2xl p-8 mb-20 text-center layout-content-container flex flex-col items-center">
+                <h2 class="text-2xl mb-4 font-rye">Still Stuck?</h2>
+                <p class="mb-6 opacity-80">Feel free to reach out for more info, inquiries, or just to say hi! I'm always excited to connect with you all.</p>
+                <a class="flex min-w-[200px] cursor-pointer items-center justify-center rounded-full h-14 px-8 bg-[#8F3F1A] text-white text-lg font-bold shadow-lg hover:scale-105 hover:bg-[#4F321E] transition-all"
+                    href="https://ig.me/m/alchemeowww" target="_blank">
+                    Send a Message
+                </a>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-brown text-white text-center p-4 font-semibold" x-data="{
+        year: new Date().getFullYear(),
+    }">
+        <span x-text="year"></span> &copy; Alchemeowww. All Rights Reserved.
+    </footer>
+    <!-- AOS init -->
+    <script src="../js/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+
+</html>

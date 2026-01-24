@@ -135,8 +135,12 @@
                 </div>
                 <div class="hidden md:flex flex-1 justify-end gap-8">
                     <div class="flex items-center gap-9">
-                        <a class="text-secondary dark:text-background-light text-sm font-medium leading-normal hover:text-primary transition-colors"
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors"
                             href="index.html">Home</a>
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="nfc/index.html">NFC</a>
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="events.html">Events</a>
                         <a class="text-primary text-sm font-bold leading-normal" href="about.html">About</a>
                     </div>
                     <a href="#contact"
@@ -158,6 +162,8 @@
     
                     <div class="flex flex-col items-center justify-start gap-8 h-full">
                         <a href="index.html" class="font-rye text-3xl text-[#4F321E]">Home</a>
+                        <a href="nfc/index.html" class="font-rye text-3xl text-[#4F321E]">NFC</a>
+                        <a href="events.html" class="font-rye text-3xl text-[#4F321E]">Events</a>
                         <a href="about.html" class="font-rye text-3xl text-[#4F321E]">About</a>
                     </div>
                 </div>
@@ -239,8 +245,8 @@
                         interact with my game website.
                     </p>
                     <div class="bg-primary/5 rounded-lg p-6 border border-primary/20 italic text-primary/80">
-                        "Alchemeowww 錬金術喵 is a combination of Alchemist + Cat. It is pronounced as "Al" + "K" + "Meow". Yes, the "Che" is
-                        pronounced as Chemistry's "Che" not Cherry's "Che" or "奧客喵" in hokkien ฅ/ᐠ. ̫ .ᐟ\ฅ"
+                        Alchemeowww 錬金術喵 is a combination of Alchemist + Cat. It is pronounced as "Al" + "K" + "Meow". Yes, the "Che" is
+                        pronounced as Chemistry's "Che" not Cherry's "Che" or "奧客喵" in hokkien<br /><br />ฅ/ᐠ. ̫ .ᐟ\ฅ
                     </div>
                 </div>
             </div>
@@ -304,7 +310,7 @@
             <h2 class="font-rye text-3xl md:text-5xl mb-6">Drop me some messages!</h2>
             <p class="max-w-[600px] text-lg mb-8 opacity-90 font-lato">
                 As you know time flies, we do not want to live without leaving anything. I ain't good in speech, also bad in writing, but thanks God I still have my chubby fingers to make something else so I ain't gonna waste them. Every baby I made are with my full love. 
-                Hope they are touching your hearts ฅ/ᐠ. ̫ .ᐟ\ฅ"
+                Hope they are touching your hearts<br/>ฅ/ᐠ. ̫ .ᐟ\ฅ
             </p>
             <div class="flex gap-4">
                 <a href="https://ig.me/m/alchemeowww" target="_blank"
@@ -315,9 +321,11 @@
         </div>
     </div>
     <!-- Footer -->
-    <div class="w-full bg-brown text-white text-center p-4 font-semibold">
+    <footer class="w-full bg-brown text-white text-center p-4 font-semibold" x-data="{
+        year: new Date().getFullYear(),
+    }">
         <span x-text="year"></span> &copy; Alchemeowww. All Rights Reserved.
-    </div>
+    </footer>
 </body>
 
 </html>

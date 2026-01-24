@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" class="h-screen md:snap-y md:snap-mandatory overflow-y-scroll scrollbar-hide">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=no">
+    <title>NFC Guide - How to Use NFC Technology | Alchemeowww</title>
+    <script src="../js/alpinejs@3.min.js" defer></script>
+    <script src="../js/tailwind@4.js" defer></script>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link href="../fonts/fontawesome-free-6.7.2-web/css/fontawesome.css" rel="stylesheet" />
+    <link href="../fonts/fontawesome-free-6.7.2-web/css/brands.css" rel="stylesheet" />
+    <link href="../fonts/fontawesome-free-6.7.2-web/css/solid.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../images/favicon/site.webmanifest">
+    <meta name="theme-color" content="#E4DDD3">
+    <link rel="stylesheet" href="../css/material-icon.css" />
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Learn how to use NFC technology with your smartphone. Discover three simple steps to tap and unlock digital experiences, from websites to smart doors. Explore NFC possibilities with Alchemeowww's interactive merchandise.">
+    <meta name="keywords"
+        content="NFC, Near Field Communication, smartphone NFC, tap to unlock, digital business card, NFC merchandise, interactive NFC, NFC guide, NFC technology, Alchemeowww">
+    <meta name="author" content="Alchemeowww">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://alchemeowww.com/nfc.html">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alchemeowww.com/nfc.html">
+    <meta property="og:title" content="NFC Guide - How to Use NFC Technology | Alchemeowww">
+    <meta property="og:description"
+        content="Learn how to use NFC technology with your smartphone. Discover three simple steps to tap and unlock digital experiences, from websites to smart doors.">
+    <meta property="og:image" content="https://alchemeowww.com/images/alchemeowww-logo.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://alchemeowww.com/nfc.html">
+    <meta property="twitter:title" content="NFC Guide - How to Use NFC Technology | Alchemeowww">
+    <meta property="twitter:description"
+        content="Learn how to use NFC technology with your smartphone. Discover three simple steps to tap and unlock digital experiences, from websites to smart doors.">
+    <meta property="twitter:image" content="https://alchemeowww.com/images/alchemeowww-logo.png">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Alchemeowww",
+        "description": "Random Alchemist who creates fancy little labbish",
+        "url": "https://alchemeowww.com/",
+        "image": "https://alchemeowww.com/images/alchemeowww-logo.png",
+        "sameAs": [
+            "https://github.com/alchemeowww"
+        ],
+        "knowsAbout": [
+            "Art",
+            "Board Games",
+            "Interactive Design",
+            "Merchandise",
+            "Alchemist"
+        ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="../css/font.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/aos.css" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8F3F1A",
+                        "secondary": "#4F321E",
+                        "accent": "#A3371D",
+                        "cream": "#E4DDD3",
+                        "light-cream": "#f9e4c6",
+                        "brown": "#8F3F1A",
+                        "light-brown": "#C7BAA8",
+                        "dark-brown": "#4F321E",
+                        "text-dark": "#2F232F",
+                        "background-light": "#E4DDD3",
+                        "background-dark": "#201612",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "rye": ["Rye", "cursive"],
+                        "lato": ["Lato", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    keyframes: {
+                        'soft-pulse': {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                            '50%': { transform: 'scale(1.15)', opacity: '0.8' },
+                        }
+                    },
+                    animation: {
+                        'soft-pulse': 'soft-pulse 2s ease-in-out infinite',
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        html {
+            scroll-behavior: smooth;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .font-rye {
+            font-family: "Rye", serif;
+        }
+
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, Opera */
+        }
+
+        .my-div {
+            background: #f9f9f9;
+            box-shadow:
+                inset 5px 0 10px -5px gray,
+                /* left side */
+                inset -5px 0 10px -5px gray;
+            /* right side */
+        }
+
+        .texture::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('../images/texture.png');
+            /* small noise texture */
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .demo-indicator {
+            @apply absolute top-3 right-3 text-[#8F3F1A] cursor-pointer transition-colors hover:text-[#4F321E];
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-secondary dark:text-background-light">
+    <!-- Navigation -->
+    <div class="w-full top-0 z-10 h-0">
+        <div class="px-4 flex justify-center py-5">
+            <header
+                class="flex w-full max-w-[1536px] items-center justify-between whitespace-nowrap border-b border-solid border-secondary/10 px-4 md:px-10 py-3">
+                <div class="flex items-center gap-4 text-primary">
+                    <h2
+                        class="hidden font-rye text-secondary dark:text-background-light text-lg font-bold leading-tight tracking-[-0.015em] font-display">
+                        Alchemeowww</h2>
+                </div>
+                <div class="hidden md:flex flex-1 justify-end gap-8">
+                    <div class="flex items-center gap-9">
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors"
+                            href="../index.html">Home</a>
+                        <a class="text-primary text-sm font-bold leading-normal" href="../nfc/index.html">NFC</a>
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="../events.html">Events</a>
+                        <a class="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="../about.html">About</a>
+                    </div>
+                    <a href="#contact"
+                        class="hidden flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span>Let's Talk</span>
+                    </a>
+                </div>
+                <!-- Mobile Menu Icon -->
+                <div id="menu-open" class="md:hidden">
+                    <span class="material-symbols-outlined text-secondary dark:text-background-light">menu</span>
+                </div>
+                <div id="mobile-menu"
+                    class="fixed inset-0 bg-[#E4DDD3] z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+                    <div class="flex justify-end p-6">
+                        <button id="menu-close" class="text-[#8F3F1A] focus:outline-none">
+                            <span
+                                class="material-symbols-outlined text-secondary dark:text-background-light">close</span>
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col items-center justify-start gap-8 h-full">
+                        <a href="../index.html" class="font-rye text-3xl text-[#4F321E]">Home</a>
+                        <a href="../nfc/index.html" class="font-rye text-3xl text-dark-brown">NFC</a>
+                        <a href="../events.html" class="font-rye text-3xl text-dark-brown">Events</a>
+                        <a href="../about.html" class="font-rye text-3xl text-[#4F321E]">About</a>
+                    </div>
+                </div>
+                <script>
+                    const menuOpenBtn = document.getElementById('menu-open');
+                    const menuCloseBtn = document.getElementById('menu-close');
+                    const mobileMenu = document.getElementById('mobile-menu');
+
+                    menuOpenBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-full');
+                        mobileMenu.classList.add('translate-x-0');
+                    });
+
+                    menuCloseBtn.addEventListener('click', () => {
+                        mobileMenu.classList.remove('translate-x-0');
+                        mobileMenu.classList.add('translate-x-full');
+                    });
+                </script>
+            </header>
+        </div>
+    </div>
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center py-5 mt-[95px]">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="@container">
+                <div class="flex flex-col gap-6 px-4 py-10 md:flex-row items-center md:items-start">
+                    <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl shadow-lg border-4 border-white dark:border-accent-dark/50
+                        max-w-[320px]"
+                        data-alt="Illustration of a smartphone tapping a cute art keychain"
+                        style='background-image: url("../images/nfc/20260123_211505.gif");'>
+                    </div>
+                    <div class="flex flex-col gap-6 @[864px]:justify-center">
+                        <div class="flex flex-col gap-4 text-left">
+                            <h1
+                                class="text-accent-dark dark:text-background-light text-4xl font-rye leading-tight @[480px]:text-5xl">
+                                Unlock Digital Alchemy with <span class="text-primary">NFC</span>
+                            </h1>
+                            <h2
+                                class="text-accent-dark/80 dark:text-background-light/80 text-base font-normal leading-relaxed">
+                                NFC (Near Field Communication) tag is smart little chip that allows you to transfer information with your smartphone over a short distances. 
+                                It allows you to perform automate task when you scan it using you smartphone.
+                            </h2>
+                        </div>
+                        <!-- <div class="flex flex-wrap gap-4">
+                            <button
+                                class="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-5 bg-primary text-white text-base font-bold shadow-md hover:scale-105 transition-transform">
+                                <span class="truncate">Shop NFC Art</span>
+                            </button>
+                            <button
+                                class="flex min-w-[160px] cursor-pointer items-center justify-center rounded-xl h-12 px-5 border-2 border-primary text-primary text-base font-bold hover:bg-primary/10 transition-colors">
+                                <span class="truncate">View Portfolio</span>
+                            </button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <h2
+                class="text-accent-dark dark:text-background-light text-3xl font-rye px-4 pb-3 pt-10 text-center md:text-left">
+                Three Simple Steps</h2>
+        </div>
+    </div>
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center py-5">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-col gap-10 px-4 py-5 @container">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-0">
+                    <div data-aos="fade-down" data-aos-once="true"
+                        class="flex flex-1 gap-5 rounded-xl border border-primary/20 bg-white/50 dark:bg-accent-dark/20 p-6 flex-col shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-3xl">smartphone</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <h2 class="text-accent-dark dark:text-background-light text-xl font-bold font-rye">
+                                Check Compatibility</h2>
+                            <p class="text-accent-dark/70 dark:text-background-light/70 text-sm leading-normal">
+                                Most modern smartphones from the last 5 years (iPhone XS+ and Androids) have
+                                built-in NFC readers ready to go.
+                            </p>
+                        </div>
+                    </div>
+                    <div data-aos="fade-down" data-aos-delay="100" data-aos-once="true"
+                        class="flex flex-1 gap-5 rounded-xl border border-primary/20 bg-white/50 dark:bg-accent-dark/20 p-6 flex-col shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-3xl">settings_input_antenna</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <h2 class="text-accent-dark dark:text-background-light text-xl font-bold font-rye">
+                                Enable NFC</h2>
+                            <p class="text-accent-dark/70 dark:text-background-light/70 text-sm leading-normal">
+                                Ensure NFC is toggled 'On' in your device settings. For iPhones, it's always on.
+                                For Android, check your pull down menu or inside the Settings.
+                            </p>
+                        </div>
+                    </div>
+                    <div data-aos="fade-down" data-aos-delay="200" data-aos-once="true"
+                        class="flex flex-1 gap-5 rounded-xl border border-primary/20 bg-white/50 dark:bg-accent-dark/20 p-6 flex-col shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-3xl">ads_click</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <h2 class="text-accent-dark dark:text-background-light text-xl font-bold font-rye">
+                                Tap to Discover</h2>
+                            <p class="text-accent-dark/70 dark:text-background-light/70 text-sm leading-normal">
+                                Gently tap the top or back of your phone's 'magic spot' by using our NFC merch to
+                                unlock your digital surprise.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center py-10 bg-secondary/5">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <h2
+                class="text-accent-dark dark:text-background-light text-3xl font-rye px-4 pb-10 pt-5 text-center md:text-left">
+                Limitless Possibilities</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 px-4">
+                <div
+                    class="flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/30 dark:bg-accent-dark/30 hover:shadow-md transition-all border border-primary/5">
+                    <span class="material-symbols-outlined text-[#8F3F1A] text-3xl">language</span>
+                    <h3 class="text-accent-dark dark:text-background-light text-sm md:text-base font-bold text-center">
+                        Launch a Website</h3>
+                </div>
+                <div
+                    class="flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/30 dark:bg-accent-dark/30 hover:shadow-md transition-all border border-primary/5">
+                    <span class="material-symbols-outlined text-[#8F3F1A] text-3xl">contact_page</span>
+                    <h3 class="text-accent-dark dark:text-background-light text-sm md:text-base font-bold text-center">
+                        Digital Business Card</h3>
+                </div>
+                <a href="https://www.instagram.com/reels/Ch4k39ar39t/" target="_blank"
+                    class="relative flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/30 dark:bg-accent-dark/30 hover:shadow-md transition-all border border-primary/5">
+                    <div class="demo-indicator animate-soft-pulse" title="Watch Demo">
+                        <span class="material-symbols-outlined !text-xl">play_circle</span>
+                    </div>
+                    <span class="material-symbols-outlined text-[#8F3F1A] text-3xl">lock_open</span>
+                    <h3 class="text-accent-dark dark:text-background-light text-sm md:text-base font-bold text-center">
+                        Unlock Smart Doors</h3>
+                </a>
+                <div
+                    class="flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/30 dark:bg-accent-dark/30 hover:shadow-md transition-all border border-primary/5">
+                    <span class="material-symbols-outlined text-[#8F3F1A] text-3xl">palette</span>
+                    <h3 class="text-accent-dark dark:text-background-light text-sm md:text-base font-bold text-center">
+                        Open Portfolio</h3>
+                </div>
+                <a href="https://www.instagram.com/reels/Ch6Q0eOvWRA/" target="_blank"
+                    class="relative flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/30 dark:bg-accent-dark/30 hover:shadow-md transition-all border border-primary/5">
+                    <div class="demo-indicator animate-soft-pulse" title="Watch Demo">
+                        <span class="material-symbols-outlined !text-xl">play_circle</span>
+                    </div>
+                    <span class="material-symbols-outlined text-[#8F3F1A] text-3xl">share</span>
+                    <h3 class="text-accent-dark dark:text-background-light text-sm md:text-base font-bold text-center">
+                        Social Media (IG, FB, WhatsApp)</h3>
+                </a>
+                <div
+                    class="flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/30 dark:bg-accent-dark/30 hover:shadow-md transition-all border border-primary/5">
+                    <span class="material-symbols-outlined text-[#8F3F1A] text-3xl">home_iot_device</span>
+                    <h3 class="text-accent-dark dark:text-background-light text-sm md:text-base font-bold text-center">
+                        Smart Home Controls</h3>
+                </div>
+                <div
+                    class="flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/30 dark:bg-accent-dark/30 hover:shadow-md transition-all border border-primary/5">
+                    <span class="material-symbols-outlined text-[#8F3F1A] text-3xl">play_circle</span>
+                    <h3 class="text-accent-dark dark:text-background-light text-sm md:text-base font-bold text-center">
+                        Launch Apps (YouTube, Spotify)</h3>
+                </div>
+                <div
+                    class="flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/30 dark:bg-accent-dark/30 hover:shadow-md transition-all border border-primary/5">
+                    <span class="material-symbols-outlined text-[#8F3F1A] text-3xl">wifi</span>
+                    <h3 class="text-accent-dark dark:text-background-light text-sm md:text-base font-bold text-center">
+                        Connect to Wi-Fi</h3>
+                </div>
+                <div
+                    class="flex flex-col items-center justify-center gap-3 p-6 rounded-xl bg-white/30 dark:bg-accent-dark/30 hover:shadow-md transition-all border border-primary/5">
+                    <span class="material-symbols-outlined text-[#8F3F1A] text-3xl">pets</span>
+                    <h3 class="text-accent-dark dark:text-background-light text-sm md:text-base font-bold text-center">
+                        Customizable Pet Tags</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center py-10">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <h2 class="text-accent-dark dark:text-background-light text-3xl font-rye px-4 pb-6 pt-5">Common
+                Questions</h2>
+            <div class="flex flex-col gap-3 px-4">
+                <div data-aos="fade-down" data-aos-once="true"
+                    class="rounded-xl border border-primary/10 bg-white/30 dark:bg-accent-dark/10 p-5">
+                    <h3 class="font-bold text-lg text-primary mb-2">Where is the NFC reader on my phone?</h3>
+                    <p class="text-sm text-accent-dark/80 dark:text-background-light/80">On iPhones, the reader
+                        is at the very top edge near the front camera. On Android devices, it's usually at the back of the phone.</p>
+                </div>
+                <div data-aos="fade-down" data-aos-delay="100" data-aos-once="true"
+                    class="rounded-xl border border-primary/10 bg-white/30 dark:bg-accent-dark/10 p-5">
+                    <h3 class="font-bold text-lg text-primary mb-2">Do I need a special app?</h3>
+                    <p class="text-sm text-accent-dark/80 dark:text-background-light/80">No apps required!
+                        Modern smartphones recognize these tags natively and will show a notification banner
+                        when tapped.</p>
+                </div>
+                <div data-aos="fade-down" data-aos-delay="200" data-aos-once="true"
+                    class="rounded-xl border border-primary/10 bg-white/30 dark:bg-accent-dark/10 p-5">
+                    <h3 class="font-bold text-lg text-primary mb-2">Can the NFC chip get damaged?</h3>
+                    <p class="text-sm text-accent-dark/80 dark:text-background-light/80">The chips are
+                        water-resistant and embedded securely. They don't have batteries and will last for many
+                        years of tapping.</p>
+                </div>
+                <div data-aos="fade-down" data-aos-delay="300" data-aos-once="true"
+                    class="rounded-xl border border-primary/10 bg-white/30 dark:bg-accent-dark/10 p-5">
+                    <h3 class="font-bold text-lg text-primary mb-2">My tag isn't scanning, what should I do?
+                    </h3>
+                    <p class="text-sm text-accent-dark/80 dark:text-background-light/80">Ensure your screen is
+                        on and unlocked. Remove any thick metallic cases as they might interfere with the
+                        signal.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 md:px-20 lg:px-40 flex justify-center py-20 bg-secondary/5">
+        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div
+                class="relative overflow-hidden rounded-2xl bg-[#8F3F1A]/5 border border-[#8F3F1A]/20 p-8 md:p-12 flex flex-col items-center text-center gap-6">
+                <div class="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
+                    <span class="material-symbols-outlined text-9xl">edit_note</span>
+                </div>
+                <h2 class="text-accent-dark dark:text-background-light text-3xl md:text-4xl font-rye">Want to program your
+                    own?</h2>
+                <p class="max-w-xl text-accent-dark/80 dark:text-background-light/80 text-base md:text-lg leading-relaxed">
+                    Ready to take full control? Learn how to write your own data to NFC tags and create unique digital
+                    experiences for your friends and family.
+                </p>
+                <a class="flex min-w-[200px] cursor-pointer items-center justify-center rounded-full h-14 px-8 bg-[#8F3F1A] text-white text-lg font-bold shadow-lg hover:scale-105 hover:bg-[#4F321E] transition-all"
+                    href="guide.html">
+                    Start Configuration Guide
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="w-full bg-brown text-white text-center p-4 font-semibold" x-data="{
+        year: new Date().getFullYear(),
+    }">
+        <span x-text="year"></span> &copy; Alchemeowww. All Rights Reserved.
+    </footer>
+    <!-- AOS init -->
+    <script src="../js/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+</body>
+
+</html>

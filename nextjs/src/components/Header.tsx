@@ -19,7 +19,7 @@ export default function Header() {
               <a className="text-primary text-sm font-bold leading-normal" href="/">Home</a>
               <a className="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="/nfc">NFC</a>
               <a className="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="/events">Events</a>
-              <a className="text-secondary dark:text-background-light text-sm font-medium leading-normal hover:text-primary transition-colors" href="/about">About</a>
+              <a className="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="/about">About</a>
             </div>
             <a href="#contact" className="hidden flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
               <span>Let's Talk</span>
@@ -27,12 +27,12 @@ export default function Header() {
           </div>
           {/* Mobile Menu Icon */}
           <div id="menu-open" className="md:hidden" onClick={() => setIsMenuOpen(true)}>
-            <span className="material-symbols-outlined text-secondary dark:text-background-light">menu</span>
+            <span className="material-symbols-outlined text-secondary">menu</span>
           </div>
           <div id="mobile-menu" className={`fixed inset-0 bg-cream z-50 transform transition-transform duration-300 ease-in-out md:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
             <div className="flex justify-end p-6">
               <button id="menu-close" className="text-brown focus:outline-none" onClick={() => setIsMenuOpen(false)}>
-                <span className="material-symbols-outlined text-secondary dark:text-background-light">close</span>
+                <span className="material-symbols-outlined text-secondary">close</span>
               </button>
             </div>
             <div className="flex flex-col items-center justify-start gap-8 h-full">

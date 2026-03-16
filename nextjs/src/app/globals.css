@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "aos/dist/aos.css";
 
 :root {
   --background: #ffffff;
@@ -19,8 +20,17 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html { scroll-behavior: smooth; }
+.font-rye {font-family: "Rye", serif;}
+body {font-family: "Lato", sans-serif;}
+.scrollbar-hide { -ms-overflow-style: none; /* IE and Edge */ scrollbar-width: none; /* Firefox */ } 
+.scrollbar-hide::-webkit-scrollbar { display: none; /* Chrome, Safari, Opera */ }
+
+.my-div {
+    background: #f9f9f9;
+    box-shadow: 
+        inset 5px 0 10px -5px gray,   /* left side */
+        inset -5px 0 10px -5px gray;  /* right side */
 }
+
+.texture::after { content: ""; position: absolute; inset: 0; background-image: url('/images/texture.png'); /* small noise texture */ opacity: 0.2; pointer-events: none; }

@@ -12,7 +12,7 @@ export default function MistyForest() {
                 In the fog-veiled Mist;y Forest, the little cats embark on a journey into the unknown...
               </p>
               <div className="relative w-full flex flex-col items-center md:items-start">
-                <a href="/mistiy-forest" className="font-play px-12 py-2 bg-[#4F321E] text-white rounded-full transform transition-all duration-100 ease-linear hover:scale-110 hover:bg-[#A3371D] cursor-pointer shadow-xl text-2xl">
+                <a href="/mist;y-forest" className="font-play px-12 py-2 bg-[#4F321E] text-white rounded-full transform transition-all duration-100 ease-linear hover:scale-110 hover:bg-[#A3371D] cursor-pointer shadow-xl text-2xl">
                   Journey Begins
                 </a>
               </div>

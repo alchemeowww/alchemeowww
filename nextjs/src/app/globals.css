@@ -67,3 +67,48 @@ body {font-family: "Lato", sans-serif;}
   transition: color 0.15s;
 }
 .demo-indicator:hover { color: #4F321E; }
+
+/* ── MIST;Y FOREST page animations ── */
+@keyframes misty-bounce-char {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(30px); }
+}
+@keyframes misty-bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes misty-ball-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.misty-character { animation: misty-bounce-char 3s infinite ease-in-out; }
+.misty-banner { animation: misty-bounce-slow 2s infinite ease-in-out; }
+.misty-character-description { animation: misty-bounce-slow 5s infinite ease-in-out; }
+.misty-ball-1 { animation: misty-ball-bounce 1s infinite ease-in-out; }
+.misty-ball-2 { animation: misty-ball-bounce 1.3s infinite ease-in-out; }
+.misty-ball-3 { animation: misty-ball-bounce 1.6s infinite ease-in-out; }
+
+/* ── MIST;Y FOREST card game ── */
+:root {
+  --card-w: clamp(5rem, 20vw, 10rem);
+  --card-h: calc(var(--card-w) * 1.4);
+}
+.font-young-serif { font-family: "Young Serif", serif; font-weight: 400; }
+.font-play { font-family: "Play", sans-serif; }
+.card {
+  width: var(--card-w);
+  height: var(--card-h);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.card-div { height: calc(var(--card-h) + 10px); }
+.card-text { font-size: calc(var(--card-h) * 0.08); }
+.koro-size { width: calc(var(--card-w) * 0.6); height: auto; }
+.card-description-text { font-size: calc(var(--card-h) * 0.15); }
+.card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.card-face { backface-visibility: hidden; }
+.card-back { transform: rotateY(180deg); }
+.card-enter { opacity: 0; transform: translateY(60px) scale(0.9); }
+.card-enter-active { opacity: 1; transform: translateY(0) scale(1); transition: all 0.3s ease-out; }
+.smooth-transform { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }

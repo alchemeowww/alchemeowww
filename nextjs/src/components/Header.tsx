@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-type Page = 'home' | 'nfc' | 'events' | 'about';
+type Page = 'home' | 'nfc' | 'events' | 'about' | 'mist;y-forest';
 
 export default function Header({ activePage = 'home' }: { activePage?: Page }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,7 +11,7 @@ export default function Header({ activePage = 'home' }: { activePage?: Page }) {
   const inactiveClass = 'text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors';
 
   return (
-    <div className="w-full top-0 z-10 h-0">
+    <div className="w-full top-0 z-60 h-0">
       <div className="px-4 flex justify-center py-5">
         <header className="flex w-full max-w-[1536px] items-center justify-between whitespace-nowrap border-b border-solid md:border-none border-secondary/10 px-4 md:px-10 py-3">
           <div className="flex items-center gap-4 text-primary">

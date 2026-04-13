@@ -57,3 +57,13 @@ body {font-family: "Lato", sans-serif;}
 }
 
 .texture::after { content: ""; position: absolute; inset: 0; background-image: url('/images/texture.png'); /* small noise texture */ opacity: 0.2; pointer-events: none; }
+
+.demo-indicator {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  color: #8F3F1A;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.demo-indicator:hover { color: #4F321E; }

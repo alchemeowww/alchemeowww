@@ -32,6 +32,15 @@ module.exports = {
         "xl": "1.5rem",
         "full": "9999px"
       },
+      keyframes: {
+        'soft-pulse': {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.15)', opacity: '0.8' },
+        },
+      },
+      animation: {
+        'soft-pulse': 'soft-pulse 2s ease-in-out infinite',
+      },
     },
   },
   plugins: [],

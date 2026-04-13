@@ -1,6 +1,8 @@
+import Footer from "./Footer";
+
 export default function Events() {
   return (
-    <div className="snap-start snap-always md:min-h-screen shrink-0 flex flex-col justify-center bg-light-brown" id="events">
+    <div className="snap-start md:min-h-screen shrink-0 flex flex-col justify-center bg-light-brown" id="events">
       <div className="lg:container lg:mx-auto flex flex-col md:flex-row justify-center items-center gap-12 w-full py-16 p-8 grow">
         <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-12 w-full">
           <div data-aos="flip-down" className="text-center w-full lg:w-1/3 lg:text-start">
@@ -87,6 +89,7 @@ export default function Events() {
           </section>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

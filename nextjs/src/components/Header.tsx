@@ -2,8 +2,13 @@
 
 import { useState } from 'react';
 
-export default function Header() {
+type Page = 'home' | 'nfc' | 'events' | 'about';
+
+export default function Header({ activePage = 'home' }: { activePage?: Page }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const activeClass = 'text-primary text-sm font-bold leading-normal';
+  const inactiveClass = 'text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors';
 
   return (
     <div className="w-full top-0 z-10 h-0">
@@ -16,10 +21,10 @@ export default function Header() {
           </div>
           <div className="hidden md:flex flex-1 justify-end gap-8">
             <div className="flex items-center gap-9">
-              <a className="text-primary text-sm font-bold leading-normal" href="/">Home</a>
-              <a className="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="/nfc">NFC</a>
-              <a className="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="/events">Events</a>
-              <a className="text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="/about">About</a>
+              <a className={activePage === 'home' ? activeClass : inactiveClass} href="/">Home</a>
+              <a className={activePage === 'nfc' ? activeClass : inactiveClass} href="/nfc">NFC</a>
+              <a className={activePage === 'events' ? activeClass : inactiveClass} href="/events">Events</a>
+              <a className={activePage === 'about' ? activeClass : inactiveClass} href="/about">About</a>
             </div>
             <a href="#contact" className="hidden flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
               <span>Let's Talk</span>

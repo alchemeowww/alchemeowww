@@ -26,14 +26,7 @@ export const metadata: Metadata = {
     title: "Alchemeowww - Random Alchemist",
     description: "Random Alchemist who always make fancy lil labbish. Explore MIST;Y FOREST, merchandises, and past events.",
     images: ["https://alchemeowww.com/images/alchemeowww-logo.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    url: "https://alchemeowww.com/",
-    title: "Alchemeowww - Random Alchemist",
-    description: "Random Alchemist who always make fancy lil labbish. Explore MIST;Y FOREST, merchandises, and past events.",
-    images: ["https://alchemeowww.com/images/alchemeowww-logo.png"],
-  },
+  }
 };
 
 export default function RootLayout({
@@ -55,7 +48,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="/css/material-icon.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=Rye&family=Lato:wght@400;700&family=Play:wght@400;700&family=Tangerine:wght@400;700&family=Young+Serif&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=Rye&family=Lato:wght@400;700&family=Play:wght@400;700&family=Tangerine:wght@400;700&display=swap" rel="stylesheet" />
         <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",

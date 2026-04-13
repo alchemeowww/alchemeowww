@@ -15,7 +15,6 @@ export default function Home() {
       <MistyForest />
       <Merchandises />
       <Events />
-      <Footer />
     </>
   );
 }

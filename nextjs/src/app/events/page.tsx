@@ -6,18 +6,18 @@ import Footer from '../../components/Footer';
 
 const events = [
   {
-    date: '18 - 19 Apr 2026',
-    title: 'AF Fiesta 2026 (TBC)',
-    location: 'Sunway Pyramid Convention Center',
-    type: 'Anime Convention',
-    image: '/images/events/booths/AF-tbc.webp',
+    date: '13 - 14 Jun 2026',
+    title: 'Comic Art Festival KL X',
+    location: 'Hextar World Empire City',
+    type: 'Art Market',
+    image: '/images/events/booths/CAFKLX.webp',
   },
   {
-    date: '01 - 03 May 2026',
-    title: 'KLIF Illustration Fair (TBC)',
-    location: 'GMBB, Kuala Lumpur',
-    type: 'Art Market',
-    image: '/images/events/booths/KLIF-tbc.webp',
+    date: '25 - 26 Apr 2026',
+    title: 'Cosmic Spring 2026',
+    location: 'Lalaport Bukit Bintang City Centre, Kuala Lumpur',
+    type: 'Anime Convention',
+    image: '/images/events/booths/Cosmic-Spring.webp',
   },
   {
     date: 'Dec 2025',

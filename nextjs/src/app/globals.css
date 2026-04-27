@@ -6,6 +6,8 @@
   --foreground: #171717;
 }
 
+@variant dark (false);
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

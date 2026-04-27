@@ -8,4 +8,4 @@
 :HL["/images/events/cosmic.webp","image"]
 :HL["/images/events/amg.webp","image"]
 :HL["/images/events/df.webp","image"]
-0:{"buildId":"Qhn2CFeBomAh2ndY5FZB5","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"KH-Am3XhQQX4YR710KdSG","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

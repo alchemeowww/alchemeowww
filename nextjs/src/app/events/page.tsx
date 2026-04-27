@@ -6,6 +6,13 @@ import Footer from '../../components/Footer';
 
 const events = [
   {
+    date: '28 - 30 Aug 2026',
+    title: 'Animangaki 2026',
+    location: 'The Mines - MIECC',
+    type: 'Anime Convention',
+    image: '/images/events/booths/amg2026.webp',
+  },
+  {
     date: '13 - 14 Jun 2026',
     title: 'Comic Art Festival KL X',
     location: 'Hextar World Empire City',
@@ -17,7 +24,7 @@ const events = [
     title: 'Cosmic Spring 2026',
     location: 'Lalaport Bukit Bintang City Centre, Kuala Lumpur',
     type: 'Anime Convention',
-    image: '/images/events/booths/Cosmic-Spring.webp',
+    image: '/images/events/booths/2604-CosmicSpring.webp',
   },
   {
     date: 'Dec 2025',
@@ -93,7 +100,7 @@ export default function Events() {
               {/* Header */}
               <div className="flex flex-col items-center text-center gap-2">
                 <h2 className="font-rye text-3xl md:text-4xl font-extrabold leading-tight tracking-tight text-primary dark:text-[#cc6a3d]">
-                  Upcoming Exhibitions &amp; Markets
+                  Upcoming Events &amp; Markets
                 </h2>
                 <p className="text-secondary dark:text-[#d0c0b8] text-base md:text-lg font-normal leading-relaxed max-w-2xl">
                   A curated collection of fairs, gallery shows, and pop-up events where my work has been featured.

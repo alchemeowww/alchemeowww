@@ -7,7 +7,7 @@ export default function Events() {
         <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-12 w-full">
           <div data-aos="flip-down" className="text-center w-full lg:w-1/3 lg:text-start">
             <h1 className="font-rye text-5xl md:text-6xl font-bold mb-6 text-brown drop-shadow-lg self-start">
-              Past Events & Markets
+              Events & Markets
             </h1>
           </div>
           <section className="flex flex-col gap-8 w-full md:w-2/3 lg:pl-24">
@@ -83,7 +83,7 @@ export default function Events() {
             </div>
             <div className="flex" data-aos="fade-down" data-aos-anchor-placement="top-bottom" data-aos-delay="400">
               <a className="flex min-w-[200px] cursor-pointer items-center justify-center rounded-full h-14 px-8 bg-[#8F3F1A] text-white text-lg font-bold shadow-lg hover:scale-105 hover:bg-[#4F321E] transition-all" href="/events">
-                Past Events
+                More Events
               </a>
             </div>
           </section>

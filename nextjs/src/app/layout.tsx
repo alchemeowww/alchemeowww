@@ -20,13 +20,22 @@ export const metadata: Metadata = {
   keywords: "alchemist, art, merchandise, board games, interactive standee, keychain, card holder, NFC, events, comic fiesta, cosmic, animangaki, design fiesta, MIST;Y FOREST, Alchemeowww, Alchemeow, Alchemeoww",
   authors: [{ name: "Alchemeowww" }],
   robots: "index, follow",
+  alternates: {
+    canonical: "https://alchemeowww.com/",
+  },
   openGraph: {
     type: "website",
     url: "https://alchemeowww.com/",
     title: "Alchemeowww - Random Alchemist",
     description: "Random Alchemist who always make fancy lil labbish. Explore MIST;Y FOREST, merchandises, and past events.",
     images: ["https://alchemeowww.com/images/alchemeowww-logo.png"],
-  }
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Alchemeowww - Random Alchemist",
+    description: "Random Alchemist who creates fancy little labbish. Explore MIST;Y FOREST, merchandises, and past events.",
+    images: ["https://alchemeowww.com/images/alchemeowww-logo.png"],
+  },
 };
 
 export default function RootLayout({

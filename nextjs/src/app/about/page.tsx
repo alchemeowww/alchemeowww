@@ -1,5 +1,27 @@
+import type { Metadata } from "next";
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+
+export const metadata: Metadata = {
+  title: "About - Alchemeowww",
+  description: "Meet Kyatto, the artist and brand owner of Alchemeowww. Resin crafter turned doodler creating fancy glowing merchandise and art.",
+  alternates: {
+    canonical: "https://alchemeowww.com/about",
+  },
+  openGraph: {
+    type: "website",
+    url: "https://alchemeowww.com/about",
+    title: "About - Alchemeowww",
+    description: "Meet Kyatto, the artist and brand owner of Alchemeowww.",
+    images: ["https://alchemeowww.com/images/alchemeowww-logo.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About - Alchemeowww",
+    description: "Meet Kyatto, the artist and brand owner of Alchemeowww.",
+    images: ["https://alchemeowww.com/images/alchemeowww-logo.png"],
+  },
+};
 
 export default function About() {
   return (

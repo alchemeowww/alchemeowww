@@ -82,7 +82,7 @@ export default function RootLayout({
         </script>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.className} w-full bg-cream relative texture min-w-[360px] flex flex-col grow`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.className} w-full bg-cream relative texture min-w-[360px] flex flex-col grow min-h-screen`}
       >
         {children}
       </body>

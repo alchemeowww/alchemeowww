@@ -2,6 +2,7 @@
 
 import Header from '@/components/Header';
 import { useState, useEffect, useRef } from 'react';
+import Footer from "@/components/Footer";
 
 type CharacterKey = 'Koro' | 'Sese' | 'Rye';
 
@@ -101,7 +102,7 @@ export default function MistyForestPage() {
         </button>
       </div>
     )}
-    <div className="w-full bg-[#D0B68F]" style={{ fontFamily: '"Tangerine", cursive' }}>
+    <div className="w-full bg-[#D0B68F] grow flex flex-col" style={{ fontFamily: '"Tangerine", cursive' }}>
       {/* Character Modal */}
       {open && char && (
         <div className="fixed inset-0 backdrop-blur-lg flex items-center justify-center z-50">
@@ -135,64 +136,51 @@ export default function MistyForestPage() {
       )}
 
 
-      <div className="flex flex-col h-[100vh] w-full overflow-hidden">
+      <div className="flex flex-col grow w-full overflow-hidden">
         {/* Page 1: Landing */}
         {page === 1 && (
-          <div className="flex flex-col grow w-full overflow-hidden">
+            <div className="flex flex-col grow w-full overflow-hidden h-screen">
             <div className="h-[10vh]" />
-            <div className="relative h-1/2 sm:h-3/5">
-              {/* Parallax layers — mouse transform applied inline; CSS bounce subtle float */}
+            <div className="relative h-1/2 sm:h-3/5 bg-size-[auto_450px] sm:bg-size-[auto_650px]">
               <div
-                className="misty-p1 absolute w-full h-full bg-center bg-no-repeat"
+                className="parallax misty-p1 absolute w-full h-full bg-center bg-no-repeat"
                 style={{
                   backgroundImage: "url('/images/mistiy-forest/images/MIST;Y.png')",
-                  backgroundSize: 'auto 450px',
-                  transform: `translate(${mouse.x}px, ${mouse.y}px)`,
                   zIndex: 30,
                 }}
               />
               <div
-                className="misty-p2 absolute w-full h-full bg-center bg-no-repeat"
+                className="parallax misty-p2 absolute w-full h-full bg-center bg-no-repeat"
                 style={{
                   backgroundImage: "url('/images/mistiy-forest/images/FOREST.png')",
-                  backgroundSize: 'auto 450px',
-                  transform: `translate(${mouse.x * 0.9}px, ${mouse.y * 0.9}px)`,
                   zIndex: 20,
                 }}
               />
               <div
-                className="misty-p3 absolute w-full h-full bg-center bg-no-repeat"
+                className="parallax misty-p3 absolute w-full h-full bg-center bg-no-repeat"
                 style={{
                   backgroundImage: "url('/images/mistiy-forest/images/leave.png')",
-                  backgroundSize: 'auto 450px',
-                  transform: `translate(${mouse.x * 0.8}px, ${mouse.y * 0.8}px)`,
                   zIndex: 20,
                 }}
               />
               <div
-                className="misty-p4 absolute w-full h-full bg-center bg-no-repeat"
+                className="parallax misty-p4 absolute w-full h-full bg-center bg-no-repeat"
                 style={{
                   backgroundImage: "url('/images/mistiy-forest/images/Mist.gif')",
-                  backgroundSize: 'auto 450px',
-                  transform: `translate(${mouse.x * 0.8}px, ${mouse.y * 0.8}px)`,
                   zIndex: 20,
                 }}
               />
               <div
-                className="misty-p5 absolute w-full h-full bg-center bg-no-repeat"
+                className="parallax misty-p5 absolute w-full h-full bg-center bg-no-repeat"
                 style={{
                   backgroundImage: "url('/images/mistiy-forest/images/Miwusenlin.gif')",
-                  backgroundSize: 'auto 450px',
-                  transform: `translate(${mouse.x * 0.7}px, ${mouse.y * 0.7}px)`,
                   zIndex: 10,
                 }}
               />
               <div
-                className="misty-p6 absolute w-full h-full bg-center bg-no-repeat"
+                className="parallax misty-p6 absolute w-full h-full bg-center bg-no-repeat"
                 style={{
                   backgroundImage: "url('/images/mistiy-forest/images/tree.png')",
-                  backgroundSize: 'auto 450px',
-                  transform: `translate(${mouse.x * 0.4}px, ${mouse.y * 0.4}px)`,
                   zIndex: 10,
                 }}
               />
@@ -200,11 +188,11 @@ export default function MistyForestPage() {
 
             <div className="flex items-center justify-center">
               <div
-                className="z-30 flex flex-col items-center text-3xl md:text-5xl font-bold p-4 text-center text-[#4F321E]"
+                className="z-30 flex gap-4 relative flex-col items-center text-3xl md:text-5xl font-bold p-4 text-center text-[#4F321E]"
                 style={{ transform: `translate(${mouse.x * 0.4}px, ${mouse.y * 0.4}px)` }}
               >
                 <div>A tale is unfolding in the mist... More to be revealed soon.</div>
-                <div className="relative flex justify-center items-center w-full h-[100px] mt-4">
+                <div className="relative flex justify-center items-center w-full min-h-20">
                   {!showButton && (
                     <div className="absolute flex justify-center items-center gap-5">
                       <div className="misty-ball-1 w-[1vh] h-[1vh] bg-[#7C5B38] rounded-full" />
@@ -213,21 +201,30 @@ export default function MistyForestPage() {
                     </div>
                   )}
                   {showButton && (
+                    <div className="flex flex-col gap-4 md:items-center">
                     <div className="flex flex-col md:flex-row gap-4">
                       <button
                         onClick={() => setPage(2)}
-                        className="px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full shadow-xl text-2xl transform transition-all duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer"
+                            className="px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full shadow-xl text-2xl transform transition-all duration-100 ease-linear hover:scale-110 hover:opacity-75 cursor-pointer"
                         style={{ fontFamily: '"Play", sans-serif' }}
                       >
                         Characters
                       </button>
                       <a
                         href="/mist;y-forest/card"
-                        className="text-center px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full shadow-xl text-2xl transform transition-all duration-100 ease-linear hover:scale-110 hover:bg-[#6A442A] cursor-pointer"
+                            className="text-center px-12 py-2 bg-[#4F321E] text-[#D0B68F] rounded-full shadow-xl text-2xl transform transition-all duration-100 ease-linear hover:scale-110 hover:opacity-75 cursor-pointer"
                         style={{ fontFamily: '"Play", sans-serif' }}
                       >
                         Board Game
                       </a>
+                    </div>
+                    <a
+                      href="/"
+                          className="text-center px-12 py-2 bg-brown text-[#D0B68F] rounded-full shadow-xl text-2xl transform transition-all duration-100 ease-linear hover:scale-110 hover:opacity-75 cursor-pointer"
+                      style={{ fontFamily: '"Play", sans-serif' }}
+                    >
+                      Close
+                    </a>
                     </div>
                   )}
                 </div>
@@ -238,21 +235,21 @@ export default function MistyForestPage() {
 
         {/* Page 2: Characters */}
         {page === 2 && (
-          <div className="grow flex flex-col items-center justify-center text-[#D0B68F] h-full">
-            <div className="flex overflow-x-auto snap-x snap-mandatory space-x-4 p-4 w-full grow items-center px-[10vw]">
+          <div className="flex flex-col grow justify-center text-[#D0B68F]">
+            <div className="flex flex-row overflow-x-auto h-2/3! snap-x snap-mandatory space-x-4 p-4 w-full grow items-center px-[10vw] scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {(['Koro', 'Sese', 'Rye'] as CharacterKey[]).map((key) => {
                 const c = characters[key];
                 return (
                   <div
                     key={key}
-                    className="snap-center snap-always flex-shrink-0 w-[85vw] md:w-[75vw] h-[70vh] bg-[#f9e4c6] text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg"
+                    className="snap-center snap-always shrink-0 w-[85vw] h-[70vh] md:h-[60vh] md:w-[75vw] bg-light-cream text-[#D0B68F] flex items-center justify-center text-2xl font-bold rounded-lg"
                   >
-                    <div className="flex flex-col">
+                    <div className="flex flex-col h-full relative">
                       <div
-                        className="relative items-center justify-center w-[90vw] md:w-[40vw] h-[55vh]"
+                        className="items-center justify-center w-[90vw] md:w-[40vw] h-full"
                         style={{ fontFamily: '"Play", sans-serif' }}
                       >
-                        <div className="misty-character-description absolute w-[170px] md:w-[250px] text-left bg-white rounded-lg p-2 text-xs md:text-base">
+                        <div className="misty-character-description w-[170px] md:w-[250px] text-left bg-white rounded-lg p-4 text-xs md:text-base">
                           {c.info.map((line) => (
                             <p key={line}>{line}</p>
                           ))}
@@ -262,7 +259,7 @@ export default function MistyForestPage() {
                             setSelectedCharacter(key);
                             setOpen(true);
                           }}
-                          className="misty-character cursor-pointer absolute top-10 w-[90vw] md:w-[40vw] h-[50vh] z-10 bg-center bg-no-repeat bg-contain"
+                          className="misty-character cursor-pointer absolute top-10 w-[90vw] md:w-[40vw] h-4/5 z-10 bg-center bg-no-repeat bg-contain"
                           style={{ backgroundImage: `url('${c.charImage}')` }}
                         />
                       </div>
@@ -271,8 +268,8 @@ export default function MistyForestPage() {
                           setSelectedCharacter(key);
                           setOpen(true);
                         }}
-                        className="misty-banner cursor-pointer h-[20vh] flex flex-row items-center justify-center bg-center bg-no-repeat"
-                        style={{ backgroundImage: `url('${c.bannerImage}')` }}
+                        className="misty-banner z-30 cursor-pointer h-1/3 flex flex-row items-center justify-center bg-contain bg-center bg-no-repeat"
+                          style={{ backgroundImage: `url('${c.bannerImage}')` }}
                       >
                         <div className="w-16 h-16 bg-[#D0B68F]/30 rounded-full animate-ping" />
                       </div>
@@ -286,9 +283,7 @@ export default function MistyForestPage() {
       </div>
 
       {/* Footer */}
-      <div className="w-full bg-[#543100] text-[#D0B68F] text-center p-4">
-        {year} &copy; Alchemeowww. All Rights Reserved.
-      </div>
+      <Footer />
     </div>
     </>
   );

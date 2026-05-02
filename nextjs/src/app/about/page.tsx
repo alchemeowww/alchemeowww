@@ -27,7 +27,7 @@ export default function About() {
   return (
     <>
       <Header activePage="about" />
-
+      <div className="flex flex-col grow">
       {/* Hero / Profile Header */}
       <div className="px-4 md:px-20 lg:px-40 flex justify-center py-5 mt-[95px]">
         <div className="w-full max-w-[960px] flex flex-col gap-8 md:flex-row items-center md:items-start p-4">
@@ -112,7 +112,7 @@ export default function About() {
           </div>
         </div>
       </div>
-
+      </div>
       <Footer />
     </>
   );

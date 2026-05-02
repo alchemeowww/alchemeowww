@@ -8,7 +8,7 @@ export default function NfcGuide() {
       <AOSInit />
       <Header activePage="nfc" />
 
-      <main className="px-4 md:px-20 lg:px-40 flex justify-center py-5 mt-[95px]">
+      <main className="px-4 md:px-20 lg:px-40 flex justify-center py-5 mt-[95px] grow">
         <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
 
           {/* Title */}

@@ -42,7 +42,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
               </h2>
             )}
           </div>
-          <div className="hidden md:flex flex-1 justify-end gap-8">
+          <div className="hidden md:flex flex-1 justify-end gap-8 min-h-8">
             <div className="flex items-center gap-9 font-rye text-3xl">
               <a className={activePage === 'home' ? activeClass : inactiveClass} href="/">Home</a>
               <a className={activePage === 'nfc' ? activeClass : inactiveClass} href="/nfc">NFC</a>

@@ -21,7 +21,7 @@ const events = [
   },
   {
     name: "Cosmic Spring 2026",
-    venue: "Lalaport Bukit Bintang City Centre",
+    venue: "Lalaport Bukit Bintang",
     date: "25 - 26 Apr 2026",
     image: "/images/events/cosmic-spring.webp",
     alt: "Cosmic Spring 2026 event logo",
@@ -63,21 +63,22 @@ export default function Events() {
                   >
                     {event.upcoming && <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>}
                   </div>
-                  <div data-aos="fade-down" data-aos-delay={String((index + 1) * 100)} className="flex-grow md:pl-12 w-full pl-6 flex items-center flex-row gap-4 sm:gap-12">
+                  <div data-aos="fade-down" data-aos-delay={String((index + 1) * 100)} 
+                    className="flex grow md:pl-12 w-full pl-6 items-start md:items-center flex-col md:flex-row gap-4 sm:gap-12">
                     <div className={`flex-shrink-0 w-20 h-20 rounded-full inline-flex items-center justify-center overflow-hidden bg-white ${!event.upcoming ? "opacity-80" : ""}`}>
                       <img src={event.image} alt={event.alt} />
                     </div>
-                    <div className="flex-grow">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h2 className={`font-medium title-font text-xl text-darken`}>{event.name}</h2>
+                    <div className="flex flex-col gap-1 w-full">
+                      <div className="flex flex-col md:flex-row md:items-center items-start gap-2 mb-1">
+                        <h2 className={`font-rye font-medium title-font text-xl text-primary`}>{event.name}</h2>
                         {event.upcoming && (
                           <span className="inline-flex animate-pulse items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-300">
                             Upcoming
                           </span>
                         )}
                       </div>
-                      <h2 className={`font-medium title-font mb-1 flex flex-row items-center gap-1`}>
-                        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>location_on</span>
+                      <h2 className={`font-medium title-font mb-1 flex flex-row items-start md:items-center gap-1`}>
+                        <span className="material-symbols-outlined">location_on</span>
                         <a href={event.googleMapsLink} target="_blank" rel="noopener noreferrer">{event.venue}</a>
                       </h2>
                       <p className="leading-relaxed text-secondary">{event.date}</p>

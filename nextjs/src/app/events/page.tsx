@@ -92,7 +92,7 @@ export default function Events() {
     <>
       <Header activePage="events" />
 
-      <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden mt-[95px]">
+      <div className="relative flex grow w-full flex-col overflow-x-hidden mt-[95px]">
         <div className="layout-container flex h-full grow flex-col">
           <div className="flex flex-1 justify-center py-12 px-4 sm:px-8 lg:px-40">
             <div className="layout-content-container flex flex-col w-full max-w-[1024px] flex-1 gap-8">

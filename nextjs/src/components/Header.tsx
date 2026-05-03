@@ -73,7 +73,52 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
             <div className="flex flex-col items-end justify-start gap-8 h-full px-6 font-rye text-3xl text-dark-brown">
               <a href="/" className={`${activePage === 'home' ? 'text-primary' : ''}`}>Home</a>
               <a href="/nfc" className={`${activePage === 'nfc' ? 'text-primary' : ''}`}>NFC</a>
-              <a href="/projects" className={`${activePage === 'projects' ? 'text-primary' : ''}`}>Projects</a>
+              {/* Projects accordion for mobile */}
+              <div className="flex flex-col items-end w-full">
+                <button
+                  className={`${activePage === 'projects' ? 'text-primary' : ''} flex items-center gap-1`}
+                  onClick={() => setIsProjectsOpen((p) => !p)}
+                >
+                  Projects
+                  <span className="material-symbols-outlined transition-transform duration-200" style={{ fontSize: '30px', transform: isProjectsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
+                </button>
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out w-full ${isProjectsOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <div className="mt-3 flex flex-col items-end gap-4 text-2xl pr-4 border-r-2 border-primary/30">
+                    <button
+                      className={`transition-colors ${selectedProject === 'misty' ? 'text-primary' : 'text-dark-brown/60'}`}
+                      onClick={() => setSelectedProject('misty')}
+                    >Mist;y Forest</button>
+                    {/* <button
+                      className={`transition-colors ${selectedProject === 'meownogatari' ? 'text-primary' : 'text-dark-brown/60'}`}
+                      onClick={() => setSelectedProject('meownogatari')}
+                    >Le Meownogatari</button> */}
+                    <div className="flex overflow-x-auto w-full justify-end [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                      <div className={`transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0 ${selectedProject === 'misty' ? 'max-w-xs opacity-100 translate-x-0' : 'max-w-0 opacity-0 translate-x-8'}`}>
+                        <a href="/mist;y-forest" onClick={() => setIsMenuOpen(false)}>
+                          <div className="overflow-hidden w-40 h-40 relative rounded-xl bg-white">
+                            <div className="absolute w-full h-full top-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }}></div>
+                            <div className="absolute w-full h-full -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }}></div>
+                            <div className="absolute bottom-2 px-3 flex flex-col gap-0.5">
+                              <div className="font-rye text-sm text-brown">Board Game</div>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                      <div className={`transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0 ${selectedProject === 'meownogatari' ? 'max-w-xs opacity-100 translate-x-0' : 'max-w-0 opacity-0 translate-x-8'}`}>
+                        <a href="/le-meownogatari" onClick={() => setIsMenuOpen(false)}>
+                          <div className="overflow-hidden w-40 h-40 relative rounded-xl bg-white">
+                            <div className="absolute w-full h-full top-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }}></div>
+                            <div className="absolute w-full h-full -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }}></div>
+                            <div className="absolute bottom-2 px-3 flex flex-col gap-0.5">
+                              <div className="font-rye text-sm text-brown">Mini Game</div>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <a href="/events" className={`${activePage === 'events' ? 'text-primary' : ''}`}>Events</a>
               <a href="/about" className={`${activePage === 'about' ? 'text-primary' : ''}`}>About</a>
             </div>
@@ -82,8 +127,8 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
         {/* Projects full-width accordion */}
         <div className={`hidden md:block z-5 w-full absolute insert-0 pt-21 backdrop-blur-lg md:shadow-md
             transform transition-transform duration-300 ease-in-out ${isProjectsOpen ? 'translate-y-0' : '-translate-y-full'}`} ref={projectsRef}>
-          <div className="max-w-4/5 mx-auto px-10 py-6 gap-8 flex flex-row items-start">
-            <div className="selection flex flex-col gap-4 font-rye text-secondary transition-colors text-lg">
+          <div className="max-w-4/5 mx-auto px-10 py-6 gap-8 flex flex-row items-stretch">
+            <div className="selection flex flex-col gap-4 font-rye text-dark-brown/60 transition-colors text-lg">
               <a
                 href="#"
                 className={`hover:text-primary transition-colors ${selectedProject === 'misty' ? 'text-primary font-bold' : ''}`}
@@ -92,12 +137,12 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
               {/* <a
                 href="#"
                 className={`hover:text-primary transition-colors ${selectedProject === 'meownogatari' ? 'text-primary font-bold' : ''}`}
-                onClick={(e) => { e.preventDefault(); setSelectedProject((p) => p === 'meownogatari'); }}
+                onClick={(e) => { e.preventDefault(); setSelectedProject((p) => 'meownogatari'); }}
               >Le Meownogatari</a> */}
             </div>
-            <div className="flex-1 overflow-hidden">
+            <div className="flex flex-row overflow-hidden">
               {/* Mist;y Forest */}
-              <div className={`transform transition-all duration-300 ease-in-out overflow-hidden ${selectedProject === 'misty' ? 'max-h-96 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4'}`}>
+              <div className={`transform transition-all duration-300 ease-in-out overflow-hidden ${selectedProject === 'misty' ? 'max-w-xs opacity-100 translate-x-0' : 'max-w-0 opacity-0 translate-x-8'}`}>
                 <div className="flex flex-row gap-8 overflow-x-auto">
                   <a href="/mist;y-forest" onClick={() => setIsProjectsOpen(false)}>
                     <div className="overflow-hidden w-70 h-70 relative rounded-2xl bg-white">
@@ -112,7 +157,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                 </div>
               </div>
               {/* Le Meownogatari */}
-              <div className={`transform transition-all duration-300 ease-in-out overflow-hidden ${selectedProject === 'meownogatari' ? 'max-h-96 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-4'}`}>
+              <div className={`transform transition-all duration-300 ease-in-out overflow-hidden ${selectedProject === 'meownogatari' ? 'max-w-xs opacity-100 translate-x-0' : 'max-w-0 opacity-0 translate-x-8'}`}>
                 <div className="flex flex-row gap-8 overflow-x-auto">
                   <a href="/le-meownogatari" onClick={() => setIsProjectsOpen(false)}>
                     <div className="overflow-hidden w-70 h-70 relative rounded-2xl bg-white">

@@ -128,7 +128,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
         <div className={`hidden md:block z-5 w-full absolute insert-0 pt-21 backdrop-blur-lg md:shadow-md
             transform transition-transform duration-300 ease-in-out ${isProjectsOpen ? 'translate-y-0' : '-translate-y-full'}`} ref={projectsRef}>
           <div className="max-w-4/5 mx-auto px-10 py-6 gap-8 flex flex-row items-stretch">
-            <div className="selection flex flex-col gap-4 font-rye text-dark-brown/60 transition-colors text-lg">
+            <div className="selection flex flex-col gap-4 font-rye text-dark-brown/60 transition-colors text-lg pr-8 py-1 border-r-2 border-primary/30">
               <a
                 href="#"
                 className={`hover:text-primary transition-colors ${selectedProject === 'misty' ? 'text-primary font-bold' : ''}`}

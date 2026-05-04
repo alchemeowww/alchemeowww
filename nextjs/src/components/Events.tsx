@@ -77,7 +77,7 @@ export default function Events() {
                   }`}
               >
                 {/* Event logo */}
-                <div className={`flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center ${!event.upcoming ? 'grayscale' : ''}`}>
+                <div className={`flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center`}>
                   <img src={event.image} alt={event.alt} className="w-full h-full object-cover" />
                 </div>
 
@@ -109,9 +109,9 @@ export default function Events() {
                 </div>
 
                 {/* Arrow for upcoming */}
-                {event.upcoming && (
+                {/* {event.upcoming && (
                   <span className="material-symbols-outlined text-brown/30 shrink-0">chevron_right</span>
-                )}
+                )} */}
               </div>
             ))}
 

@@ -24,9 +24,9 @@ export default function Merchandises() {
               className="w-full sm:w-2/5 h-[420px] sm:h-auto relative shadow-lg rounded-2xl bg-white self-stretch bg-center bg-no-repeat bg-cover overflow-hidden"
               style={{ backgroundImage: "url('/images/products/sticker-sheets.png')" }}
             >
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brown/60 to-transparent px-5 py-4 pt-16 flex flex-col gap-0.5">
-                <div className="font-rye text-xl text-white drop-shadow">Sticker Sheets</div>
-                <div className="font-play text-xs text-white/80">Customizable cat in box</div>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white/90 to-transparent px-5 py-4 pt-16 flex flex-col gap-0.5">
+                <div className="font-rye text-xl text-brown drop-shadow">Sticker Sheets</div>
+                <div className="font-play text-xs text-brown/70">Customizable cat in box</div>
               </div>
             </div>
 
@@ -42,6 +42,9 @@ export default function Merchandises() {
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white/90 to-transparent px-5 py-4 flex flex-col gap-0.5">
                   <div className="font-rye text-xl text-brown">Board Game</div>
                   <div className="font-play text-xs text-brown/70">Journey into the fog-veiled MIST;Y FOREST</div>
+                  <a href="/mist;y-forest" className="mt-2 flex w-fit items-center gap-1.5 rounded-full bg-[#4F321E] px-4 py-1.5 text-xs font-play font-bold text-white transition hover:bg-[#A3371D] hover:scale-105">
+                    Explore More <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                  </a>
                 </div>
               </div>
 

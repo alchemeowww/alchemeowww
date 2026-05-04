@@ -58,17 +58,8 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 font-play text-sm text-white/60 hover:text-white transition-colors"
           >
-            <i className="fa-brands fa-instagram text-base" />
+            {/* <i className="fa-brands fa-instagram text-base" /> */}
             @instagram.com/alchemeowww
-          </a>
-          <a
-            href="https://www.tiktok.com/@alchemeowww"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 font-play text-sm text-white/60 hover:text-white transition-colors"
-          >
-            <i className="fa-brands fa-tiktok text-base" />
-            @tiktok.com/@alchemeowww
           </a>
         </div>
       </div>

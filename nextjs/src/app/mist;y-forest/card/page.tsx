@@ -237,10 +237,10 @@ export default function MistyForestCardPage() {
             <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_back</span>
           </a>
           <button
-            className="cursor-pointer px-6 py-2 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition flex flex-row items-center gap-2"
+            className="cursor-pointer px-4 py-1.5 text-xs bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-full font-semibold shadow-md transition flex flex-row items-center gap-2"
             onClick={() => setOpenInstruction(true)}
           >
-            <span className="material-symbols-outlined">info</span> Instruction
+            Instruction <span className="material-symbols-outlined">info</span>
           </button>
         </div>
       </header>
@@ -278,7 +278,7 @@ export default function MistyForestCardPage() {
 
       {/* Main */}
       <div className="flex flex-col items-center justify-center gap-6 grow w-full">
-        <div className="font-young-serif text-2xl">
+        <div className="text-2xl font-rye">
           {cardType === 'trap' ? 'Trap Cards' : 'Alchemy Cards'}
         </div>
 
@@ -302,23 +302,23 @@ export default function MistyForestCardPage() {
         {/* Controls */}
         <div className="flex flex-col items-center">
           <button
-            className="cursor-pointer px-6 py-2 mt-10 bg-[#4F321E] hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition flex flex-row items-center gap-2"
+            className="cursor-pointer px-4 py-1.5 text-xs mt-10 bg-[#4F321E] hover:bg-[#4F321E]/80 text-white rounded-full font-semibold shadow-md transition flex flex-row items-center gap-2"
             onClick={() => toggleSpread()}
           >
-            <span className="material-symbols-outlined">shuffle</span> shuffle
+            shuffle <span className="material-symbols-outlined">shuffle</span>
           </button>
           <div className="flex flex-row gap-4">
             <button
-              className="cursor-pointer px-6 py-2 mt-10 bg-[#4F321E]/70 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition flex flex-row items-center gap-2"
+              className="cursor-pointer px-4 py-1.5 text-xs mt-10 bg-[#4F321E]/70 hover:bg-[#4F321E]/80 text-white rounded-full font-semibold shadow-md transition flex flex-row items-center gap-2"
               onClick={() => toggleSpread('trap')}
             >
-              <span className="material-symbols-outlined">bomb</span> Trap Card
+              Trap Card <span className="material-symbols-outlined">bomb</span>
             </button>
             <button
-              className="cursor-pointer px-6 py-2 mt-10 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition flex flex-row items-center gap-2"
+              className="cursor-pointer px-4 py-1.5 text-xs mt-10 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-full font-semibold shadow-md transition flex flex-row items-center gap-2"
               onClick={() => toggleSpread('alchemy')}
             >
-              <span className="material-symbols-outlined">wand_shine</span> Alchemy Card
+              Alchemy Card <span className="material-symbols-outlined">wand_shine</span>
             </button>
           </div>
         </div>

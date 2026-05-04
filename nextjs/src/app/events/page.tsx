@@ -149,7 +149,7 @@ export default function Events() {
                     </div>
                   )}
                   {/* Type tag */}
-                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
+                  <div className="absolute top-3 right-3 flex items-center bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
                     <span className="font-play text-[10px] uppercase tracking-widest text-brown/70">{event.type}</span>
                   </div>
                 </div>

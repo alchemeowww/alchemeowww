@@ -235,7 +235,7 @@ export default function MistyForestPage() {
 
         {/* Page 2: Characters */}
         {page === 2 && (
-          <div className="flex flex-col grow justify-center text-[#D0B68F]">
+          <div className="flex flex-col grow justify-center text-[#D0B68F] h-screen">
             <div className="flex flex-row overflow-x-auto h-2/3! snap-x snap-mandatory space-x-4 p-4 w-full grow items-center px-[10vw] scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {(['Koro', 'Sese', 'Rye'] as CharacterKey[]).map((key) => {
                 const c = characters[key];

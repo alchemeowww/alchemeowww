@@ -39,62 +39,95 @@ const events = [
 
 export default function Events() {
   return (
-    <div className="snap-start md:min-h-screen shrink-0 flex flex-col justify-center bg-light-brown" id="events">
-      <div className="lg:container lg:mx-auto flex flex-col md:flex-row justify-center items-center gap-12 w-full py-16 p-8 grow">
-        <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-12 w-full">
-          <div data-aos="flip-down" className="text-center w-full lg:w-1/3 lg:text-start">
-            <h1 className="font-rye text-5xl md:text-6xl font-bold mb-6 text-brown drop-shadow-lg self-start">
-              Events & Markets
+    <div className="snap-start md:min-h-screen shrink-0 flex flex-col justify-between bg-light-brown relative overflow-hidden" id="events">
+      {/* Ambient top fog */}
+      <div className="pointer-events-none absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-brown/8 to-transparent" />
+
+      <div className="lg:container lg:mx-auto flex flex-col gap-6 w-full py-16 px-8 grow">
+        {/* Section label */}
+        <div className="flex items-center gap-3" data-aos="fade-up" data-aos-once="true">
+          <div className="h-px flex-1 bg-brown/20" />
+          <span className="font-play text-xs tracking-widest uppercase text-brown/50">✦ Where to Find Us ✦</span>
+          <div className="h-px flex-1 bg-brown/20" />
+        </div>
+
+        <div className="flex flex-col lg:flex-row justify-center items-start gap-12 w-full">
+          {/* Left heading block */}
+          <div className="w-full lg:w-1/3 flex flex-col gap-4" data-aos="fade-up" data-aos-delay="100" data-aos-once="true">
+            <h1 className="font-rye text-5xl md:text-6xl font-bold text-brown drop-shadow-lg text-center lg:text-left">
+              Events &<br />Markets
             </h1>
+            <p className="font-play text-sm text-brown/60 text-center lg:text-left leading-relaxed">
+              Catch us at conventions and markets across Malaysia — come say hi, grab some merch, and journey into the Mist;y Forest!
+            </p>
           </div>
-          <section className="flex flex-col gap-8 w-full md:w-2/3 lg:pl-24">
-            <div className="flex flex-col w-full">
-              {events.map((event, index) => (
-                <div key={event.name} className="flex relative pb-8 sm:items-center w-full">
-                  <div data-aos="fade-down" className="h-full w-6 absolute inset-0 flex items-center justify-center">
-                    <div className="h-full w-1 bg-gray-200 pointer-events-none"></div>
+
+          {/* Right timeline */}
+          <section className="flex flex-col gap-3 w-full lg:w-2/3">
+            {events.map((event, index) => (
+              <div
+                key={event.name}
+                data-aos="fade-up"
+                data-aos-delay={String((index + 1) * 80)}
+                data-aos-once="true"
+                className={`flex items-center gap-5 rounded-2xl px-5 py-4 border transition-all
+                  ${event.upcoming
+                    ? 'bg-white/70 border-amber-200 shadow-md'
+                    : 'bg-white/30 border-brown/10 opacity-70'
+                  }`}
+              >
+                {/* Event logo */}
+                <div className={`flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center ${!event.upcoming ? 'grayscale' : ''}`}>
+                  <img src={event.image} alt={event.alt} className="w-full h-full object-cover" />
+                </div>
+
+                {/* Event info */}
+                <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="font-rye text-lg text-brown truncate">{event.name}</h2>
+                    {event.upcoming && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-300 shrink-0">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                        Upcoming
+                      </span>
+                    )}
                   </div>
-                  <div
-                    data-aos="fade-down"
-                    data-aos-delay={String((index + 1) * 100)}
-                    className={`flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center relative z-10 title-font font-medium text-sm ${
-                      event.upcoming ? "bg-amber-400 shadow-md shadow-amber-300 ring-2 ring-amber-200" : "bg-brown text-white"
-                    }`}
-                  >
-                    {event.upcoming && <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>}
+                  <div className="flex items-center gap-1 text-sm text-brown/70">
+                    <span className="material-symbols-outlined text-[16px]">calendar_month</span>
+                    <span className="font-play">{event.date}</span>
                   </div>
-                  <div data-aos="fade-down" data-aos-delay={String((index + 1) * 100)} 
-                    className="flex grow md:pl-12 w-full pl-6 items-start md:items-center flex-col md:flex-row gap-4 sm:gap-12">
-                    <div className={`flex-shrink-0 w-20 h-20 rounded-full inline-flex items-center justify-center overflow-hidden bg-white ${!event.upcoming ? "opacity-80" : ""}`}>
-                      <img src={event.image} alt={event.alt} />
-                    </div>
-                    <div className="flex flex-col gap-1 w-full">
-                      <div className="flex flex-col md:flex-row md:items-center items-start gap-2 mb-1">
-                        <h2 className={`font-rye font-medium title-font text-xl text-primary`}>{event.name}</h2>
-                        {event.upcoming && (
-                          <span className="inline-flex animate-pulse items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-300">
-                            Upcoming
-                          </span>
-                        )}
-                      </div>
-                      <h2 className={`font-medium title-font mb-1 flex flex-row items-start md:items-center gap-1`}>
-                        <span className="material-symbols-outlined">location_on</span>
-                        <a href={event.googleMapsLink} target="_blank" rel="noopener noreferrer">{event.venue}</a>
-                      </h2>
-                      <p className="leading-relaxed text-secondary">{event.date}</p>
-                    </div>
+                  <div className="flex items-center gap-1 text-sm text-brown/60">
+                    <span className="material-symbols-outlined text-[16px]">location_on</span>
+                    {event.googleMapsLink ? (
+                      <a href={event.googleMapsLink} target="_blank" rel="noopener noreferrer" className="font-play hover:text-primary transition-colors underline underline-offset-2 decoration-brown/30">
+                        {event.venue}
+                      </a>
+                    ) : (
+                      <span className="font-play">{event.venue}</span>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
-            <div className="flex" data-aos="fade-down" data-aos-anchor-placement="top-bottom" data-aos-delay="400">
-              <a className="flex min-w-[200px] cursor-pointer items-center justify-center rounded-full h-14 px-8 bg-[#8F3F1A] text-white text-lg font-bold shadow-lg hover:scale-105 hover:bg-[#4F321E] transition-all" href="/events">
-                More Events
+
+                {/* Arrow for upcoming */}
+                {event.upcoming && (
+                  <span className="material-symbols-outlined text-brown/30 shrink-0">chevron_right</span>
+                )}
+              </div>
+            ))}
+
+            <div className="mt-4 flex" data-aos="fade-up" data-aos-delay="450" data-aos-once="true">
+              <a
+                className="flex cursor-pointer items-center justify-center gap-2 rounded-full h-12 px-8 bg-[#4F321E] text-white font-play text-sm font-bold shadow-lg hover:scale-105 hover:bg-[#A3371D] transition-all"
+                href="/events"
+              >
+                All Events
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </a>
             </div>
           </section>
         </div>
       </div>
+
       <Footer />
     </div>
   );

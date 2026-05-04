@@ -1,19 +1,47 @@
 import Image from 'next/image';
 
+const sparkles = [
+  { top: '12%', left: '8%',  delay: '0s',    size: 'text-lg',  opacity: 'opacity-20' },
+  { top: '25%', left: '15%', delay: '0.6s',  size: 'text-sm',  opacity: 'opacity-15' },
+  { top: '60%', left: '5%',  delay: '1.2s',  size: 'text-xl',  opacity: 'opacity-10' },
+  { top: '75%', left: '20%', delay: '0.3s',  size: 'text-xs',  opacity: 'opacity-20' },
+  { top: '10%', left: '80%', delay: '0.9s',  size: 'text-xl',  opacity: 'opacity-15' },
+  { top: '30%', left: '88%', delay: '0.2s',  size: 'text-sm',  opacity: 'opacity-10' },
+  { top: '55%', left: '92%', delay: '1.5s',  size: 'text-lg',  opacity: 'opacity-20' },
+  { top: '80%', left: '75%', delay: '0.7s',  size: 'text-xs',  opacity: 'opacity-15' },
+  { top: '45%', left: '50%', delay: '1.8s',  size: 'text-xs',  opacity: 'opacity-10' },
+];
+
 export default function Hero() {
   return (
-    <div className="snap-start snap-always md:min-h-screen h-screen shrink-0">
+    <div className="snap-start snap-always md:min-h-screen h-screen shrink-0 relative overflow-hidden">
+      {/* Ambient radial gradient */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_40%,_var(--color-primary)/8%,_transparent_70%)]" />
+
+      {/* Floating sparkles */}
+      {sparkles.map((s, i) => (
+        <span
+          key={i}
+          className={`pointer-events-none select-none absolute text-primary ${s.size} ${s.opacity} animate-pulse`}
+          style={{ top: s.top, left: s.left, animationDelay: s.delay, animationDuration: '3s' }}
+          aria-hidden="true"
+        >✦</span>
+      ))}
+
       <div className="lg:container lg:mx-auto px-4 py-8 h-full flex flex-col md:flex-row justify-center items-center gap-8 relative">
-        <div className="shrink-0" data-aos="fade-up" data-aos-delay="300" data-aos-once="true">
+        {/* Logo with glow halo */}
+        <div className="shrink-0 relative" data-aos="fade-up" data-aos-delay="300" data-aos-once="true">
+          <div className="absolute inset-0 rounded-full bg-primary/15 blur-2xl scale-110 pointer-events-none" />
           <Image
             src="/images/alchemeowww-logo.webp"
             alt="Alchemeowww Logo"
             width={256}
             height={256}
-            className="h-32 md:h-48 lg:h-64 w-auto"
+            className="relative h-32 md:h-48 lg:h-64 w-auto"
             priority
           />
         </div>
+
         <div className="flex flex-col gap-6 justify-center items-center md:items-start">
           <h1 data-aos="fade-up" data-aos-delay="300" data-aos-once="true" className="font-rye text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-secondary drop-shadow-md text-center md:text-left">
             Welcome to <span className="text-primary">Alchemeowww</span>
@@ -21,8 +49,15 @@ export default function Hero() {
           <p data-aos="fade-up" data-aos-delay="400" data-aos-once="true" className="font-play text-lg md:text-2xl text-text-dark drop-shadow-md text-center md:text-left">
             Random Alchemist who always make fancy lil labbish
           </p>
+          {/* Social proof micro-line */}
+          <p data-aos="fade-up" data-aos-delay="500" data-aos-once="true" className="font-play text-xs tracking-widest uppercase text-secondary/40 text-center md:text-left">
+            Est. 2023 &nbsp;·&nbsp; Tabletop &nbsp;·&nbsp; Collectibles &nbsp;·&nbsp; NFC
+          </p>
         </div>
-        <div className="absolute bottom-18 md:bottom-8 flex flex-col items-center text-brown animate-bounce" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-delay="300" data-aos-once="true">
+
+        {/* Scroll cue */}
+        <div className="absolute bottom-18 md:bottom-8 flex flex-col items-center gap-1 text-brown animate-bounce" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-delay="300" data-aos-once="true">
+          <span className="font-play text-[10px] tracking-widest uppercase text-secondary/40 hidden md:block">Scroll</span>
           <a href="#projects" className="rounded-full bg-light-brown p-2 w-10 h-10 shadow-lg flex flex-col items-center">
             <div className="block md:hidden">
               <span className="material-symbols-outlined">swipe_down</span>

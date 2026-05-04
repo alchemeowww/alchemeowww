@@ -25,7 +25,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
   const inactiveClass = 'text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors';
 
   return (
-    <div className="w-full top-0 z-60 h-0" ref={projectsRef}>
+    <div className="font-play w-full top-0 z-60 h-0" ref={projectsRef}>
       <div className="px-4 flex justify-center relative">
         <header className={`z-10 flex w-full max-w-8xl min-h-14 items-center justify-between whitespace-nowrap px-4 md:px-10 py-8 ${showLogo ? 'border-b border-solid md:border-none border-secondary/10' : ''}`}>
           <div className="flex items-center gap-4 text-primary">
@@ -43,7 +43,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
             )}
           </div>
           <div className="hidden md:flex flex-1 justify-end gap-8 min-h-8">
-            <div className="flex items-center gap-9 font-rye text-3xl">
+            <div className="flex items-center gap-9 font-play text-3xl">
               <a className={activePage === 'home' ? activeClass : inactiveClass} href="/">Home</a>
               <a className={activePage === 'nfc' ? activeClass : inactiveClass} href="/nfc">NFC</a>
               <button
@@ -70,7 +70,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                 <span className="material-symbols-outlined text-secondary">close</span>
               </button>
             </div>
-            <div className="flex flex-col items-end justify-start gap-8 h-full px-6 font-rye text-3xl text-dark-brown">
+            <div className="flex flex-col items-end justify-start gap-8 h-full px-6 font-play text-3xl text-dark-brown">
               <a href="/" className={`${activePage === 'home' ? 'text-primary' : ''}`}>Home</a>
               <a href="/nfc" className={`${activePage === 'nfc' ? 'text-primary' : ''}`}>NFC</a>
               {/* Projects accordion for mobile */}
@@ -83,7 +83,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                   <span className="material-symbols-outlined transition-transform duration-200" style={{ fontSize: '30px', transform: isProjectsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
                 </button>
                 <div className={`overflow-hidden transition-all duration-300 ease-in-out w-full ${isProjectsOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <div className="mt-3 flex flex-col items-end gap-4 text-2xl pr-4 border-r-2 border-primary/30">
+                  <div className="mt-3 flex flex-col items-end gap-4 text-2xl pr-4 border-r border-primary/30">
                     <button
                       className={`transition-colors ${selectedProject === 'misty' ? 'text-primary' : 'text-dark-brown/60'}`}
                       onClick={() => setSelectedProject('misty')}
@@ -128,7 +128,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
         <div className={`hidden md:block z-5 w-full absolute insert-0 pt-21 backdrop-blur-lg md:shadow-md
             transform transition-transform duration-300 ease-in-out ${isProjectsOpen ? 'translate-y-0' : '-translate-y-full'}`} ref={projectsRef}>
           <div className="max-w-4/5 mx-auto px-10 py-6 gap-8 flex flex-row items-stretch">
-            <div className="selection flex flex-col gap-4 font-rye text-dark-brown/60 transition-colors text-lg pr-8 py-1 border-r-2 border-primary/30">
+            <div className="selection flex flex-col gap-4 font-play text-dark-brown/60 transition-colors text-lg pr-8 py-1 border-r border-primary/30">
               <a
                 href="#"
                 className={`hover:text-primary transition-colors ${selectedProject === 'misty' ? 'text-primary font-bold' : ''}`}

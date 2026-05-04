@@ -11,6 +11,7 @@ const events = [
     location: 'The Mines - MIECC',
     type: 'Anime Convention',
     image: '/images/events/booths/amg2026.webp',
+    upcoming: true,
   },
   {
     date: '13 - 14 Jun 2026',
@@ -18,6 +19,7 @@ const events = [
     location: 'Hextar World Empire City',
     type: 'Art Market',
     image: '/images/events/booths/CAFKLX.webp',
+    upcoming: true,
   },
   {
     date: '25 - 26 Apr 2026',
@@ -25,6 +27,7 @@ const events = [
     location: 'Lalaport Bukit Bintang City Centre, Kuala Lumpur',
     type: 'Anime Convention',
     image: '/images/events/booths/2604-CosmicSpring.webp',
+    upcoming: false,
   },
   {
     date: 'Dec 2025',
@@ -32,6 +35,7 @@ const events = [
     location: 'Kuala Lumpur Convention Center',
     type: 'Anime Convention',
     image: '/images/events/booths/2512-CF.webp',
+    upcoming: false,
   },
   {
     date: 'Sep 2025',
@@ -39,6 +43,7 @@ const events = [
     location: 'Sunway Pyramid Convention Center',
     type: 'Anime Convention',
     image: '/images/events/booths/202509-Cosmic.webp',
+    upcoming: false,
   },
   {
     date: 'Aug 2025',
@@ -46,6 +51,7 @@ const events = [
     location: 'The Mines - MIECC',
     type: 'Anime Convention',
     image: '/images/events/booths/202508-AMG.webp',
+    upcoming: false,
   },
   {
     date: 'Jul 2025',
@@ -53,6 +59,7 @@ const events = [
     location: 'Tokyo Big Sight, Japan',
     type: 'Expo',
     image: '/images/events/booths/2507-DesignFesta.webp',
+    upcoming: false,
   },
   {
     date: 'May 2025',
@@ -60,6 +67,7 @@ const events = [
     location: 'Fahrenheit88',
     type: 'Art Market',
     image: '/images/events/booths/2505-CAFKL9.webp',
+    upcoming: false,
   },
   {
     date: 'May 2025',
@@ -67,6 +75,7 @@ const events = [
     location: 'Pavilion Bukit Jalil Exhibition Centre',
     type: 'Anime Convention',
     image: '/images/events/booths/2505-Cosworld2U.webp',
+    upcoming: false,
   },
   {
     date: 'Feb 2025',
@@ -74,6 +83,7 @@ const events = [
     location: 'The Mines - MIECC',
     type: 'Anime Convention',
     image: '/images/events/booths/2502-NijigenExpo.webp',
+    upcoming: false,
   },
 ];
 
@@ -92,104 +102,114 @@ export default function Events() {
     <>
       <Header activePage="events" />
 
-      <div className="relative flex grow w-full flex-col overflow-x-hidden mt-[95px]">
-        <div className="layout-container flex h-full grow flex-col">
-          <div className="flex flex-1 justify-center py-12 px-4 sm:px-8 lg:px-40">
-            <div className="layout-content-container flex flex-col w-full max-w-[1024px] flex-1 gap-8">
+      <div className="flex grow flex-col bg-cream mt-24">
 
-              {/* Header */}
-              <div className="flex flex-col items-center text-center gap-2">
-                <h2 className="font-rye text-3xl md:text-4xl font-extrabold leading-tight tracking-tight text-primary dark:text-[#cc6a3d]">
-                  Upcoming Events &amp; Markets
-                </h2>
-                <p className="text-secondary dark:text-[#d0c0b8] text-base md:text-lg font-normal leading-relaxed max-w-2xl">
-                  A curated collection of fairs, gallery shows, and pop-up events where my work has been featured.
-                  Explore the journey through the years and upcoming opportunities.
-                </p>
-              </div>
-
-              {/* Events Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
-                {paginatedEvents.map((event) => (
-                  <article
-                    key={event.title}
-                    className="group flex flex-col h-full bg-white/30 dark:bg-card-dark rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-primary/20 dark:border-[#3a2d28]"
-                  >
-                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-200">
-                      <img
-                        src={event.image}
-                        alt={`Event image for ${event.title}`}
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute top-3 left-3 bg-white/95 dark:bg-[#201612]/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-sm">
-                        <p className="text-primary font-bold text-xs uppercase tracking-wider">{event.date}</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-col flex-1 p-5 gap-3">
-                      <div className="flex flex-col gap-1">
-                        <h3 className="text-xl font-bold text-[#1a120f] dark:text-white group-hover:text-primary transition-colors">
-                          {event.title}
-                        </h3>
-                        <div className="flex items-center gap-1.5 text-secondary dark:text-[#a09088]">
-                          <span className="material-symbols-outlined text-[18px]">location_on</span>
-                          <span className="text-sm font-medium">{event.location}</span>
-                        </div>
-                      </div>
-                      <div className="mt-auto pt-3 border-t border-gray-100 dark:border-[#3a2d28] flex justify-between items-center">
-                        <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase">
-                          {event.type}
-                        </span>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-center p-4 mt-4">
-                  <nav aria-label="Pagination" className="flex items-center gap-1">
-                    <button
-                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                      disabled={currentPage === 1}
-                      className="group flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-[#3a2d28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <span className="material-symbols-outlined text-[#1a120f] dark:text-white group-hover:text-primary" style={{ fontSize: 20 }}>
-                        chevron_left
-                      </span>
-                    </button>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={
-                          page === currentPage
-                            ? 'flex size-10 items-center justify-center text-sm font-bold leading-normal text-white rounded-full bg-primary shadow-md'
-                            : 'flex size-10 items-center justify-center text-sm font-normal leading-normal text-secondary dark:text-[#d0c0b8] rounded-full hover:bg-gray-100 dark:hover:bg-[#3a2d28] transition-colors'
-                        }
-                      >
-                        {page}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                      disabled={currentPage === totalPages}
-                      className="group flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-[#3a2d28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <span className="material-symbols-outlined text-[#1a120f] dark:text-white group-hover:text-primary" style={{ fontSize: 20 }}>
-                        chevron_right
-                      </span>
-                    </button>
-                  </nav>
-                </div>
-              )}
-
-            </div>
+        {/* Page header */}
+        <div className="relative overflow-hidden bg-light-brown">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_70%_50%,_var(--color-primary)/8%,_transparent_70%)]" />
+          <div className="lg:container lg:mx-auto px-8 py-16 flex flex-col gap-4">
+            <span className="font-play text-xs tracking-widest uppercase text-brown/50">✦ Where to Find Us ✦</span>
+            <h1 className="font-rye text-4xl md:text-5xl text-brown drop-shadow">
+              Events &amp; Markets
+            </h1>
+            <p className="font-play text-base text-brown/70 leading-relaxed max-w-xl">
+              A curated collection of conventions, art fairs, and pop-up markets where Alchemeowww has been featured. Explore the journey through the years and upcoming opportunities.
+            </p>
           </div>
         </div>
+
+        {/* Events grid */}
+        <div className="lg:container lg:mx-auto px-8 py-12 flex flex-col gap-8">
+          {/* Section label */}
+          <div className="flex items-center gap-3">
+            <span className="font-play text-xs tracking-widest uppercase text-secondary/40">✦ All Events ✦</span>
+            <div className="h-px flex-1 bg-secondary/10" />
+            <span className="font-play text-xs text-secondary/30">{events.length} events</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {paginatedEvents.map((event) => (
+              <article
+                key={event.title}
+                className={`group flex flex-col rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border
+                  ${event.upcoming ? 'bg-white border-amber-200' : 'bg-white/60 border-brown/10'}`}
+              >
+                {/* Image */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-light-brown">
+                  <img
+                    src={event.image}
+                    alt={`${event.title} booth`}
+                    className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-105`}
+                  />
+                  {/* Upcoming badge */}
+                  {event.upcoming && (
+                    <div className="absolute top-3 left-3 flex items-center gap-1 bg-amber-100 border border-amber-300 text-amber-700 px-2.5 py-1 rounded-full text-xs font-semibold font-play shadow-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                      Upcoming
+                    </div>
+                  )}
+                  {/* Type tag */}
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm">
+                    <span className="font-play text-[10px] uppercase tracking-widest text-brown/70">{event.type}</span>
+                  </div>
+                </div>
+
+                {/* Info */}
+                <div className="flex flex-col gap-2 p-4">
+                  <h3 className={`font-rye text-lg leading-snug group-hover:text-primary transition-colors ${event.upcoming ? 'text-brown' : 'text-brown/60'}`}>
+                    {event.title}
+                  </h3>
+                  <div className="flex items-start gap-1 text-brown/60">
+                    <span className="material-symbols-outlined text-[15px] mt-0.5 shrink-0">location_on</span>
+                    <span className="font-play text-xs leading-relaxed">{event.location}</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-brown/50">
+                    <span className="material-symbols-outlined text-[15px] shrink-0">calendar_month</span>
+                    <span className="font-play text-xs">{event.date}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-1 pt-4">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-light-brown transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <span className="material-symbols-outlined text-brown" style={{ fontSize: 20 }}>chevron_left</span>
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`flex h-9 w-9 items-center justify-center rounded-full font-play text-sm transition-colors
+                    ${page === currentPage
+                      ? 'bg-[#4F321E] text-white font-bold shadow-md'
+                      : 'text-brown/60 hover:bg-light-brown'
+                    }`}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-light-brown transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <span className="material-symbols-outlined text-brown" style={{ fontSize: 20 }}>chevron_right</span>
+              </button>
+            </div>
+          )}
+        </div>
+
       </div>
 
       <Footer />
     </>
   );
 }
+

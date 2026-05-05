@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
@@ -91,6 +91,12 @@ const ITEMS_PER_PAGE = 6;
 
 export default function Events() {
   const [currentPage, setCurrentPage] = useState(1);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const changePage = (page: number) => {
+    setCurrentPage(page);
+    gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const totalPages = Math.ceil(events.length / ITEMS_PER_PAGE);
   const paginatedEvents = events.slice(
@@ -119,7 +125,7 @@ export default function Events() {
         </div>
 
         {/* Events grid */}
-        <div className="lg:container lg:mx-auto px-8 py-12 flex flex-col gap-8">
+          <div ref={gridRef} className="lg:container lg:mx-auto px-8 py-12 flex flex-col gap-8">
           {/* Section label */}
           <div className="flex items-center gap-3">
             <span className="font-play text-xs tracking-widest uppercase text-secondary/40">✦ All Events ✦</span>
@@ -176,7 +182,7 @@ export default function Events() {
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-1 pt-4">
               <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                onClick={() => changePage(Math.max(currentPage - 1, 1))}
                 disabled={currentPage === 1}
                 className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-light-brown transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
@@ -185,7 +191,7 @@ export default function Events() {
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
                   key={page}
-                  onClick={() => setCurrentPage(page)}
+                  onClick={() => changePage(page)}
                   className={`flex h-9 w-9 items-center justify-center rounded-full font-play text-sm transition-colors
                     ${page === currentPage
                       ? 'bg-[#4F321E] text-white font-bold shadow-md'
@@ -196,7 +202,7 @@ export default function Events() {
                 </button>
               ))}
               <button
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                onClick={() => changePage(Math.min(currentPage + 1, totalPages))}
                 disabled={currentPage === totalPages}
                 className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-light-brown transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >

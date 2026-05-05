@@ -100,7 +100,7 @@ export default function About() {
                   Yes, the &quot;Che&quot; is pronounced like Chemistry&apos;s &quot;Che&quot; — not Cherry&apos;s &quot;Che&quot;,
                   or &quot;奧客喵&quot; in Hokkien.
                 </p>
-                <p className="text-2xl">ฅ/ᐠ. ̫ .ᐟ\ฅ</p>
+                <p className="font-sans text-2xl">ฅ/ᐠ. ̫ .ᐟ\ฅ</p>
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function About() {
               As you know time flies, we do not want to live without leaving anything. I ain&apos;t good in speech,
               also bad in writing — but thanks God I still have my chubby fingers to make something else.
               Every baby I made are with my full love. Hope they are touching your hearts.
-              <br /><br />ฅ/ᐠ. ̫ .ᐟ\ฅ
+              <br /><br /><span className="font-sans">ฅ/ᐠ. ̫ .ᐟ\ฅ</span>
             </p>
             <a
               href="https://ig.me/m/alchemeowww"

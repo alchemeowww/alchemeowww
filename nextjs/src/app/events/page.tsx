@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
@@ -93,9 +93,12 @@ export default function Events() {
   const [currentPage, setCurrentPage] = useState(1);
   const gridRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [currentPage]);
+
   const changePage = (page: number) => {
     setCurrentPage(page);
-    gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const totalPages = Math.ceil(events.length / ITEMS_PER_PAGE);

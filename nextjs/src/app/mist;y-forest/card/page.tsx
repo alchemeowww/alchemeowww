@@ -2,6 +2,17 @@
 
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 
+const SPARKLES = [
+  { top: '12%', left: '7%', delay: '0s' },
+  { top: '22%', right: '6%', delay: '0.6s' },
+  { top: '55%', left: '3%', delay: '1.1s' },
+  { top: '68%', right: '9%', delay: '1.7s' },
+  { top: '82%', left: '14%', delay: '0.4s' },
+  { top: '40%', right: '4%', delay: '1.4s' },
+  { top: '8%', left: '45%', delay: '0.9s' },
+  { top: '90%', right: '18%', delay: '0.2s' },
+];
+
 const CARD_DESCRIPTIONS = {
   trap: [
     'Fall into trap. Skip 1 round.',
@@ -59,7 +70,7 @@ function getCardStyleStr(
     const usedScale = Math.min(maxW / rawCardW, maxH / rawCardH);
     const finalW = Math.round(rawCardW * usedScale);
     const finalH = Math.round(rawCardH * usedScale);
-    return `position:fixed;top:50%;left:50%;width:${finalW}px;height:${finalH}px;transform:translate(-50%,-50%);z-index:100;transition:all 0.28s ease-in-out;border:0px;box-shadow:0 20px 40px rgba(0,0,0,0.3)`;
+    return `position:fixed;top:50%;left:50%;width:${finalW}px;height:${finalH}px;transform:translate(-50%,-50%);z-index:100;transition:all 0.28s ease-in-out;border:0px;`;
   }
 
   if (!spread) {
@@ -124,24 +135,29 @@ function CardItem({ card, index, total, activeCard, spread, cardType, deckRef, o
     el.style.opacity = visible ? '1' : '0';
   };
 
+  const isTrap = cardType === 'trap';
+  const borderClass = isTrap
+    ? 'border-red-700/50'
+    : 'border-amber-500/50';
+
   return (
     <div
       ref={ref}
-      className={`card absolute bottom-0 rounded-xl shadow-lg border border-gray-200 smooth-transform cursor-pointer${isActive ? ' flipped' : ''}`}
+      className={`card absolute bottom-0 rounded-xl smooth-transform cursor-pointer${isActive ? ' flipped' : ''}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => onToggle(card.id)}
     >
       <div className="card-inner w-full h-full relative">
-        {/* Front */}
-        <div className="card-face p-1 gap-2 absolute inset-0 bg-[#D0B68F] rounded-xl flex flex-col items-center justify-center text-gray-700 font-semibold">
+        {/* Front (face down) */}
+        <div className={`border ${borderClass} card-face p-1 gap-2 absolute inset-0 bg-[#D0B68F] rounded-xl flex flex-col items-center justify-center text-gray-700 font-semibold overflow-hidden`}>
           <img src="/images/mistiy-forest/images/MIST;Y FOREST.png" alt="MIST;Y FOREST" />
           <div className="text-center card-text px-2 font-young-serif">
-            {cardType === 'trap' ? 'Trap Card' : 'Alchemy Card'}
+            {isTrap ? 'Trap Card' : 'Alchemy Card'}
           </div>
         </div>
-        {/* Back */}
-        <div className="p-1 card-face card-back absolute inset-0 bg-[#f9e4c6] rounded-xl flex items-center justify-center overflow-hidden">
+        {/* Back (revealed) */}
+        <div className={`p-1 drop-shadow-2xl card-face card-back absolute inset-0 bg-light-cream rounded-xl flex items-center justify-center overflow-hidden`}>
           <div
             className="flex flex-col items-center justify-center w-full h-full bg-center bg-no-repeat bg-cover"
             style={{ backgroundImage: "url('/images/mistiy-forest/images/Frame 4.png')" }}
@@ -167,10 +183,22 @@ export default function MistyForestCardPage() {
   );
   const [cardType, setCardType] = useState<CardType>('trap');
   const [openInstruction, setOpenInstruction] = useState(false);
+  const [instructionVisible, setInstructionVisible] = useState(false);
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [spread, setSpread] = useState(false);
   const [animating, setAnimating] = useState(false);
+  const [labelVisible, setLabelVisible] = useState(true);
+  const [displayedCardType, setDisplayedCardType] = useState<CardType>('trap');
   const deckRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setLabelVisible(false);
+    const t = setTimeout(() => {
+      setDisplayedCardType(cardType);
+      setLabelVisible(true);
+    }, 150);
+    return () => clearTimeout(t);
+  }, [cardType]);
 
   // Prevent body scroll while on this page
   useEffect(() => {
@@ -199,6 +227,16 @@ export default function MistyForestCardPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const openInstructionModal = () => {
+    setOpenInstruction(true);
+    requestAnimationFrame(() => requestAnimationFrame(() => setInstructionVisible(true)));
+  };
+
+  const closeInstructionModal = () => {
+    setInstructionVisible(false);
+    setTimeout(() => setOpenInstruction(false), 300);
+  };
+
   const toggleCard = (id: number) => {
     if (animating) return;
     setActiveCard((prev) => (prev === id ? null : id));
@@ -225,64 +263,111 @@ export default function MistyForestCardPage() {
     setAnimating(false);
   };
 
+  const typeConfig = {
+    trap: {
+      label: 'Trap Cards',
+      textColor: 'text-[#A3371D]',
+      activeTab: 'bg-[#A3371D]/20 border border-[#A3371D]/40 text-[#A3371D] shadow-sm',
+      inactiveTab: 'text-brown/40 hover:text-[#A3371D] hover:bg-[#A3371D]/10',
+    },
+    alchemy: {
+      label: 'Alchemy Cards',
+      textColor: 'text-dark-brown',
+      activeTab: 'bg-[#4F321E]/20 border border-[#4F321E]/40 text-dark-brown shadow-sm',
+      inactiveTab: 'text-brown/40 hover:text-dark-brown hover:bg-[#4F321E]/10',
+    },
+  };
+  const cfg = typeConfig[cardType];
+  const displayedCfg = typeConfig[displayedCardType];
+
   return (
-    <div className="font-play w-screen h-screen bg-gradient-to-br from-[#f9e4c6] to-[#D0B68F]/50 flex flex-col items-start gap-6 overflow-hidden">
-      {/* Header */}
-      <header className="sticky top-0 w-full text-white py-3 px-3 z-50">
+    <div className="font-play w-screen h-screen flex flex-col items-start overflow-hidden relative bg-cream">
+
+      {/* Atmospheric mist overlay */}
+      <div
+        className="absolute inset-0 opacity-5 bg-center bg-cover bg-no-repeat pointer-events-none"
+        style={{ backgroundImage: "url('/images/mistiy-forest/images/Miwusenlin.gif')" }}
+      />
+      {/* Radial depth glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 60%, rgba(199,186,168,0.5) 0%, transparent 70%)' }}
+      />
+
+      {/* Floating sparkles */}
+      {SPARKLES.map((s, i) => (
+        <span
+          key={i}
+          className="absolute text-brown/20 animate-pulse pointer-events-none select-none text-base"
+          style={{ top: s.top, left: (s as { left?: string }).left, right: (s as { right?: string }).right, animationDelay: s.delay }}
+        >✦</span>
+      ))}
+
+      {/* ── Header HUD ── */}
+      <header className="relative w-full py-3 px-4 z-50 border-b border-brown/10 bg-cream/80 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <a
             href="/mist;y-forest"
-            className="w-10 h-10 bg-[#4F321E] text-[#D0B68F] rounded-full flex items-center justify-center hover:bg-[#6A442A] shadow-xl cursor-pointer transform transition-all duration-100 ease-linear hover:scale-110"
+            className="w-9 h-9 bg-light-brown/40 hover:bg-light-brown border border-brown/20 text-dark-brown rounded-full flex items-center justify-center cursor-pointer transition"
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_back</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_back</span>
           </a>
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="font-rye text-brown/50 text-[10px] tracking-[0.2em] uppercase">Mist;y Forest</span>
+            <span
+              className={`font-rye text-base leading-tight transition-opacity duration-150 ${displayedCfg.textColor} ${labelVisible ? 'opacity-100' : 'opacity-0'}`}
+            >{displayedCfg.label}</span>
+          </div>
           <button
-            className="cursor-pointer px-4 py-1.5 text-xs bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-full font-semibold shadow-md transition flex flex-row items-center gap-2"
-            onClick={() => setOpenInstruction(true)}
+            onClick={() => openInstructionModal()}
+            className="w-9 h-9 bg-light-brown/40 hover:bg-light-brown border border-brown/20 text-dark-brown rounded-full flex items-center justify-center cursor-pointer transition"
           >
-            Instruction <span className="material-symbols-outlined">info</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>menu_book</span>
           </button>
         </div>
       </header>
 
-      {/* Instruction Modal */}
+      {/* ── Instruction Modal ── */}
       {openInstruction && (
-        <div className="fixed inset-0 backdrop-blur-lg flex items-center justify-center z-50">
-          <div className="w-full h-full md:w-1/2 flex flex-col items-center font-play overflow-hidden">
-            <div className="flex flex-col items-center justify-center w-full h-full gap-4">
-              <div className="w-full max-h-[80%] flex items-center justify-center">
-                <img
-                  className="max-h-full"
-                  src="/images/mistiy-forest/images/GameInstruction.png"
-                  alt="Game Instruction"
-                />
-              </div>
-              <button
-                className="cursor-pointer px-6 py-2 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-lg font-semibold shadow-md transition flex flex-row items-center gap-2"
-                onClick={() => setOpenInstruction(false)}
-              >
-                close
-              </button>
+        <div
+          className={`fixed inset-0 backdrop-blur-md flex items-center justify-center z-101 p-4 transition-[opacity,background-color] duration-300 ${
+            instructionVisible ? 'opacity-100' : 'bg-brown/0 opacity-0'
+          }`}
+          onClick={closeInstructionModal}
+        >
+          <div
+            className={`relative w-full max-w-lg flex flex-col items-center gap-4 bg-cream border border-brown/15 rounded-2xl p-6 shadow-2xl transition-all duration-300 ${
+              instructionVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-6'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-brown" style={{ fontSize: '20px' }}>menu_book</span>
+              <h3 className="font-rye text-dark-brown text-lg">Game Instructions</h3>
             </div>
+            <div className="w-full rounded-xl overflow-hidden border border-brown/15">
+              <img className="w-full" src="/images/mistiy-forest/images/GameInstruction.webp" alt="Game Instruction" />
+            </div>
+            <button
+              onClick={closeInstructionModal}
+              className="px-7 py-2 bg-[#4F321E] hover:bg-accent text-cream rounded-full text-sm transition cursor-pointer"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
 
-      {/* Backdrop for active card */}
+      {/* ── Active card backdrop ── */}
       {activeCard !== null && (
         <div
-          className="fixed inset-0 bg-black/10 backdrop-blur-sm z-40"
+          className="fixed inset-0 backdrop-blur-sm z-40"
           onClick={() => setActiveCard(null)}
         />
       )}
 
-      {/* Main */}
-      <div className="flex flex-col items-center justify-center gap-6 grow w-full">
-        <div className="text-2xl font-rye">
-          {cardType === 'trap' ? 'Trap Cards' : 'Alchemy Cards'}
-        </div>
-
-        {/* Deck */}
+      {/* ── Card Deck Area ── */}
+      <div className="flex flex-col items-center justify-center gap-4 grow w-full relative">
         <div ref={deckRef} className="relative w-full card-div max-h-full flex items-end justify-center">
           {cards.map((card, index) => (
             <CardItem
@@ -298,30 +383,38 @@ export default function MistyForestCardPage() {
             />
           ))}
         </div>
+      </div>
 
-        {/* Controls */}
-        <div className="flex flex-col items-center">
+      {/* ── Bottom HUD Controls ── */}
+      <div className={`relative w-full py-4 px-4 z-50 border-t border-brown/10 bg-cream/80 backdrop-blur-sm flex flex-col items-center gap-3 transition-transform duration-300 ease-in-out ${instructionVisible ? 'translate-y-full' : 'translate-y-0'}`}>
+        {/* Card type switcher */}
+        <div className="flex gap-1 p-1 bg-light-brown/30 border border-brown/15 rounded-full">
           <button
-            className="cursor-pointer px-4 py-1.5 text-xs mt-10 bg-[#4F321E] hover:bg-[#4F321E]/80 text-white rounded-full font-semibold shadow-md transition flex flex-row items-center gap-2"
-            onClick={() => toggleSpread()}
+            disabled={animating}
+            onClick={() => toggleSpread('trap')}
+            className={`px-4 py-1.5 text-xs rounded-full font-semibold transition flex items-center gap-1.5 cursor-pointer disabled:cursor-default ${cardType === 'trap' ? typeConfig.trap.activeTab : typeConfig.trap.inactiveTab}`}
           >
-            shuffle <span className="material-symbols-outlined">shuffle</span>
+            <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>warning</span>
+            Trap
           </button>
-          <div className="flex flex-row gap-4">
-            <button
-              className="cursor-pointer px-4 py-1.5 text-xs mt-10 bg-[#4F321E]/70 hover:bg-[#4F321E]/80 text-white rounded-full font-semibold shadow-md transition flex flex-row items-center gap-2"
-              onClick={() => toggleSpread('trap')}
-            >
-              Trap Card <span className="material-symbols-outlined">bomb</span>
-            </button>
-            <button
-              className="cursor-pointer px-4 py-1.5 text-xs mt-10 bg-[#4F321E]/50 hover:bg-[#4F321E]/80 text-white rounded-full font-semibold shadow-md transition flex flex-row items-center gap-2"
-              onClick={() => toggleSpread('alchemy')}
-            >
-              Alchemy Card <span className="material-symbols-outlined">wand_shine</span>
-            </button>
-          </div>
+          <button
+            disabled={animating}
+            onClick={() => toggleSpread('alchemy')}
+            className={`px-4 py-1.5 text-xs rounded-full font-semibold transition flex items-center gap-1.5 cursor-pointer disabled:cursor-default ${cardType === 'alchemy' ? typeConfig.alchemy.activeTab : typeConfig.alchemy.inactiveTab}`}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>wand_shine</span>
+            Alchemy
+          </button>
         </div>
+        {/* Shuffle button */}
+        <button
+          disabled={animating}
+          onClick={() => toggleSpread()}
+          className="px-7 py-2 bg-[#4F321E] hover:bg-accent disabled:opacity-30 text-cream rounded-full text-sm font-semibold shadow-md transition flex items-center gap-2 cursor-pointer disabled:cursor-default"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>shuffle</span>
+          Shuffle Deck
+        </button>
       </div>
     </div>
   );

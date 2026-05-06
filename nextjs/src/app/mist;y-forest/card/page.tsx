@@ -97,9 +97,10 @@ interface CardItemProps {
   cardType: CardType;
   deckRef: React.RefObject<HTMLDivElement | null>;
   onToggle: (id: number) => void;
+  lastCard: { type: CardType; id: number } | null;
 }
 
-function CardItem({ card, index, total, activeCard, spread, cardType, deckRef, onToggle }: CardItemProps) {
+function CardItem({ card, index, total, activeCard, spread, cardType, deckRef, onToggle, lastCard }: CardItemProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const isActive = activeCard === card.id;
@@ -140,6 +141,11 @@ function CardItem({ card, index, total, activeCard, spread, cardType, deckRef, o
     ? 'border-red-700/50'
     : 'border-amber-500/50';
 
+  const isKarmaCard = isTrap && card.id === 5;
+  const karmaTarget = isKarmaCard && lastCard
+    ? CARD_DESCRIPTIONS[lastCard.type][lastCard.id]
+    : null;
+
   return (
     <div
       ref={ref}
@@ -162,8 +168,21 @@ function CardItem({ card, index, total, activeCard, spread, cardType, deckRef, o
             className="flex flex-col items-center justify-center w-full h-full bg-center bg-no-repeat bg-cover"
             style={{ backgroundImage: "url('/images/mistiy-forest/images/Frame 4.png')" }}
           >
-            <div className="card-description-text text-black font-young-serif grow h-full w-full pt-14 px-8 pb-4 text-center flex flex-col justify-center">
-              <div>{CARD_DESCRIPTIONS[cardType][card.id] ?? 'Coming Soon'}</div>
+            <div className="card-description-text text-black gap-1 font-young-serif grow h-full w-full pt-14 px-8 pb-4 text-center flex flex-col justify-center">
+              {isKarmaCard && karmaTarget ? (
+                <>
+                  <div className="text-[0.7em]">{CARD_DESCRIPTIONS[cardType][card.id]}</div>
+                  <div className="text-[0.6em] opacity-60">Repeat last card:</div>
+                  <div>{karmaTarget}</div>
+                </>
+              ) : isKarmaCard ? (
+                <>
+                  <div>{CARD_DESCRIPTIONS[cardType][card.id]}</div>
+                  <div className="text-[0.6em] opacity-50 mt-1">(No card opened yet)</div>
+                </>
+              ) : (
+                <div>{CARD_DESCRIPTIONS[cardType][card.id]}</div>
+              )}
             </div>
             <img
               className="koro-size self-end mr-2 mb-2 md:mr-4 md:mb-4"
@@ -190,6 +209,7 @@ export default function MistyForestCardPage() {
   const [labelVisible, setLabelVisible] = useState(true);
   const [displayedCardType, setDisplayedCardType] = useState<CardType>('trap');
   const deckRef = useRef<HTMLDivElement>(null);
+  const lastCard = useRef<{ type: CardType; id: number } | null>(null);
 
   useEffect(() => {
     setLabelVisible(false);
@@ -239,7 +259,14 @@ export default function MistyForestCardPage() {
 
   const toggleCard = (id: number) => {
     if (animating) return;
-    setActiveCard((prev) => (prev === id ? null : id));
+    setActiveCard((prev) => {
+      // When opening a card (not closing), save it as lastCard — but skip the Karma card itself
+      if (prev !== id) {
+        const isKarma = cardType === 'trap' && id === 5;
+        if (!isKarma) lastCard.current = { type: cardType, id };
+      }
+      return prev === id ? null : id;
+    });
   };
 
   const toggleSpread = async (newType?: CardType) => {
@@ -380,6 +407,7 @@ export default function MistyForestCardPage() {
               cardType={cardType}
               deckRef={deckRef}
               onToggle={toggleCard}
+              lastCard={lastCard.current}
             />
           ))}
         </div>

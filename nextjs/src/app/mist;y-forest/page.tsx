@@ -85,7 +85,7 @@ export default function MistyForestPage() {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowButton(true), 2000);
+    const timer = setTimeout(() => setShowButton(true), 1000);
     return () => clearTimeout(timer);
   }, []);
 

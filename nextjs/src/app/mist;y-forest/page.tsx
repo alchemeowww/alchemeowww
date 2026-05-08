@@ -144,7 +144,7 @@ export default function MistyForestPage() {
       <div className="w-full bg-cream flex flex-col">
 
         {/* ── Hero: Parallax Landing ── */}
-        <div className="relative w-full h-screen bg-[#D0B68F]/60 overflow-hidden flex flex-col">
+        <div className="relative w-full h-dvh bg-[#D0B68F]/60 overflow-hidden flex flex-col">
           {/* Parallax art layers */}
           <div className="relative h-2/3 sm:h-4/5 bg-size-[auto_450px] sm:bg-size-[auto_650px]">
             <div className="parallax absolute w-full h-full bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/mistiy-forest/images/MIST;Y.png')", zIndex: 30 }} />

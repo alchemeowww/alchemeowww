@@ -308,7 +308,7 @@ export default function MistyForestCardPage() {
   const displayedCfg = typeConfig[displayedCardType];
 
   return (
-    <div className="font-play w-screen h-screen flex flex-col items-start overflow-hidden relative bg-cream">
+    <div className="font-play w-screen h-dvh flex flex-col items-start overflow-hidden relative bg-cream">
 
       {/* Atmospheric mist overlay */}
       <div

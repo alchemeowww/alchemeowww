@@ -1,6 +1,6 @@
 export default function MistyForest() {
   return (
-    <div className="snap-start snap-always md:min-h-screen shrink-0 bg-light-brown flex flex-col justify-center overflow-hidden relative" id="projects">
+    <div className="snap-start snap-always md:min-h-dvh shrink-0 bg-light-brown flex flex-col justify-center overflow-hidden relative" id="projects">
       {/* Atmospheric bottom fog */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-brown/10 to-transparent" />
 

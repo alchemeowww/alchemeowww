@@ -34,7 +34,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
     <div className={`font-play w-full ${showLogo ? 'sticky top-0' : ''} z-60 h-0`} ref={projectsRef}>
       <div className="flex justify-center">
         {/* ── Main bar ── */}
-        <header className={`w-full ${showLogo ? 'bg-cream/85 backdrop-blur-md border-b border-brown/10 shadow-sm' : ''}`}>
+        <header className={`w-full ${showLogo ? 'bg-cream/45 backdrop-blur-lg border-b border-brown/10 shadow-sm' : ''}`}>
           <div className="lg:container lg:mx-auto px-4 md:px-8 flex items-center justify-between h-14 gap-8">
 
             {/* Logo */}
@@ -93,7 +93,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
 
         {/* ── Projects dropdown (desktop) ── */}
         <div
-          className={`hidden md:block absolute w-full top-14 bg-cream/95 backdrop-blur-md border-b border-t border-brown/10 shadow-md transition-all duration-300 ease-in-out z-50 ${isProjectsOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+          className={`hidden md:block absolute w-full top-14 bg-cream/45 backdrop-blur-lg border-b border-t border-brown/10 shadow-md transition-all duration-300 ease-in-out z-50 ${isProjectsOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
         >
           <div className="lg:container lg:mx-auto px-8 py-6 flex items-stretch">
             {/* Project selector */}
@@ -104,12 +104,12 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
               >
                 Mist;y Forest
               </button>
-              <button
+              {/* <button
                 onClick={() => setSelectedProject('meownogatari')}
                 className={`text-left transition-colors ${selectedProject === 'meownogatari' ? 'text-primary font-semibold' : 'text-dark-brown/50 hover:text-primary'}`}
               >
                 Le Meownogatari
-              </button>
+              </button> */}
             </div>
             {/* Project card */}
             <div className="flex overflow-hidden pl-8">
@@ -125,7 +125,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                   </div>
                 </a>
               </div>
-              <div className={`w-64 h-46 transition-all duration-300 overflow-hidden ${selectedProject === 'meownogatari' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
+              {/* <div className={`w-64 h-46 transition-all duration-300 overflow-hidden ${selectedProject === 'meownogatari' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
                 <a href="/meownogatari" onClick={() => setIsMenuOpen(false)}>
                   <div className="relative rounded-2xl bg-white/80 border border-brown/10 overflow-hidden h-46 hover:shadow-md transition-shadow">
                     <div className="absolute inset-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }} />
@@ -136,7 +136,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                     </div>
                   </div>
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -196,10 +196,10 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                       onClick={() => setSelectedProject('misty')}
                       className={`font-play text-xs px-3 py-1 rounded-full border transition-colors ${selectedProject === 'misty' ? 'bg-[#4F321E] text-cream border-transparent' : 'border-brown/20 text-dark-brown/60 hover:text-primary'}`}
                     >Mist;y Forest</button>
-                    <button
+                    {/* <button
                       onClick={() => setSelectedProject('meownogatari')}
                       className={`font-play text-xs px-3 py-1 rounded-full border transition-colors ${selectedProject === 'meownogatari' ? 'bg-[#4F321E] text-cream border-transparent' : 'border-brown/20 text-dark-brown/60 hover:text-primary'}`}
-                    >Le Meownogatari</button>
+                    >Le Meownogatari</button> */}
                   </div>
                   <div className="flex">
                   {/* Misty Forest card */}
@@ -216,7 +216,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                     </a>
                   </div>
                   {/* Le Meownogatari card */}
-                  <div className={`w-64 h-36 transition-all duration-300 overflow-hidden ${selectedProject === 'meownogatari' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
+                  {/* <div className={`w-64 h-36 transition-all duration-300 overflow-hidden ${selectedProject === 'meownogatari' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
                     <a href="/meownogatari" onClick={() => setIsMenuOpen(false)}>
                       <div className="relative rounded-2xl bg-white/80 overflow-hidden h-36 hover:shadow-md transition-shadow">
                         <div className="absolute inset-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }} />
@@ -227,7 +227,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                         </div>
                       </div>
                     </a>
-                  </div>
+                  </div> */}
                   </div>
                 </div>
               </div>

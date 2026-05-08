@@ -39,7 +39,7 @@ const events = [
 
 export default function Events() {
   return (
-    <div className="snap-start md:min-h-screen shrink-0 flex flex-col justify-between bg-light-brown relative overflow-hidden" id="events">
+    <div className="snap-start md:min-h-dvh shrink-0 flex flex-col justify-between bg-light-brown relative overflow-hidden" id="events">
       {/* Ambient top fog */}
       <div className="pointer-events-none absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-brown/8 to-transparent" />
 

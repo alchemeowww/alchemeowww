@@ -1,6 +1,6 @@
 export default function Merchandises() {
   return (
-    <div className="snap-start snap-always md:min-h-screen md:h-screen flex flex-col shrink-0 relative overflow-hidden" id="merchandises">
+    <div className="snap-start snap-always md:min-h-dvh md:h-screen flex flex-col shrink-0 relative overflow-hidden" id="merchandises">
       {/* Ambient gradient */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_80%,_var(--color-light-brown)/60%,_transparent_70%)]" />
 

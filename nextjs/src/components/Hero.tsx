@@ -14,7 +14,7 @@ const sparkles = [
 
 export default function Hero() {
   return (
-    <div className="snap-start snap-always md:min-h-screen h-dvh shrink-0 relative overflow-hidden">
+    <div className="snap-start snap-always md:min-h-dvh h-dvh shrink-0 relative overflow-hidden">
       {/* Ambient radial gradient */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_40%,_var(--color-primary)/8%,_transparent_70%)]" />
 

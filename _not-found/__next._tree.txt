@@ -1,4 +1,4 @@
-:HL["/_next/static/chunks/f7037c34a1c4ec09.css","style"]
+:HL["/_next/static/chunks/e1e3eaa9817f286f.css","style"]
 :HL["/css/material-icon.css","style"]
 :HL["https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=Rye&family=Lato:wght@400;700&family=Play:wght@400;700&family=Tangerine:wght@400;700&display=swap","style"]
-0:{"buildId":"fanWrDoydvXVOpo_dICzg","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"/_not-found","paramType":null,"paramKey":"/_not-found","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"gSkweEZpPn5MnVn4AT_Eg","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"/_not-found","paramType":null,"paramKey":"/_not-found","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

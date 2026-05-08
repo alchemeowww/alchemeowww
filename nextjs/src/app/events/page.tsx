@@ -116,7 +116,7 @@ export default function Events() {
     <>
       <Header activePage="events" />
 
-      <div className="flex grow flex-col bg-cream mt-24">
+      <div className="flex grow flex-col bg-cream mt-14">
 
         {/* Page header */}
         <div className="relative overflow-hidden bg-light-brown">

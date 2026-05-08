@@ -5,10 +5,10 @@ import Image from 'next/image';
 
 type Page = 'home' | 'nfc' | 'events' | 'about' | 'mist;y-forest' | 'projects';
 
-export default function Header({ showLogo = true, activePage = 'home' }: { showLogo?: boolean, activePage?: Page  }) {
+export default function Header({ showLogo = true, activePage = 'home' }: { showLogo?: boolean, activePage?: Page }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<string | null>('misty');
+  const [selectedProject, setSelectedProject] = useState<string>('misty');
   const projectsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,157 +21,228 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isProjectsOpen]);
 
-  const activeClass = 'text-primary text-sm font-bold leading-normal';
-  const inactiveClass = 'text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors';
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isMenuOpen]);
+
+  const linkClass = (page: Page) =>
+    `font-play text-sm transition-colors ${activePage === page ? 'text-primary font-semibold' : 'text-dark-brown/70 hover:text-primary'}`;
 
   return (
-    <div className="font-play w-full top-0 z-60 h-0" ref={projectsRef}>
-      <div className="px-4 flex justify-center relative">
-        <header className={`z-10 flex w-full max-w-8xl min-h-14 items-center justify-between whitespace-nowrap px-4 md:px-10 py-8 ${showLogo ? 'border-b border-solid md:border-none border-secondary/10' : ''}`}>
-          <div className="flex items-center gap-4 text-primary">
+    <div className={`font-play w-full ${showLogo ? 'sticky top-0' : ''} z-60 h-0`} ref={projectsRef}>
+      <div className="flex justify-center">
+        {/* ── Main bar ── */}
+        <header className={`w-full ${showLogo ? 'bg-cream/85 backdrop-blur-md border-b border-brown/10 shadow-sm' : ''}`}>
+          <div className="lg:container lg:mx-auto px-4 md:px-8 flex items-center justify-between h-14 gap-8">
+
+            {/* Logo */}
             {showLogo && (
-              <h2 className="flex flex-row gap-2 items-center font-rye text-primary dark:text-background-light text-lg font-bold leading-tight tracking-[-0.015em] font-display">
+              <a href="/" className="flex items-center gap-2 shrink-0">
                 <Image
                   src="/images/alchemeowww-logo.webp"
                   alt="Alchemeowww Logo"
-                  width={16}
-                  height={16}
+                  width={32}
+                  height={32}
                   className="h-8 w-auto"
                   priority
-                />Alchemeowww
-              </h2>
+                />
+                <span className="font-rye text-dark-brown text-base leading-none">Alchemeowww</span>
+              </a>
             )}
-          </div>
-          <div className="hidden md:flex flex-1 justify-end gap-8 min-h-8">
-            <div className="flex items-center gap-9 font-play text-3xl">
-              <a className={activePage === 'home' ? activeClass : inactiveClass} href="/">Home</a>
-              <a className={activePage === 'nfc' ? activeClass : inactiveClass} href="/nfc">NFC</a>
+
+            {/* Desktop nav */}
+            <nav className="hidden md:flex items-center gap-7 flex-1 justify-end">
+              <a href="/" className={linkClass('home')}>Home</a>
+              <a href="/nfc" className={linkClass('nfc')}>NFC</a>
               <button
-                className={`${activePage === 'projects' ? activeClass : inactiveClass} flex items-center gap-1`}
+                className={`${linkClass('projects')} flex items-center gap-0.5`}
                 onClick={() => setIsProjectsOpen((p) => !p)}
               >
                 Projects
-                <span className="material-symbols-outlined transition-transform duration-200" style={{ fontSize: '16px', transform: isProjectsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
+                <span
+                  className="material-symbols-outlined transition-transform duration-200"
+                  style={{ fontSize: '16px', transform: isProjectsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                >expand_more</span>
               </button>
-              <a className={activePage === 'events' ? activeClass : inactiveClass} href="/events">Events</a>
-              <a className={activePage === 'about' ? activeClass : inactiveClass} href="/about">About</a>
-            </div>
-            <a href="#contact" className="hidden flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
-              <span>Let's Talk</span>
+              <a href="/events" className={linkClass('events')}>Events</a>
+              <a href="/about" className={linkClass('about')}>About</a>
+            </nav>
+
+            {/* Desktop CTA */}
+            <a
+              href="https://ig.me/m/alchemeowww" target="_blank" rel="noopener noreferrer"
+              className="hidden md:inline-flex items-center gap-1.5 px-5 py-2 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors shrink-0"
+            >
+              Let&apos;s Talk
             </a>
-          </div>
-          {/* Mobile Menu Icon */}
-          <div id="menu-open" className="md:hidden" onClick={() => setIsMenuOpen(true)}>
-            <span className="material-symbols-outlined text-secondary">menu</span>
-          </div>
-          <div id="mobile-menu" className={`fixed inset-0 bg-cream z-50 transform transition-transform duration-300 ease-in-out md:hidden ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-            <div className="flex justify-end p-6">
-              <button id="menu-close" className="text-brown focus:outline-none" onClick={() => setIsMenuOpen(false)}>
-                <span className="material-symbols-outlined text-secondary">close</span>
+
+            {/* Mobile hamburger */}
+            <div className="md:hidden flex-1 justify-end items-center flex">
+              <button
+                className="text-dark-brown flex items-center"
+                onClick={() => setIsMenuOpen(true)}
+                aria-label="Open menu"
+              >
+                <span className="material-symbols-outlined">menu</span>
               </button>
-            </div>
-            <div className="flex flex-col items-end justify-start gap-8 h-full px-6 font-play text-3xl text-dark-brown">
-              <a href="/" className={`${activePage === 'home' ? 'text-primary' : ''}`}>Home</a>
-              <a href="/nfc" className={`${activePage === 'nfc' ? 'text-primary' : ''}`}>NFC</a>
-              {/* Projects accordion for mobile */}
-              <div className="flex flex-col items-end w-full">
-                <button
-                  className={`${activePage === 'projects' ? 'text-primary' : ''} flex items-center gap-1`}
-                  onClick={() => setIsProjectsOpen((p) => !p)}
-                >
-                  Projects
-                  <span className="material-symbols-outlined transition-transform duration-200" style={{ fontSize: '30px', transform: isProjectsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
-                </button>
-                <div className={`overflow-hidden transition-all duration-300 ease-in-out w-full ${isProjectsOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <div className="mt-3 flex flex-col items-end gap-4 text-2xl pr-4 border-r border-primary/30">
-                    <button
-                      className={`transition-colors ${selectedProject === 'misty' ? 'text-primary' : 'text-dark-brown/60'}`}
-                      onClick={() => setSelectedProject('misty')}
-                    >Mist;y Forest</button>
-                    {/* <button
-                      className={`transition-colors ${selectedProject === 'meownogatari' ? 'text-primary' : 'text-dark-brown/60'}`}
-                      onClick={() => setSelectedProject('meownogatari')}
-                    >Le Meownogatari</button> */}
-                    <div className="flex overflow-x-auto w-full justify-end [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                      <div className={`transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0 ${selectedProject === 'misty' ? 'max-w-xs opacity-100 translate-x-0' : 'max-w-0 opacity-0 translate-x-8'}`}>
-                        <a href="/mist;y-forest" onClick={() => setIsMenuOpen(false)}>
-                          <div className="overflow-hidden w-40 h-40 relative rounded-xl bg-white">
-                            <div className="absolute w-full h-full top-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }}></div>
-                            <div className="absolute w-full h-full -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }}></div>
-                            <div className="absolute bottom-2 px-3 flex flex-col gap-0.5">
-                              <div className="font-rye text-sm text-brown">Board Game</div>
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                      <div className={`transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0 ${selectedProject === 'meownogatari' ? 'max-w-xs opacity-100 translate-x-0' : 'max-w-0 opacity-0 translate-x-8'}`}>
-                        <a href="/le-meownogatari" onClick={() => setIsMenuOpen(false)}>
-                          <div className="overflow-hidden w-40 h-40 relative rounded-xl bg-white">
-                            <div className="absolute w-full h-full top-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }}></div>
-                            <div className="absolute w-full h-full -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }}></div>
-                            <div className="absolute bottom-2 px-3 flex flex-col gap-0.5">
-                              <div className="font-rye text-sm text-brown">Mini Game</div>
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <a href="/events" className={`${activePage === 'events' ? 'text-primary' : ''}`}>Events</a>
-              <a href="/about" className={`${activePage === 'about' ? 'text-primary' : ''}`}>About</a>
             </div>
           </div>
         </header>
-        {/* Projects full-width accordion */}
-        <div className={`hidden md:block z-5 w-full absolute insert-0 pt-21 backdrop-blur-lg md:shadow-md
-            transform transition-transform duration-300 ease-in-out ${isProjectsOpen ? 'translate-y-0' : '-translate-y-full'}`} ref={projectsRef}>
-          <div className="max-w-4/5 mx-auto px-10 py-6 gap-8 flex flex-row items-stretch">
-            <div className="selection flex flex-col gap-4 font-play text-dark-brown/60 transition-colors text-lg pr-8 py-1 border-r border-primary/30">
+
+        {/* ── Projects dropdown (desktop) ── */}
+        <div
+          className={`hidden md:block absolute w-full top-14 bg-cream/95 backdrop-blur-md border-b border-t border-brown/10 shadow-md transition-all duration-300 ease-in-out z-50 ${isProjectsOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+        >
+          <div className="lg:container lg:mx-auto px-8 py-6 flex items-stretch">
+            {/* Project selector */}
+            <div className="flex flex-col items-end w-1/5 gap-3 font-play text-sm pr-8 border-r border-brown/15">
+              <button
+                onClick={() => setSelectedProject('misty')}
+                className={`text-left transition-colors ${selectedProject === 'misty' ? 'text-primary font-semibold' : 'text-dark-brown/50 hover:text-primary'}`}
+              >
+                Mist;y Forest
+              </button>
+              <button
+                onClick={() => setSelectedProject('meownogatari')}
+                className={`text-left transition-colors ${selectedProject === 'meownogatari' ? 'text-primary font-semibold' : 'text-dark-brown/50 hover:text-primary'}`}
+              >
+                Le Meownogatari
+              </button>
+            </div>
+            {/* Project card */}
+            <div className="flex overflow-hidden pl-8">
+              <div className={`w-64 h-46 transition-all duration-300 overflow-hidden ${selectedProject === 'misty' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
+                <a href="/mist;y-forest" onClick={() => setIsMenuOpen(false)}>
+                  <div className="relative rounded-2xl bg-white/80 border border-brown/10 overflow-hidden h-46 hover:shadow-md transition-shadow">
+                    <div className="absolute inset-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }} />
+                    <div className="absolute inset-0 -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }} />
+                    <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-linear-to-t from-white/90 to-transparent">
+                      <p className="font-rye text-base text-dark-brown">Mist;y Forest</p>
+                      <p className="font-play text-xs text-brown/60">Board Game</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div className={`w-64 h-46 transition-all duration-300 overflow-hidden ${selectedProject === 'meownogatari' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
+                <a href="/meownogatari" onClick={() => setIsMenuOpen(false)}>
+                  <div className="relative rounded-2xl bg-white/80 border border-brown/10 overflow-hidden h-46 hover:shadow-md transition-shadow">
+                    <div className="absolute inset-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }} />
+                    <div className="absolute inset-0 -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }} />
+                    <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-linear-to-t from-white/90 to-transparent">
+                      <p className="font-rye text-base text-dark-brown">Le Meownogatari</p>
+                      <p className="font-play text-xs text-brown/60">Journey into the Mini Game</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Mobile menu ── */}
+      <div className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)} />
+        {/* Panel slides in from right */}
+        <div className={`absolute top-0 right-0 h-full w-4/5 max-w-xs bg-cream shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          {/* Panel header */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-brown/10">
+            <a href="/" className="flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
+              <Image src="/images/alchemeowww-logo.webp" alt="logo" width={28} height={28} className="h-7 w-auto" />
+              <span className="font-rye text-dark-brown text-sm">Alchemeowww</span>
+            </a>
+            <div className="flex-1 justify-end items-center flex">
+              <button onClick={() => setIsMenuOpen(false)} aria-label="Close menu" className="flex items-center">
+                <span className="material-symbols-outlined text-dark-brown/60">close</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Nav links */}
+          <nav className="flex flex-col px-6 py-6 grow">
+            {([
+              { href: '/', label: 'Home', page: 'home' as Page },
+              { href: '/nfc', label: 'NFC', page: 'nfc' as Page },
+              { href: '/events', label: 'Events', page: 'events' as Page },
+              { href: '/about', label: 'About', page: 'about' as Page },
+            ]).map(({ href, label, page }) => (
               <a
-                href="#"
-                className={`hover:text-primary transition-colors ${selectedProject === 'misty' ? 'text-primary font-bold' : ''}`}
-                onClick={(e) => { e.preventDefault(); setSelectedProject((p) => 'misty'); }}
-              >Mist;y Forest</a>
-              {/* <a
-                href="#"
-                className={`hover:text-primary transition-colors ${selectedProject === 'meownogatari' ? 'text-primary font-bold' : ''}`}
-                onClick={(e) => { e.preventDefault(); setSelectedProject((p) => 'meownogatari'); }}
-              >Le Meownogatari</a> */}
-            </div>
-            <div className="flex flex-row overflow-hidden">
-              {/* Mist;y Forest */}
-              <div className={`transform transition-all duration-300 ease-in-out overflow-hidden ${selectedProject === 'misty' ? 'max-w-xs opacity-100 translate-x-0' : 'max-w-0 opacity-0 translate-x-8'}`}>
-                <div className="flex flex-row gap-8 overflow-x-auto">
-                  <a href="/mist;y-forest" onClick={() => setIsProjectsOpen(false)}>
-                    <div className="overflow-hidden w-70 h-70 relative rounded-2xl bg-white">
-                      <div className="absolute w-full h-full top-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }}></div>
-                      <div className="absolute w-full h-full -top-8 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }}></div>
-                      <div className="absolute bottom-4 px-5 flex flex-col gap-1">
-                        <div className="font-rye text-2xl text-brown">Board Game</div>
-                        <div className="text-xs">Journey into the fog-veiled MIST;Y FOREST</div>
+                key={page}
+                href={href}
+                onClick={() => setIsMenuOpen(false)}
+                className={`font-play text-lg py-2 border-b border-brown/8 transition-colors ${activePage === page ? 'text-primary font-semibold' : 'text-dark-brown/70'}`}
+              >
+                {label}
+              </a>
+            ))}
+
+            {/* Projects accordion */}
+            <div className="border-b border-brown/8">
+              <button
+                onClick={() => setIsProjectsOpen((p) => !p)}
+                className={`w-full flex items-center justify-between font-play text-lg py-2 transition-colors ${activePage === 'projects' ? 'text-primary font-semibold' : 'text-dark-brown/70'}`}
+              >
+                Projects
+                <span className="material-symbols-outlined transition-transform duration-200" style={{ fontSize: '20px', transform: isProjectsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>expand_more</span>
+              </button>
+              <div className={`overflow-hidden transition-all duration-300 ${isProjectsOpen ? 'max-h-56 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className="pb-2">
+                  {/* Project selector tabs */}
+                  <div className="flex gap-2 mb-3">
+                    <button
+                      onClick={() => setSelectedProject('misty')}
+                      className={`font-play text-xs px-3 py-1 rounded-full border transition-colors ${selectedProject === 'misty' ? 'bg-[#4F321E] text-cream border-transparent' : 'border-brown/20 text-dark-brown/60 hover:text-primary'}`}
+                    >Mist;y Forest</button>
+                    <button
+                      onClick={() => setSelectedProject('meownogatari')}
+                      className={`font-play text-xs px-3 py-1 rounded-full border transition-colors ${selectedProject === 'meownogatari' ? 'bg-[#4F321E] text-cream border-transparent' : 'border-brown/20 text-dark-brown/60 hover:text-primary'}`}
+                    >Le Meownogatari</button>
+                  </div>
+                  <div className="flex">
+                  {/* Misty Forest card */}
+                  <div className={`w-64 h-36 transition-all duration-300 overflow-hidden ${selectedProject === 'misty' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
+                    <a href="/mist;y-forest" onClick={() => setIsMenuOpen(false)}>
+                      <div className="relative rounded-2xl bg-white/80 overflow-hidden h-36 hover:shadow-md transition-shadow">
+                        <div className="absolute inset-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }} />
+                        <div className="absolute inset-0 -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }} />
+                        <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-linear-to-t from-white/90 to-transparent">
+                          <p className="font-rye text-base text-dark-brown">Mist;y Forest</p>
+                          <p className="font-play text-xs text-brown/60">Board Game</p>
+                        </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
+                  {/* Le Meownogatari card */}
+                  <div className={`w-64 h-36 transition-all duration-300 overflow-hidden ${selectedProject === 'meownogatari' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
+                    <a href="/meownogatari" onClick={() => setIsMenuOpen(false)}>
+                      <div className="relative rounded-2xl bg-white/80 overflow-hidden h-36 hover:shadow-md transition-shadow">
+                        <div className="absolute inset-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }} />
+                        <div className="absolute inset-0 -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }} />
+                        <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-linear-to-t from-white/90 to-transparent">
+                          <p className="font-rye text-base text-dark-brown">Le Meownogatari</p>
+                          <p className="font-play text-xs text-brown/60">Mini Game</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  </div>
                 </div>
               </div>
-              {/* Le Meownogatari */}
-              <div className={`transform transition-all duration-300 ease-in-out overflow-hidden ${selectedProject === 'meownogatari' ? 'max-w-xs opacity-100 translate-x-0' : 'max-w-0 opacity-0 translate-x-8'}`}>
-                <div className="flex flex-row gap-8 overflow-x-auto">
-                  <a href="/le-meownogatari" onClick={() => setIsProjectsOpen(false)}>
-                    <div className="overflow-hidden w-70 h-70 relative rounded-2xl bg-white">
-                      <div className="absolute w-full h-full top-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }}></div>
-                      <div className="absolute w-full h-full -top-8 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }}></div>
-                      <div className="absolute bottom-4 px-5 flex flex-col gap-1">
-                        <div className="font-rye text-2xl text-brown">Mini Game</div>
-                        <div className="text-xs">LE MEOWNOGATARI the world of mini games</div>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
             </div>
+          </nav>
+
+          {/* Bottom CTA */}
+          <div className="px-6 py-6 border-t border-brown/10">
+            <a
+              href="https://ig.me/m/alchemeowww" target="_blank" rel="noopener noreferrer"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-3 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors"
+            >
+              Let&apos;s Talk
+            </a>
           </div>
         </div>
       </div>

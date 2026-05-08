@@ -39,7 +39,7 @@ export default function Nfc() {
       <AOSInit />
       <Header activePage="nfc" />
 
-      <div className="flex flex-col grow bg-cream mt-24">
+      <div className="flex flex-col grow bg-cream mt-14">
 
         {/* Hero */}
         <div className="relative overflow-hidden bg-light-brown">

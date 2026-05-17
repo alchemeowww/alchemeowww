@@ -20,9 +20,9 @@ export default function CafKlXPage() {
         {/* ── Hero Band ── */}
         <div className="relative overflow-hidden bg-light-brown">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_90%_at_30%_50%,var(--color-primary)/8%,transparent_70%)]" />
-          <div className="lg:container lg:mx-auto px-8 py-16 flex flex-col md:flex-row items-center gap-10">
+          <div className="lg:container lg:mx-auto px-8 py-16 flex flex-col md:flex-row items-center justify-between gap-10">
             {/* Text block */}
-            <div className="flex flex-col gap-5 md:w-1/2">
+            <div className="flex flex-col gap-5 md:w-2/3">
               <div className="flex items-center gap-3">
                 <div className="h-px w-8 bg-brown/30" />
                 <span className="font-play text-xs tracking-widest uppercase text-brown/50">✦ Upcoming Event ✦</span>
@@ -53,13 +53,13 @@ export default function CafKlXPage() {
             </div>
 
             {/* Booth image */}
-            <div className="md:w-1/2 w-full">
+            <div className="md:w-1/3 w-full">
               <div className="rounded-2xl overflow-hidden border border-brown/10 shadow-lg">
                 <Image
                   src="/images/events/booths/CAFKLX.webp"
                   alt="CAFKL X booth preview"
-                  width={800}
-                  height={600}
+                  width={400}
+                  height={400}
                   className="w-full object-cover"
                   priority
                 />

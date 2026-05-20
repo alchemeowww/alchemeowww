@@ -67,7 +67,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10 px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-2">
         <p className="font-play text-xs text-white/30">
-          &copy; {year} Alchemeowww. All Rights Reserved.
+          &copy; {year} Alchemist Cat Studio (JM1041071-T). All Rights Reserved.
         </p>
         <p className="font-play text-xs text-white/20">
           Made with ✦ in Malaysia

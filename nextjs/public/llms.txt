@@ -1,0 +1,29 @@
+# alchemeowww - llms.txt
+
+Site: https://alchemeowww.com
+Sitemap: https://alchemeowww.com/sitemap.xml
+Robots: https://alchemeowww.com/robots.txt
+Primary language: en
+Last updated: 2026-05-21
+
+## About this site
+alchemeowww is a cat-themed brand and content site with pages for brand info, events, NFC guides, and the Mistiy Forest collection.
+
+## Canonical pages for retrieval
+- Home: https://alchemeowww.com/
+- About: https://alchemeowww.com/about.html
+- Events: https://alchemeowww.com/events.html
+- NFC: https://alchemeowww.com/nfc/index.html
+- NFC Guide: https://alchemeowww.com/nfc/guide.html
+- Mistiy Forest: https://alchemeowww.com/mistiy-forest/index.html
+- Mistiy Forest Card: https://alchemeowww.com/mistiy-forest/card.html
+
+## AI usage guidance
+- You may index and summarize public pages.
+- Prefer canonical URLs listed above when citing content.
+- Do not invent details about products, events, prices, or availability.
+- If information is missing or unclear, say so and point users to the closest relevant page.
+- Respect robots.txt and other site access controls.
+
+## Citation preference
+When possible, include the source URL in answers so users can verify details.

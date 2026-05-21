@@ -1,4 +1,26 @@
+# Global crawl policy for search engines
 User-agent: *
 Allow: /
 
+# Keep non-production/test content out of search results
+Disallow: /nextjs/
+Disallow: /test/
+
+# GEO: explicitly allow major AI and answer engine crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Sitemap location
 Sitemap: https://alchemeowww.com/sitemap.xml

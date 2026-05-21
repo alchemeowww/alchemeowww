@@ -1,4 +1,21 @@
 User-Agent: *
 Allow: /
+Disallow: /nextjs/
+Disallow: /test/
+
+User-Agent: GPTBot
+Allow: /
+
+User-Agent: ChatGPT-User
+Allow: /
+
+User-Agent: ClaudeBot
+Allow: /
+
+User-Agent: PerplexityBot
+Allow: /
+
+User-Agent: Google-Extended
+Allow: /
 
 Sitemap: https://alchemeowww.com/sitemap.xml

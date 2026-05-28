@@ -6,6 +6,14 @@ import Footer from '../../components/Footer';
 
 const events = [
   {
+    date: '26 - 27 Sep 2026',
+    title: 'Anime Fest+ 2026(Round 2) - TBC',
+    location: 'World Trade Center, Kuala Lumpur',
+    type: 'Anime Convention',
+    image: "/images/events/booths/AF-tbc.webp",
+    upcoming: true,
+  },
+  {
     date: '28 - 30 Aug 2026',
     title: 'Animangaki 2026',
     location: 'The Mines - MIECC',
@@ -173,7 +181,7 @@ export default function Events() {
                   <h3 className={`font-rye text-lg leading-snug group-hover:text-primary transition-colors ${event.upcoming ? 'text-brown' : 'text-brown/60'}`}>
                     {event.title}
                   </h3>
-                  <div className="flex items-start gap-1 text-brown/60">
+                  <div className="flex items-center gap-1 text-brown/60">
                     <span className="material-symbols-outlined text-[15px] mt-0.5 shrink-0">location_on</span>
                     <span className="font-play text-xs leading-relaxed">{event.location}</span>
                   </div>

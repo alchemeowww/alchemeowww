@@ -174,7 +174,7 @@ function ProductCard({ product }: { product: Product }) {
 				}`}
 			>
 				{product.images.map((image) => (
-					<div key={image.src} className="rounded-xl overflow-hidden border border-brown/10 bg-cream">
+					<div key={image.src} className="rounded-xl overflow-hidden border border-brown/10 bg-white">
 						<div className="relative aspect-square">
 							<Image
 								src={image.src}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RapidBus Debug</title>
+</head>
+<body>
+  <p>Open DevTools console to see bus data.</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/pako@2/dist/pako.min.js"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script>
+    var SOCKET_URL = 'https://rapidbus-socketio-avl.prasarana.com.my';
+    var SID = '5ipamfo2bumjion6rcfjdbkhmu0032u0';
+    var PROVIDER = 'prm';
+    var ROUTE = '';
+
+    function decodePayload(payload) {
+      try {
+        console.log('Received gzipped payload:', payload);
+        var binary = atob(payload);
+        var bytes = Uint8Array.from(binary, function(c) { return c.charCodeAt(0); });
+        var inflated = pako.inflate(bytes);
+        return JSON.parse(new TextDecoder('utf-8').decode(inflated));
+      } catch (e) {
+        try { return JSON.parse(payload); } catch (_) { return {}; }
+      }
+    }
+
+    var socket = io(SOCKET_URL, { transports: ['websocket'] });
+
+    socket.on('connect', function () {
+      console.log('Connected:', socket.id);
+      socket.emit('onFts-reload', { sid: SID, uid: '', provider: PROVIDER, route: ROUTE });
+      setInterval(function () {
+        socket.emit('onFts-reload', { sid: SID, uid: '', provider: PROVIDER, route: ROUTE });
+      }, 5000);
+    });
+
+    socket.on('onFts-client', function (raw) {
+      var data = decodePayload(raw);
+      console.log('Raw bus data:', data);
+    });
+
+    socket.on('connect_error', function (err) {
+      console.error('Connection error:', err.message);
+    });
+  </script>
+</body>
+</html>

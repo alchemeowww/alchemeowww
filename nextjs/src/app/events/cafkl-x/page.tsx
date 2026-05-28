@@ -1,7 +1,9 @@
+import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
+import HextarMapClient from '@/components/HextarMapClient';
 
 const artworks = [
   { src: '/images/products/sticker-sheets.png', label: 'Sticker Sheets' },
@@ -151,6 +153,32 @@ export default function CafKlXPage() {
           </div>
         </div>
 
+        {/* ── Venue Map ── */}
+        <div className="lg:container lg:mx-auto px-8 py-14">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-px bg-brown/15" />
+              <span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">✦ Find Us Here ✦</span>
+              <div className="flex-1 h-px bg-brown/15" />
+            </div>
+            <p className="font-play text-brown/60 text-sm text-center -mt-2">
+              Hextar World, Empire City Damansara — just look for the booth!
+            </p>
+            <HextarMapClient />
+            <div className="flex justify-center">
+              <a
+                href="https://maps.app.goo.gl/hextar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>directions</span>
+                Open in Google Maps
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* ── More Coming Soon ── */}
         <div className="lg:container lg:mx-auto px-8 py-14">
           <div className="rounded-2xl border border-brown/10 bg-white/60 p-10 flex flex-col items-center text-center gap-5">
@@ -168,15 +196,6 @@ export default function CafKlXPage() {
               >
                 <i className="fa-brands fa-instagram" />
                 Follow on Instagram
-              </a>
-              <a
-                href="https://www.tiktok.com/@alchemeowww"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-2.5 border border-brown/30 hover:bg-brown/10 text-brown rounded-full font-play text-sm transition-colors"
-              >
-                <i className="fa-brands fa-tiktok" />
-                Follow on TikTok
               </a>
             </div>
           </div>

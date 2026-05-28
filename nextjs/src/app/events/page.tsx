@@ -12,6 +12,7 @@ const events = [
     type: 'Anime Convention',
     image: "/images/events/booths/AF-tbc.webp",
     upcoming: true,
+    link: '/events/af-plus-2026',
   },
   {
     date: '28 - 30 Aug 2026',
@@ -128,7 +129,7 @@ export default function Events() {
 
         {/* Page header */}
         <div className="relative overflow-hidden bg-light-brown">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_70%_50%,_var(--color-primary)/8%,_transparent_70%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_70%_50%,var(--color-primary)/8%,transparent_70%)]" />
           <div className="lg:container lg:mx-auto px-8 py-16 flex flex-col gap-4">
             <span className="font-play text-xs tracking-widest uppercase text-brown/50">✦ Where to Find Us ✦</span>
             <h1 className="font-rye text-4xl md:text-5xl text-brown drop-shadow">
@@ -150,14 +151,12 @@ export default function Events() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {paginatedEvents.map((event) => (
-              <article
-                key={event.title}
-                className={`group flex flex-col rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border
-                  ${event.upcoming ? 'bg-white border-amber-200' : 'bg-white/60 border-brown/10'}`}
-              >
+            {paginatedEvents.map((event) => {
+              const cardClass = `group flex flex-col rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border
+                  ${event.upcoming ? 'bg-white border-amber-200' : 'bg-white/60 border-brown/10'}`;
+              const inner = (<>
                 {/* Image */}
-                <div className="relative aspect-[4/3] overflow-hidden bg-light-brown">
+                <div className="relative aspect-4/3 overflow-hidden bg-light-brown">
                   <img
                     src={event.image}
                     alt={`${event.title} booth`}
@@ -190,8 +189,17 @@ export default function Events() {
                     <span className="font-play text-xs">{event.date}</span>
                   </div>
                 </div>
-              </article>
-            ))}
+              </>);
+              return event.link ? (
+                <a key={event.title} href={event.link} className={cardClass}>
+                  {inner}
+                </a>
+              ) : (
+                <article key={event.title} className={cardClass}>
+                  {inner}
+                </article>
+              );
+            })}
           </div>
 
           {/* Pagination */}

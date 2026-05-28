@@ -169,7 +169,9 @@ function ProductCard({ product }: { product: Product }) {
 			</div>
 
 			<div
-				className={`grid gap-2 p-3 md:w-3/5 md:p-4 grid-cols-2`}
+				className={`grid gap-2 p-3 md:w-3/5 md:p-4 self-start ${
+					product.images.length === 1 ? 'grid-cols-1' : 'grid-cols-2'
+				}`}
 			>
 				{product.images.map((image) => (
 					<div key={image.src} className="rounded-xl overflow-hidden border border-brown/10 bg-cream">
@@ -221,7 +223,7 @@ export default function AfPlusPage() {
 
 								<div className="flex flex-wrap gap-3 pt-2">
 									<a
-										href="https://maps.app.goo.gl/"
+										href="https://maps.app.goo.gl/uzFFhcNdpm3xBM5q7"
 										target="_blank"
 										rel="noopener noreferrer"
 										className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors"

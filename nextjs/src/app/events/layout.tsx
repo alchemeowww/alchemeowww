@@ -31,6 +31,19 @@ const eventsSchema = {
     {
       "@type": "Event",
       "position": 1,
+      "name": "Anime Fest+ 2026 (Round 2)",
+      "startDate": "2026-09-26",
+      "endDate": "2026-09-27",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": { "@type": "Place", "name": "World Trade Center Kuala Lumpur", "address": { "@type": "PostalAddress", "addressCountry": "MY" } },
+      "organizer": { "@type": "Person", "name": "Alchemeowww", "url": "https://alchemeowww.com" },
+      "image": "https://alchemeowww.com/images/events/booths/AF-tbc.webp",
+      "url": "https://alchemeowww.com/events/af-plus-2026",
+    },
+    {
+      "@type": "Event",
+      "position": 2,
       "name": "Animangaki 2026",
       "startDate": "2026-08-28",
       "endDate": "2026-08-30",
@@ -39,10 +52,11 @@ const eventsSchema = {
       "location": { "@type": "Place", "name": "The Mines - MIECC", "address": { "@type": "PostalAddress", "addressCountry": "MY" } },
       "organizer": { "@type": "Person", "name": "Alchemeowww", "url": "https://alchemeowww.com" },
       "image": "https://alchemeowww.com/images/events/booths/amg2026.webp",
+      "url": "https://alchemeowww.com/events",
     },
     {
       "@type": "Event",
-      "position": 2,
+      "position": 3,
       "name": "Comic Art Festival KL X",
       "startDate": "2026-06-13",
       "endDate": "2026-06-14",
@@ -51,10 +65,11 @@ const eventsSchema = {
       "location": { "@type": "Place", "name": "Hextar World Empire City", "address": { "@type": "PostalAddress", "addressCountry": "MY" } },
       "organizer": { "@type": "Person", "name": "Alchemeowww", "url": "https://alchemeowww.com" },
       "image": "https://alchemeowww.com/images/events/booths/CAFKLX.webp",
+      "url": "https://alchemeowww.com/events/cafkl-x",
     },
     {
       "@type": "Event",
-      "position": 3,
+      "position": 4,
       "name": "Cosmic Spring 2026",
       "startDate": "2026-04-25",
       "endDate": "2026-04-26",
@@ -66,7 +81,7 @@ const eventsSchema = {
     },
     {
       "@type": "Event",
-      "position": 4,
+      "position": 5,
       "name": "Comic Fiesta 2025",
       "startDate": "2025-12-01",
       "eventStatus": "https://schema.org/EventScheduled",
@@ -77,7 +92,7 @@ const eventsSchema = {
     },
     {
       "@type": "Event",
-      "position": 5,
+      "position": 6,
       "name": "Cosmic 2025",
       "startDate": "2025-09-01",
       "eventStatus": "https://schema.org/EventScheduled",
@@ -88,7 +103,7 @@ const eventsSchema = {
     },
     {
       "@type": "Event",
-      "position": 6,
+      "position": 7,
       "name": "Animangaki 2025",
       "startDate": "2025-08-01",
       "eventStatus": "https://schema.org/EventScheduled",
@@ -99,7 +114,7 @@ const eventsSchema = {
     },
     {
       "@type": "Event",
-      "position": 7,
+      "position": 8,
       "name": "Design Fiesta 2025",
       "startDate": "2025-07-01",
       "eventStatus": "https://schema.org/EventScheduled",
@@ -110,7 +125,7 @@ const eventsSchema = {
     },
     {
       "@type": "Event",
-      "position": 8,
+      "position": 9,
       "name": "Comic Art Festival KL 9",
       "startDate": "2025-05-01",
       "eventStatus": "https://schema.org/EventScheduled",
@@ -121,7 +136,7 @@ const eventsSchema = {
     },
     {
       "@type": "Event",
-      "position": 9,
+      "position": 10,
       "name": "CosWorld Festival 2025",
       "startDate": "2025-05-01",
       "eventStatus": "https://schema.org/EventScheduled",
@@ -132,7 +147,7 @@ const eventsSchema = {
     },
     {
       "@type": "Event",
-      "position": 10,
+      "position": 11,
       "name": "Nijigen Expo",
       "startDate": "2025-02-01",
       "eventStatus": "https://schema.org/EventScheduled",

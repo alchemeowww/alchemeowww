@@ -1,7 +1,62 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Comic Art Festival KL X - Alchemeowww Events',
+  description:
+    'Visit Alchemeowww at Comic Art Festival KL X on 13-14 June 2026 at Hextar World, Empire City. Explore exclusive stickers, keychains, NFC cards, and new merchandise drops.',
+  keywords:
+    'Comic Art Festival KL X, CAFKL X, Alchemeowww, Kuala Lumpur art market, Hextar World Empire City, artist alley Malaysia, sticker sheets, acrylic keychain, NFC card',
+  alternates: {
+    canonical: 'https://alchemeowww.com/events/cafkl-x',
+  },
+  openGraph: {
+    type: 'website',
+    url: 'https://alchemeowww.com/events/cafkl-x',
+    title: 'Comic Art Festival KL X - Alchemeowww Events',
+    description:
+      'Find Alchemeowww at Comic Art Festival KL X (13-14 Jun 2026) at Hextar World Empire City, Kuala Lumpur.',
+    images: ['https://alchemeowww.com/images/events/booths/CAFKLX.webp'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Comic Art Festival KL X - Alchemeowww Events',
+    description:
+      'Find Alchemeowww at Comic Art Festival KL X (13-14 Jun 2026) at Hextar World Empire City, Kuala Lumpur.',
+    images: ['https://alchemeowww.com/images/events/booths/CAFKLX.webp'],
+  },
+};
+
+const eventSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: 'Comic Art Festival KL X',
+  description:
+    'Alchemeowww booth at Comic Art Festival KL X featuring stickers, acrylic keychains, card holders, and NFC interactive cards.',
+  startDate: '2026-06-13T10:00:00+08:00',
+  endDate: '2026-06-14T19:00:00+08:00',
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  image: ['https://alchemeowww.com/images/events/booths/CAFKLX.webp'],
+  url: 'https://alchemeowww.com/events/cafkl-x',
+  location: {
+    '@type': 'Place',
+    name: 'Hextar World Empire City',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Kuala Lumpur',
+      addressCountry: 'MY',
+    },
+  },
+  organizer: {
+    '@type': 'Person',
+    name: 'Alchemeowww',
+    url: 'https://alchemeowww.com',
+  },
+};
 
 const artworks = [
   { src: '/images/products/sticker-sheets.png', label: 'Sticker Sheets' },
@@ -13,6 +68,11 @@ const artworks = [
 export default function CafKlXPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }}
+      />
+
       <Header activePage="events" />
 
       <div className="flex flex-col bg-cream mt-14">

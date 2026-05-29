@@ -25,6 +25,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/events/cafkl-x`,
+      lastModified: new Date("2026-05-29"),
+      changeFrequency: "weekly",
+      priority: 0.75,
+    },
+    {
+      url: `${baseUrl}/events/af-plus-2026`,
+      lastModified: new Date("2026-05-29"),
+      changeFrequency: "weekly",
+      priority: 0.75,
+    },
+    {
       url: `${baseUrl}/nfc`,
       lastModified: new Date("2026-04-27"),
       changeFrequency: "monthly",

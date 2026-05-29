@@ -29,6 +29,7 @@ const events = [
     type: 'Art Market',
     image: '/images/events/booths/CAFKLX.webp',
     upcoming: true,
+    link: '/events/cafkl-x',
   },
   {
     date: '25 - 26 Apr 2026',

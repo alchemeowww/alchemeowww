@@ -31,11 +31,11 @@ export default function CafKlXPage() {
                 Comic Art<br />Festival KL X
               </h1>
               <p className="font-play text-brown/70 text-base leading-relaxed max-w-md">
-                Alchemeowww is heading to CAFKL X — one of Malaysia's most beloved indie art markets. Come say hi, browse the booth, and take home something special.
+                Alchemeowww is heading to CAFKL X — one of Malaysia's most beloved art markets. Come say hi, browse the booth, and take home something special.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="https://maps.app.goo.gl/hextar"
+                  href="https://maps.app.goo.gl/axRC5Paq6bZEL6x1A"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors"
@@ -157,7 +157,7 @@ export default function CafKlXPage() {
             <span className="text-3xl">✦</span>
             <h2 className="font-rye text-2xl md:text-3xl text-dark-brown">More to Come</h2>
             <p className="font-play text-brown/70 text-base leading-relaxed max-w-lg">
-              Exclusive prints, new merchandise, and surprise reveals are still in the works. Follow Alchemeowww on Instagram and TikTok to stay updated on everything dropping at CAFKL X.
+              Exclusive prints, new merchandise, and surprise reveals are still in the works. Follow Alchemeowww on Instagram to stay updated on everything dropping at CAFKL X.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               <a
@@ -168,15 +168,6 @@ export default function CafKlXPage() {
               >
                 <i className="fa-brands fa-instagram" />
                 Follow on Instagram
-              </a>
-              <a
-                href="https://www.tiktok.com/@alchemeowww"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-2.5 border border-brown/30 hover:bg-brown/10 text-brown rounded-full font-play text-sm transition-colors"
-              >
-                <i className="fa-brands fa-tiktok" />
-                Follow on TikTok
               </a>
             </div>
           </div>

@@ -148,7 +148,7 @@ export default function CafKlXPage() {
                 </div>
                 <div>
                   <p className="font-play text-xs uppercase tracking-widest text-brown/50 mb-1">Location</p>
-                  <p className="font-rye text-dark-brown text-lg leading-snug">Hextar World Empire City<br /><span className='text-accent text-2xl'>ROW C - C17-18</span></p>
+                  <p className="font-rye text-dark-brown text-lg leading-snug">Hextar World Empire City<br /><span className='text-accent text-2xl'>ROW C 17-18</span></p>
                   <p className="font-play text-xs text-brown/50 mt-1">Kuala Lumpur</p>
                 </div>
               </div>
@@ -182,10 +182,15 @@ export default function CafKlXPage() {
         {/* ── Booth Location ── */}
         <div className="lg:container lg:mx-auto px-8 py-14">
           <div className="flex flex-col gap-6">
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-px bg-brown/15" />
-              <span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">✦ Find Us Here ✦</span>
-              <div className="flex-1 h-px bg-brown/15" />
+            <div className="flex flex-col items-center gap-3 text-center w-full">
+              <div className="flex items-center gap-3 w-full">
+                <div className="flex-1 h-px bg-brown/20" />
+                <span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">✦ Find Us Here ✦</span>
+                <div className="flex-1 h-px bg-brown/20" />
+              </div>
+              <p className="font-play text-brown/60 text-sm max-w-md">
+                Our booth at <span className="text-accent text-xl">Row C, Booth 17-18</span> — Near to the entry A! Here's a handy map to help you find us once you're at the venue. We can't wait to see you there!
+              </p>
             </div>
             <div className="relative rounded-2xl overflow-hidden border border-brown/10 shadow-md">
               <Image

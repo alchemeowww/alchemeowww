@@ -11,6 +11,7 @@
     "deploy": "next build && touch out/.nojekyll && npx gh-pages -d out --dotfiles"
   },
   "dependencies": {
+    "animejs": "^4.4.1",
     "aos": "^2.3.4",
     "next": "16.1.6",
     "react": "19.2.3",

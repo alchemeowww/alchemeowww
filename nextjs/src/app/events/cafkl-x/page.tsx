@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
+import BoothLocationAnimation from '@/components/BoothLocationAnimation';
 
 export const metadata: Metadata = {
   title: 'Comic Art Festival KL X - Alchemeowww Events',
@@ -59,10 +60,12 @@ const eventSchema = {
 };
 
 const artworks = [
-  { src: '/images/products/sticker-sheets.png', label: 'Sticker Sheets' },
-  { src: '/images/products/keychain.png', label: 'Acrylic Keychain' },
-  { src: '/images/products/cardholder.webp', label: 'Card Holder' },
-  { src: '/images/products/nfc.png', label: 'NFC Interactive Card' },
+  { src: '/images/products/sticker.webp', label: 'Sticker Sheets' },
+  { src: '/images/products/interactive-keychain.webp', label: 'Acrylic Keychain' },
+  { src: '/images/products/interactive-standee-01.webp', label: 'Acrylic Standee' },
+  { src: '/images/products/magnet.webp', label: 'Acrylic Magnet' },
+  { src: '/images/products/card-holder-01.webp', label: 'Card Holder' },
+  { src: '/images/products/nfc.webp', label: 'NFC Interactive Card' },
 ];
 
 export default function CafKlXPage() {
@@ -138,6 +141,18 @@ export default function CafKlXPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* Location */}
+              <div className="rounded-2xl border border-brown/10 bg-white/60 p-6 flex flex-col gap-3">
+                <div className="w-10 h-10 rounded-xl bg-light-brown flex items-center justify-center">
+                  <span className="material-symbols-outlined text-dark-brown" style={{ fontSize: '20px' }}>location_on</span>
+                </div>
+                <div>
+                  <p className="font-play text-xs uppercase tracking-widest text-brown/50 mb-1">Location</p>
+                  <p className="font-rye text-dark-brown text-lg leading-snug">Hextar World Empire City<br /><span className='text-accent text-2xl'>ROW C - C17-18</span></p>
+                  <p className="font-play text-xs text-brown/50 mt-1">Kuala Lumpur</p>
+                </div>
+              </div>
+              
               {/* Date */}
               <div className="rounded-2xl border border-brown/10 bg-white/60 p-6 flex flex-col gap-3">
                 <div className="w-10 h-10 rounded-xl bg-light-brown flex items-center justify-center">
@@ -160,18 +175,27 @@ export default function CafKlXPage() {
                   <p className="font-play text-xs text-brown/50 mt-1">Both days</p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
 
-              {/* Location */}
-              <div className="rounded-2xl border border-brown/10 bg-white/60 p-6 flex flex-col gap-3">
-                <div className="w-10 h-10 rounded-xl bg-light-brown flex items-center justify-center">
-                  <span className="material-symbols-outlined text-dark-brown" style={{ fontSize: '20px' }}>location_on</span>
-                </div>
-                <div>
-                  <p className="font-play text-xs uppercase tracking-widest text-brown/50 mb-1">Location</p>
-                  <p className="font-rye text-dark-brown text-lg leading-snug">Hextar World<br />Empire City</p>
-                  <p className="font-play text-xs text-brown/50 mt-1">Kuala Lumpur</p>
-                </div>
-              </div>
+        {/* ── Booth Location ── */}
+        <div className="lg:container lg:mx-auto px-8 py-14">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-px bg-brown/15" />
+              <span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">✦ Find Us Here ✦</span>
+              <div className="flex-1 h-px bg-brown/15" />
+            </div>
+            <div className="relative rounded-2xl overflow-hidden border border-brown/10 shadow-md">
+              <Image
+                src="/images/events/cafkl-x/booth-location.webp"
+                alt="Alchemeowww booth location map at CAFKL X"
+                width={1200}
+                height={800}
+                className="w-full object-contain"
+              />
+              <BoothLocationAnimation />
             </div>
           </div>
         </div>
@@ -190,15 +214,18 @@ export default function CafKlXPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="flex flex-wrap gap-4 items-center justify-center">
               {artworks.map((art) => (
-                <div key={art.label} className="group rounded-2xl border border-brown/10 bg-white/60 overflow-hidden">
-                  <div className="aspect-square overflow-hidden bg-cream flex items-center justify-center p-4">
+                <div
+                  key={art.label}
+                  className="group w-[calc((100%-1rem)/2)] lg:w-[calc((100%-4rem)/4)] rounded-2xl border border-brown/10 bg-white/60 overflow-hidden"
+                >
+                  <div className="aspect-square overflow-hidden bg-cream flex items-center justify-center">
                     <Image
                       src={art.src}
                       alt={art.label}
-                      width={300}
-                      height={300}
+                      width={100}
+                      height={100}
                       className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>

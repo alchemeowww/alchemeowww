@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 
-export default function BoothLocationAnimation() {
+type BoothLocationAnimationProps = {
+  className?: string;
+};
+
+export default function BoothLocationAnimation({ className = '' }: BoothLocationAnimationProps) {
   const pathRef = useRef<SVGPathElement>(null);
   const carRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +53,7 @@ export default function BoothLocationAnimation() {
   }, []);
 
   return (
-    <div className="absolute inset-0 pointer-events-none">
+    <div className={`absolute inset-0 pointer-events-none ${className}`}>
       <svg
         className="absolute inset-0 z-10"
         width="100%"

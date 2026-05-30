@@ -111,10 +111,10 @@ export default function BoothLocationAnimation({ className = '' }: BoothLocation
             <text
               className="line"
               x="842px"
-              y="520px"
+              y="515px"
               style={{
-                fontFamily: "'Papyrus', sans-serif",
-                fontSize: '40.221px',
+                fontFamily: "play, sans-serif",
+                fontSize: '34px',
                 fill: '#ffb700',
                 fillOpacity: 0,
                 stroke: '#ffb700',

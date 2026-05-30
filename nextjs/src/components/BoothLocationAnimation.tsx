@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type BoothLocationAnimationProps = {
   className?: string;
@@ -9,6 +9,18 @@ type BoothLocationAnimationProps = {
 export default function BoothLocationAnimation({ className = '' }: BoothLocationAnimationProps) {
   const pathRef = useRef<SVGPathElement>(null);
   const carRef = useRef<HTMLDivElement>(null);
+
+
+  // Track window width to trigger animation refresh
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 0
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (!pathRef.current || !carRef.current) return;
@@ -50,7 +62,7 @@ export default function BoothLocationAnimation({ className = '' }: BoothLocation
       drawAnim?.pause();
       lineAnim?.pause();
     };
-  }, []);
+  }, [windowWidth]);
 
   return (
     <div className={`absolute inset-0 pointer-events-none ${className}`}>

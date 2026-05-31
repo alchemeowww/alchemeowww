@@ -63,7 +63,7 @@ const originalCatArtProducts: Product[] = [
 		name: 'Interactive Keychain',
 		images: [
 			{
-				src: '/images/events/af-plus/Le Meownogatari/Website - Interactive Keychain.png',
+				src: '/images/products/interactive-keychain.webp',
 				alt: 'Interactive keychain artwork preview',
 			},
 		],
@@ -72,7 +72,7 @@ const originalCatArtProducts: Product[] = [
 		name: 'Interactive Fridge Magnet',
     images: [
       {
-        src: '/images/events/af-plus/Le Meownogatari/Interactive Magnet.jpg',
+        src: '/images/products/magnet.webp',
         alt: 'Interactive magnet standee with mood bubble',
       },
 		],

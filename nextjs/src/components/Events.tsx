@@ -18,6 +18,7 @@ const events = [
     alt: "Comic Art Festival KL X event logo",
     upcoming: true,
     googleMapsLink: "https://maps.app.goo.gl/Gthk6ha1NHf4i8w97",
+    link: '/events/cafkl-x'
   },
   {
     name: "Cosmic Spring 2026",

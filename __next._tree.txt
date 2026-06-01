@@ -9,4 +9,4 @@
 :HL["/images/events/booths/CAFKLX.webp","image"]
 :HL["/images/events/cosmic-spring.webp","image"]
 :HL["/images/events/cf.webp","image"]
-0:{"buildId":"XfziYGQI-t-UG1g1yI3V9","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"lge0NVjV9zrbDr9HKUDQs","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

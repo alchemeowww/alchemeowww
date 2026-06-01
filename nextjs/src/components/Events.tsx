@@ -2,6 +2,16 @@ import Footer from "./Footer";
 
 const events = [
   {
+    name: "Anime Fest+ 2026(Round 2) - TBC",
+    venue: "World Trade Center, Kuala Lumpur",
+    date: "26 - 27 Sep 2026",
+    image: "/images/events/booths/AF-tbc.webp",
+    alt: "Anime Fest+ 2026(Round 2) - TBC event logo",
+    upcoming: true,
+    googleMapsLink: "https://maps.app.goo.gl/4ZfRs7Hkqitwr9eT9",
+    link: '/events/af-plus-2026',
+  },
+  {
     name: "Animangaki 2026",
     venue: "The Mines - MIECC",
     date: "28 - 30 Aug 2026",
@@ -65,56 +75,61 @@ export default function Events() {
 
           {/* Right timeline */}
           <section className="flex flex-col gap-3 w-full lg:w-2/3">
-            {events.map((event, index) => (
-              <div
-                key={event.name}
-                data-aos="fade-up"
-                data-aos-delay={String((index + 1) * 80)}
-                data-aos-once="true"
-                className={`flex items-center gap-5 rounded-2xl px-5 py-4 border transition-all
-                  ${event.upcoming
-                    ? 'bg-white/70 border-amber-200 shadow-md'
-                    : 'bg-white/30 border-brown/10 opacity-70'
-                  }`}
-              >
-                {/* Event logo */}
-                <div className={`flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center`}>
-                  <img src={event.image} alt={event.alt} className="w-full h-full object-cover" />
-                </div>
+            {events.map((event, index) => {
+              const CardTag = event.link ? 'a' : 'div';
+              return (
+                <CardTag
+                  key={event.name}
+                  data-aos="fade-up"
+                  data-aos-delay={String((index + 1) * 80)}
+                  data-aos-once="true"
+                  {...(event.link ? { href: event.link } : {})}
+                  className={`flex items-center gap-5 rounded-2xl px-5 py-4 border transition-all
+                    ${event.upcoming
+                      ? 'bg-white/70 border-amber-200 shadow-md'
+                      : 'bg-white/30 border-brown/10 opacity-70'
+                    }
+                    ${event.link ? 'cursor-pointer hover:scale-[1.01] hover:shadow-lg' : ''}`}
+                >
+                  {/* Event logo */}
+                  <div className={`flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center`}>
+                    <img src={event.image} alt={event.alt} className="w-full h-full object-cover" />
+                  </div>
 
-                {/* Event info */}
-                <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="font-rye text-lg text-brown truncate">{event.name}</h2>
-                    {event.upcoming && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-300 shrink-0">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                        Upcoming
-                      </span>
-                    )}
+                  {/* Event info */}
+                  <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="font-rye text-lg text-brown truncate">{event.name}</h2>
+                      {event.upcoming && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-300 shrink-0">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                          Upcoming
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1 text-sm text-brown/70">
+                      <span className="material-symbols-outlined text-[16px]">calendar_month</span>
+                      <span className="font-play">{event.date}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-sm text-brown/60">
+                      <span className="material-symbols-outlined text-[16px]">location_on</span>
+                      {event.googleMapsLink ? (
+                        <a href={event.googleMapsLink} target="_blank" rel="noopener noreferrer" className="font-play hover:text-primary transition-colors underline underline-offset-2 decoration-brown/30">
+                          {event.venue}
+                        </a>
+                      ) : (
+                        <span className="font-play">{event.venue}</span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-brown/70">
-                    <span className="material-symbols-outlined text-[16px]">calendar_month</span>
-                    <span className="font-play">{event.date}</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-sm text-brown/60">
-                    <span className="material-symbols-outlined text-[16px]">location_on</span>
-                    {event.googleMapsLink ? (
-                      <a href={event.googleMapsLink} target="_blank" rel="noopener noreferrer" className="font-play hover:text-primary transition-colors underline underline-offset-2 decoration-brown/30">
-                        {event.venue}
-                      </a>
-                    ) : (
-                      <span className="font-play">{event.venue}</span>
-                    )}
-                  </div>
-                </div>
 
-                {/* Arrow for upcoming */}
-                {/* {event.upcoming && (
-                  <span className="material-symbols-outlined text-brown/30 shrink-0">chevron_right</span>
-                )} */}
-              </div>
-            ))}
+                  {/* Arrow for upcoming */}
+                  {/* {event.upcoming && (
+                    <span className="material-symbols-outlined text-brown/30 shrink-0">chevron_right</span>
+                  )} */}
+                </CardTag>
+              );
+            })}
 
             <div className="mt-4 flex" data-aos="fade-up" data-aos-delay="450" data-aos-once="true">
               <a

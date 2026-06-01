@@ -64,7 +64,7 @@ const artworks = [
   { src: '/images/products/interactive-keychain.webp', label: 'Acrylic Keychain' },
   { src: '/images/products/interactive-standee-01.webp', label: 'Acrylic Standee' },
   { src: '/images/products/magnet.webp', label: 'Acrylic Magnet' },
-  { src: '/images/products/card-holder-01.webp', label: 'Card Holder' },
+  { src: '/images/events/af-plus/MIST_Y FOREST/Wooden Cardholder with light.jpg', label: 'Card Holder' },
   { src: '/images/products/nfc.webp', label: 'NFC Interactive Card' },
 ];
 

@@ -229,13 +229,13 @@ export default function AfPlusPage() {
 										className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors"
 									>
 										<span className="material-symbols-outlined" style={{ fontSize: '16px' }}>map</span>
-										Open Venue Map
+										Get Directions
 									</a>
 									<Link
 										href="/events"
 										className="inline-flex items-center gap-2 px-6 py-2.5 border border-brown/30 hover:bg-brown/10 text-brown rounded-full font-play text-sm transition-colors"
 									>
-										Back to Events
+										← All Events
 									</Link>
 								</div>
 							</div>

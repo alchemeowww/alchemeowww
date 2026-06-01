@@ -102,17 +102,18 @@ const ITEMS_PER_PAGE = 6;
 export default function Events() {
   const [currentPage, setCurrentPage] = useState(1);
   const gridRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true);
+  const shouldScrollOnPageChange = useRef(false);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
+    if (!shouldScrollOnPageChange.current) {
       return;
     }
+    shouldScrollOnPageChange.current = false;
     gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [currentPage]);
 
   const changePage = (page: number) => {
+    shouldScrollOnPageChange.current = true;
     setCurrentPage(page);
   };
 

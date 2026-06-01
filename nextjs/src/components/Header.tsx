@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type Page = 'home' | 'nfc' | 'events' | 'about' | 'mist;y-forest' | 'projects';
 
@@ -39,7 +40,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
 
             {/* Logo */}
             {showLogo && (
-              <a href="/" className="flex items-center gap-2 shrink-0">
+              <Link href="/" className="flex items-center gap-2 shrink-0">
                 <Image
                   src="/images/alchemeowww-logo.webp"
                   alt="Alchemeowww Logo"
@@ -49,13 +50,13 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                   priority
                 />
                 <span className="font-rye text-dark-brown text-base leading-none">Alchemeowww</span>
-              </a>
+              </Link>
             )}
 
             {/* Desktop nav */}
             <nav className="hidden md:flex items-center gap-7 flex-1 justify-end">
-              <a href="/" className={linkClass('home')}>Home</a>
-              <a href="/nfc" className={linkClass('nfc')}>NFC</a>
+              <Link href="/" className={linkClass('home')}>Home</Link>
+              <Link href="/nfc" className={linkClass('nfc')}>NFC</Link>
               <button
                 className={`${linkClass('projects')} flex items-center gap-0.5`}
                 onClick={() => setIsProjectsOpen((p) => !p)}
@@ -66,17 +67,17 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                   style={{ fontSize: '16px', transform: isProjectsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
                 >expand_more</span>
               </button>
-              <a href="/events" className={linkClass('events')}>Events</a>
-              <a href="/about" className={linkClass('about')}>About</a>
+              <Link href="/events" className={linkClass('events')}>Events</Link>
+              <Link href="/about" className={linkClass('about')}>About</Link>
             </nav>
 
             {/* Desktop CTA */}
-            <a
+            <Link
               href="https://ig.me/m/alchemeowww" target="_blank" rel="noopener noreferrer"
               className="hidden md:inline-flex items-center gap-1.5 px-5 py-2 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors shrink-0"
             >
               Let&apos;s Talk
-            </a>
+            </Link>
 
             {/* Mobile hamburger */}
             <div className="md:hidden flex-1 justify-end items-center flex">
@@ -114,7 +115,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
             {/* Project card */}
             <div className="flex overflow-hidden pl-8">
               <div className={`w-64 h-46 transition-all duration-300 overflow-hidden ${selectedProject === 'misty' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
-                <a href="/mist;y-forest" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/mist;y-forest" onClick={() => setIsMenuOpen(false)}>
                   <div className="relative rounded-2xl bg-white/80 border border-brown/10 overflow-hidden h-46 hover:shadow-md transition-shadow">
                     <div className="absolute inset-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }} />
                     <div className="absolute inset-0 -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }} />
@@ -123,7 +124,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                       <p className="font-play text-xs text-brown/60">Board Game</p>
                     </div>
                   </div>
-                </a>
+                </Link>
               </div>
               {/* <div className={`w-64 h-46 transition-all duration-300 overflow-hidden ${selectedProject === 'meownogatari' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
                 <a href="/meownogatari" onClick={() => setIsMenuOpen(false)}>
@@ -150,10 +151,10 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
         <div className={`absolute top-0 right-0 h-full w-4/5 max-w-xs bg-cream shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           {/* Panel header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-brown/10">
-            <a href="/" className="flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
+            <Link href="/" className="flex items-center gap-2" onClick={() => setIsMenuOpen(false)}>
               <Image src="/images/alchemeowww-logo.webp" alt="logo" width={28} height={28} className="h-7 w-auto" />
               <span className="font-rye text-dark-brown text-sm">Alchemeowww</span>
-            </a>
+            </Link>
             <div className="flex-1 justify-end items-center flex">
               <button onClick={() => setIsMenuOpen(false)} aria-label="Close menu" className="flex items-center">
                 <span className="material-symbols-outlined text-dark-brown/60">close</span>
@@ -169,14 +170,14 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
               { href: '/events', label: 'Events', page: 'events' as Page },
               { href: '/about', label: 'About', page: 'about' as Page },
             ]).map(({ href, label, page }) => (
-              <a
+              <Link
                 key={page}
                 href={href}
                 onClick={() => setIsMenuOpen(false)}
                 className={`font-play text-lg py-2 border-b border-brown/8 transition-colors ${activePage === page ? 'text-primary font-semibold' : 'text-dark-brown/70'}`}
               >
                 {label}
-              </a>
+              </Link>
             ))}
 
             {/* Projects accordion */}
@@ -204,7 +205,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                   <div className="flex">
                   {/* Misty Forest card */}
                   <div className={`w-64 h-36 transition-all duration-300 overflow-hidden ${selectedProject === 'misty' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
-                    <a href="/mist;y-forest" onClick={() => setIsMenuOpen(false)}>
+                    <Link href="/mist;y-forest" onClick={() => setIsMenuOpen(false)}>
                       <div className="relative rounded-2xl bg-white/80 overflow-hidden h-36 hover:shadow-md transition-shadow">
                         <div className="absolute inset-0 bg-top-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-map.png')" }} />
                         <div className="absolute inset-0 -top-4 bg-right bg-no-repeat bg-contain" style={{ backgroundImage: "url('/images/products/board-game-standee.png')" }} />
@@ -213,7 +214,7 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
                           <p className="font-play text-xs text-brown/60">Board Game</p>
                         </div>
                       </div>
-                    </a>
+                    </Link>
                   </div>
                   {/* Le Meownogatari card */}
                   {/* <div className={`w-64 h-36 transition-all duration-300 overflow-hidden ${selectedProject === 'meownogatari' ? 'opacity-100 translate-x-0 max-w-xs' : 'opacity-0 translate-x-4 max-w-0'}`}>
@@ -236,13 +237,13 @@ export default function Header({ showLogo = true, activePage = 'home' }: { showL
 
           {/* Bottom CTA */}
           <div className="px-6 py-6 border-t border-brown/10">
-            <a
+            <Link
               href="https://ig.me/m/alchemeowww" target="_blank" rel="noopener noreferrer"
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center justify-center gap-2 w-full py-3 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors"
             >
               Let&apos;s Talk
-            </a>
+            </Link>
           </div>
         </div>
       </div>

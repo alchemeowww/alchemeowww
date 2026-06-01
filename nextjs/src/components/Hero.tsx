@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 const sparkles = [
@@ -13,6 +16,18 @@ const sparkles = [
 ];
 
 export default function Hero() {
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setHasScrolled(window.scrollY > 24);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <div className="snap-start snap-always md:min-h-dvh h-dvh shrink-0 relative overflow-hidden">
       {/* Ambient radial gradient */}
@@ -53,6 +68,42 @@ export default function Hero() {
           <p data-aos="fade-up" data-aos-delay="500" data-aos-once="true" className="font-play text-xs tracking-widest uppercase text-secondary/40 text-center md:text-left">
             Est. 2023 &nbsp;·&nbsp; Tabletop &nbsp;·&nbsp; Collectibles &nbsp;·&nbsp; NFC
           </p>
+        </div>
+
+        {/* Upcoming event promo (desktop/tablet) */}
+        <div className={`absolute right-3 bottom-6 z-20 flex flex-row items-end transition-all duration-500 ${hasScrolled ? 'translate-x-[120%] opacity-0 pointer-events-none' : 'translate-x-0 opacity-100'}`}>
+        <a
+          href="/events/cafkl-x"
+          className="rounded-full"
+          aria-label="View upcoming Comic Art Festival KL X event"
+        >
+          <Image
+            src="/images/mistiy-forest/images/characters/koro/koro.png"
+            alt="Koro character"
+            width={70}
+            height={70}
+            className="h-14 w-auto -scale-x-100 drop-shadow-md"
+          />
+        </a>
+        <a
+          href="/events/cafkl-x"
+          className={`md:right-6 md:bottom-6 z-20 w-[230px] md:w-[280px] rounded-2xl border border-primary/20 bg-white/85 backdrop-blur-sm shadow-xl p-3 md:p-4 hover:-translate-y-1 hover:shadow-2xl`}
+          aria-label="View upcoming Comic Art Festival KL X event"
+        >
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] md:text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            Upcoming Event
+          </span>
+
+          <div className="mt-2 flex items-center gap-3">
+            <div className="min-w-0">
+              <p className="font-rye text-sm md:text-base text-secondary leading-tight">Comic Art Festival KL X</p>
+              <p className="font-play text-[11px] md:text-xs text-text-dark/70 mt-1 leading-snug">
+                Catch us at Hextar World, 13 - 14 Jun 2026. Tap to see booth location.
+              </p>
+            </div>
+          </div>
+        </a>
         </div>
 
         {/* Scroll cue */}

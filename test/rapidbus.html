@@ -7,44 +7,298 @@
 <body>
   <p>Open DevTools console to see bus data.</p>
 
-  <script src="https://cdn.jsdelivr.net/npm/pako@2/dist/pako.min.js"></script>
-  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://myrapidbus.prasarana.com.my/assets/js/pako.js"></script>
+  <script src="https://myrapidbus.prasarana.com.my/assets/socket.io/socket.io.js"></script>
+  
   <script>
-    var SOCKET_URL = 'https://rapidbus-socketio-avl.prasarana.com.my';
-    var SID = '5ipamfo2bumjion6rcfjdbkhmu0032u0';
-    var PROVIDER = 'prm';
-    var ROUTE = '';
+    var prev_markers = {};
+    var hasAppliedSelectedBusAutoZoom = false;
+    // Connect to our node/websockets server
+    var sid = '0i4j7d2a2msnont8to963g5tepkefuer';
+    var uid = '';
+    var no_route = 'T810';
+    var selectedBusNos = [];
+      var activeBusstopId = '';
 
-    function decodePayload(payload) {
+  var trip_dest = {};
+    var evBus = JSON.parse(`["BNG4101","BNG4102","BNG4103","BNG4204","BNG4105","BNG4106","BNG4107","BNG4108","BNG4109","BNG4110","BNG4111","BNG4112","BNG4113","BNG4014","BNG4015"]`);
+    var socket = io.connect('https://rapidbus-socketio-avl.prasarana.com.my', {
+      transports: ['websocket']
+    });
+    socket.emit('onFts-reload', {
+      sid: sid,
+      uid: uid,
+      provider: 'prm',
+      route: no_route
+    });
+    let timerId = setInterval(() => socket.emit('onFts-reload', {
+      sid: sid,
+      uid: uid,
+      provider: 'RKL',
+      route: no_route
+    }), 5000);
+    // console.log("socket ",socket)
+    socket.on('onFts-client', function (data) {
       try {
-        console.log('Received gzipped payload:', payload);
-        var binary = atob(payload);
-        var bytes = Uint8Array.from(binary, function(c) { return c.charCodeAt(0); });
-        var inflated = pako.inflate(bytes);
-        return JSON.parse(new TextDecoder('utf-8').decode(inflated));
-      } catch (e) {
-        try { return JSON.parse(payload); } catch (_) { return {}; }
+        setup(filter(data), prev_markers);
+        if (activeBusstopId != '') {
+          updateEta();
+        }
+      } catch (error) {
+        console.error('Error processing bus data:', error);
+      }
+    });
+
+    function filter(data) {
+      if (typeof (TextEncoder) == 'undefined') {
+        alert("Browser NOT supported TextEncoder");
+        return JSON.stringify({});
+      }
+      try {
+        var decompressed = gZip2String(data);
+        var jdata = JSON.parse(decompressed);
+        var mdata = {};
+
+        if (selectedBusNos.length > 0) {
+          for (var busKey in jdata) {
+            if (!jdata[busKey]) {
+              continue;
+            }
+            var busNo = (jdata[busKey].bus_no || busKey).toString().trim().toUpperCase();
+            if (selectedBusNoMap[busNo]) {
+              mdata[busKey] = jdata[busKey];
+            }
+          }
+          console.log('Filtering by bus list:', selectedBusNos, 'matched:', Object.keys(mdata).length);
+          return JSON.stringify(mdata);
+        }
+
+        console.log('Total buses in data:', Object.keys(jdata).length);
+
+        // Log the first few buses to see what routes are available
+        var sampleBuses = Object.keys(jdata).slice(0, 3);
+        sampleBuses.forEach(key => {
+          if (jdata[key]) {
+            console.log('Sample bus:', key, 'route:', jdata[key].route, 'provider:', jdata[key].provider);
+          }
+        });
+
+        // If no specific route is selected, show all buses for the provider
+        if (!no_route) {
+          console.log('No specific route, filtering by provider:', prm);
+          for (var bno in jdata) {
+            if (jdata[bno] && jdata[bno].provider && jdata[bno].provider == prm) {
+              mdata[bno] = jdata[bno];
+            }
+          }
+        } else {
+          // Filter by specific route
+          console.log('Filtering by specific route:', no_route);
+          for (var bno in jdata) {
+            if (jdata[bno] && jdata[bno].route) {
+              // Handle different route formats and comparisons
+              var busRoute = jdata[bno].route.toString().trim();
+              var targetRoute = no_route.toString().trim();
+
+              console.log('Comparing bus route:', busRoute, 'with target:', targetRoute);
+
+              if (busRoute === targetRoute ||
+                busRoute.includes(targetRoute) ||
+                targetRoute.includes(busRoute) ||
+                (targetRoute === 'BC04' && (busRoute === 'BC4' || busRoute === 'BC04' || busRoute === 'BC 04'))) {
+                mdata[bno] = jdata[bno];
+                console.log('Match found for bus:', bno, 'route:', busRoute);
+              }
+            }
+          }
+        }
+
+        console.log('Filtered buses for route', no_route, ':', Object.keys(mdata).length);
+        return JSON.stringify(mdata);
+      } catch (error) {
+        console.error('Error in filter function:', error);
+        return JSON.stringify({});
       }
     }
 
-    var socket = io(SOCKET_URL, { transports: ['websocket'] });
+    function setup(data, markers = {}) {
+      try {
+        var flag = 'RKL';
+        var jres = JSON.parse(data);
+        console.log('Processing buses:', Object.keys(jres).length);
 
-    socket.on('connect', function () {
-      console.log('Connected:', socket.id);
-      socket.emit('onFts-reload', { sid: SID, uid: '', provider: PROVIDER, route: ROUTE });
-      setInterval(function () {
-        socket.emit('onFts-reload', { sid: SID, uid: '', provider: PROVIDER, route: ROUTE });
-      }, 5000);
-    });
+        var cur_markers = {}, new_markers = {};
+        var selectedBusBounds = [];
 
-    socket.on('onFts-client', function (raw) {
-      var data = decodePayload(raw);
-      console.log('Raw bus data:', data);
-    });
+        // Create a list of current active bus numbers from the data
+        var activeBusNumbers = {};
+        for (var key in jres) {
+          if (jres[key] && jres[key].bus_no) {
+            activeBusNumbers[jres[key].bus_no] = true;
+          }
+        }
 
-    socket.on('connect_error', function (err) {
-      console.error('Connection error:', err.message);
-    });
+        // Process each bus in the data
+        for (var key in jres) {
+          if (!jres[key] || !jres[key].bus_no || !jres[key].latitude || !jres[key].longitude) {
+            console.warn('Invalid bus data for key:', key, jres[key]);
+            continue;
+          }
+
+          if (selectedBusNos.length > 0) {
+            var currentBusNo = jres[key].bus_no.toString().trim().toUpperCase();
+            if (!selectedBusNoMap[currentBusNo]) {
+              continue;
+            }
+          }
+
+          // Check if this bus should be displayed based on flag
+          var shouldDisplay = false;
+          if (flag == 'RKL-PUTRAJAYA') {
+            var putrajayaRoutes = ['P1010', 'P1020', 'P1021', 'P1030', 'P1040', 'P1050', 'P1060', 'P1080', 'P1070'];
+            shouldDisplay = putrajayaRoutes.includes(jres[key].route);
+          } else {
+            // For other flags, show all buses that passed the filter
+            shouldDisplay = true;
+          }
+
+          if (!shouldDisplay) {
+            continue;
+          }
+
+          var busNumber = jres[key].bus_no;
+          var dir = jres[key].dir > 0 && trip_dest[jres[key].route] ? '<br>To: ' + trip_dest[jres[key].route][(jres[key].dir == 1 ? 2 : 1)].stop_name : '';
+          let gps = '<br>GPS: ' + jres[key].dt_gps;
+          var popup = '<b>' + jres[key].bus_no + ' (' + jres[key].captain_id + ')</b>' + gps + dir + '<br>Speed: ' + (jres[key].speed || '0') + 'km/h' + '<br>Route: ' + (jres[key].route || '') + '<br><span id="pax_' + jres[key].bus_no + '"></span>';
+          var shouldAutoTooltip = selectedBusNos.length > 0;
+          var tooltipOptions = shouldAutoTooltip ? {
+            permanent: true,
+            direction: 'top',
+            offset: [0, -12]
+          } : {};
+          var icon_bus = jres[key].trip_rev_kind == '00' ? 'green' : (jres[key].trip_rev_kind == '99' ? 'yellow' : 'blue');
+          icon_bus = ['01', '03', '05'].indexOf(jres[key].trip_rev_kind) > -1 ? 'red' : icon_bus;
+          let isOKU = jres[key].accessibility && ['green', 'yellow'].includes(icon_bus) ? '_oku' : '';
+          let isEVB = evBus.includes(jres[key].bus_no) && ['green', 'yellow'].includes(icon_bus) ? '_evb' : '';
+          var icon = L.icon({
+            iconUrl: 'https://myrapidbus.prasarana.com.my/assets/images/map/bus_icon/bus_' + icon_bus + isOKU + isEVB + '.png',
+            iconSize: [30, 30],
+          });
+
+          if (prev_markers[busNumber]) { //update existing marker
+            prev_markers[busNumber].setIcon(icon).setLatLng([jres[key].latitude, jres[key].longitude]).setZIndexOffset(5000);
+            prev_markers[busNumber].bindPopup(popup);
+            if (prev_markers[busNumber].getTooltip()) {
+              prev_markers[busNumber].setTooltipContent(busNumber);
+            } else {
+              prev_markers[busNumber].bindTooltip(busNumber, tooltipOptions);
+            }
+            if (shouldAutoTooltip) {
+              prev_markers[busNumber].openTooltip();
+            } else {
+              prev_markers[busNumber].closeTooltip();
+            }
+            cur_markers[busNumber] = prev_markers[busNumber];
+          } else { //create new marker
+            var myMarker = L.marker([jres[key].latitude, jres[key].longitude], {
+              icon: icon
+            }).bindPopup(popup, {
+              autoClose: false
+            }).bindTooltip(busNumber, tooltipOptions);
+            myMarker._id = busNumber;
+            map.addLayer(myMarker);
+            new_markers[busNumber] = myMarker;
+            myMarker.setZIndexOffset(5000);
+            if (shouldAutoTooltip) {
+              myMarker.openTooltip();
+            }
+            if (myMarker._id == '')
+              myMarker.openPopup();
+          }
+
+          if (selectedBusNos.length > 0) {
+            selectedBusBounds.push([jres[key].latitude, jres[key].longitude]);
+          }
+        }
+
+        // Initialize removal counter if not exists
+        if (!window.busRemovalCounter) window.busRemovalCounter = {};
+
+        // Only process removal if we have some data (not completely empty)
+        if (Object.keys(jres).length > 0) {
+          // Reset counters for buses that are present
+          for (var activeBus in activeBusNumbers) {
+            window.busRemovalCounter[activeBus] = 0;
+          }
+
+          // Increment counters for missing buses
+          for (var busNum in prev_markers) {
+            if (!activeBusNumbers[busNum]) {
+              if (!window.busRemovalCounter[busNum]) {
+                window.busRemovalCounter[busNum] = 1;
+              } else {
+                window.busRemovalCounter[busNum]++;
+              }
+
+              // Increase threshold to 100 consecutive misses (about 500 seconds / 8+ minutes)
+              if (window.busRemovalCounter[busNum] >= 100) {
+                console.log('Removing marker for bus after 100 misses:', busNum);
+                prev_markers[busNum].closeTooltip();
+                map.removeLayer(prev_markers[busNum]);
+                delete prev_markers[busNum];
+                delete window.busRemovalCounter[busNum];
+              } else {
+                // Keep the marker for now but don't add to cur_markers
+                console.log('Bus', busNum, 'missing for', window.busRemovalCounter[busNum], 'updates');
+                // Keep existing markers in prev_markers to prevent removal
+                cur_markers[busNum] = prev_markers[busNum];
+              }
+            }
+          }
+        } else {
+          // If no data at all, don't remove any buses - keep all existing markers
+          console.log('No data received, keeping all existing markers');
+          cur_markers = Object.assign({}, prev_markers);
+        }
+
+        // Update the global markers object - merge current and new markers
+        prev_markers = Object.assign({}, cur_markers, new_markers);
+        console.log('Total markers on map:', Object.keys(prev_markers).length);
+
+        if (selectedBusNos.length > 0 && selectedBusBounds.length > 0) {
+          if (selectedBusBounds.length === 1) {
+            if (!hasAppliedSelectedBusAutoZoom) {
+              map.setView(selectedBusBounds[0], 15);
+              hasAppliedSelectedBusAutoZoom = true;
+            }
+          } else {
+            map.fitBounds(selectedBusBounds, {
+              padding: [30, 30],
+              maxZoom: 17
+            });
+            hasAppliedSelectedBusAutoZoom = true;
+          }
+        }
+
+      } catch (error) {
+        console.error('Error in setup function:', error);
+      }
+    }
+
+    function gZip2String(strBase64) {
+      // Decode base64 (convert ascii to binary)
+      var strData = atob(strBase64);
+      // Convert binary string to character-number array
+      var charData = strData.split('').map(function (x) {
+        return x.charCodeAt(0);
+      });
+      // Turn number array into byte-array
+      var binData = new Uint8Array(charData);
+      // Pako magic
+      var nData = pako.inflate(binData);
+      // Convert gunzipped byteArray back to ascii string:
+      return new TextDecoder('utf8').decode(new Uint8Array(nData));
+    }
   </script>
 </body>
 </html>

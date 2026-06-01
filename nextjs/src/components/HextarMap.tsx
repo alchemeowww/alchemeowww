@@ -22,11 +22,17 @@ const SOCKET_SID = '5ipamfo2bumjion6rcfjdbkhmu0032u0';
 const SOCKET_PROVIDER = 'prm';
 const ROUTE_FILTER = '';
 
+
+// Bus selection and trip destination logic
 const EV_BUS = new Set([
   'BNG4101', 'BNG4102', 'BNG4103', 'BNG4204', 'BNG4105',
   'BNG4106', 'BNG4107', 'BNG4108', 'BNG4109', 'BNG4110',
   'BNG4111', 'BNG4112', 'BNG4113', 'BNG4014', 'BNG4015',
 ]);
+let selectedBusNos: string[] = [];
+let selectedBusNoMap: Record<string, boolean> = {};
+let trip_dest: Record<string, any> = {};
+let busRemovalCounter: Record<string, number> = {};
 
 type RapidBus = {
   bus_no?: string;
@@ -127,10 +133,18 @@ function createBusIcon(bus: RapidBus): L.Icon {
   });
 }
 
+
 function createPopup(bus: RapidBus): string {
+  let dir = '';
+  if (bus.dir && trip_dest[bus.route]) {
+    const idx = bus.dir === 1 ? 2 : 1;
+    dir = `<br>To: ${trip_dest[bus.route][idx]?.stop_name ?? ''}`;
+  }
+  let gps = `<br>GPS: ${bus.dt_gps ?? '-'}`;
   return [
     `<b>${bus.bus_no ?? 'Unknown Bus'} (${bus.captain_id ?? '-'})</b>`,
-    `<br>GPS: ${bus.dt_gps ?? '-'}`,
+    gps,
+    dir,
     `<br>Speed: ${bus.speed ?? '0'}km/h`,
     `<br>Route: ${bus.route ?? '-'}`,
   ].join('');
@@ -172,13 +186,17 @@ export default function HextarMap() {
       if (!mapInstance) return;
 
       const currentBusIds = new Set<string>();
+      const activeBusNumbers: Record<string, boolean> = {};
 
       Object.values(incomingData).forEach((bus) => {
         const busNo = String(bus.bus_no ?? '').trim();
         const lat = parseNumber(bus.latitude);
         const lng = parseNumber(bus.longitude);
-
         if (!busNo || lat === null || lng === null) return;
+        activeBusNumbers[busNo] = true;
+
+        // selectedBusNos filtering
+        if (selectedBusNos.length > 0 && !selectedBusNoMap[busNo]) return;
 
         currentBusIds.add(busNo);
         const icon = createBusIcon(bus);
@@ -201,10 +219,23 @@ export default function HextarMap() {
         busMarkersRef.current.set(busNo, marker);
       });
 
-      busMarkersRef.current.forEach((marker, busNo) => {
-        if (currentBusIds.has(busNo)) return;
-        marker.remove();
-        busMarkersRef.current.delete(busNo);
+      // Marker removal logic (after 100 consecutive misses)
+      Object.keys(busRemovalCounter).forEach((busNum) => {
+        if (activeBusNumbers[busNum]) {
+          busRemovalCounter[busNum] = 0;
+        } else {
+          busRemovalCounter[busNum] = (busRemovalCounter[busNum] || 0) + 1;
+          if (busRemovalCounter[busNum] >= 100) {
+            const marker = busMarkersRef.current.get(busNum);
+            if (marker) marker.remove();
+            busMarkersRef.current.delete(busNum);
+            delete busRemovalCounter[busNum];
+          }
+        }
+      });
+      // Add new buses to removal counter
+      Object.keys(activeBusNumbers).forEach((busNum) => {
+        if (!(busNum in busRemovalCounter)) busRemovalCounter[busNum] = 0;
       });
     };
 

@@ -199,31 +199,27 @@ export default function AfPlusPage() {
 			<div className="flex flex-col bg-cream mt-14">
 				<div className="relative overflow-hidden bg-light-brown">
 					<div className="lg:container lg:mx-auto px-8 py-16 flex flex-col gap-8">
-						<div className="flex items-center gap-3">
-							<div className="h-px w-8 bg-brown/30" />
-							<span className="font-play text-xs tracking-widest uppercase text-brown/50">Anime Fest+ 2026</span>
-						</div>
 
 						<div className="grid md:grid-cols-2 gap-8 items-center">
 							<div className="flex flex-col gap-4">
 								<h1 className="font-rye text-4xl md:text-5xl text-dark-brown leading-tight">
-									Anime Fest+ 2026<br />Round 2
+									Cosmic 2026 Plan
 								</h1>
 
 								<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
 									<div className="rounded-xl border border-brown/15 bg-white/60 px-4 py-3">
 										<p className="font-play text-xs uppercase tracking-widest text-brown/50">Date</p>
-										<p className="font-rye text-dark-brown text-lg">26 to 27 Sep 2026</p>
+										<p className="font-rye text-dark-brown text-lg">11 to 13 Sep 2026</p>
 									</div>
 									<div className="rounded-xl border border-brown/15 bg-white/60 px-4 py-3">
 										<p className="font-play text-xs uppercase tracking-widest text-brown/50">Venue</p>
-										<p className="font-rye text-dark-brown text-lg">WTC Kuala Lumpur</p>
+										<p className="font-rye text-dark-brown text-lg">Sunway Pyramid Convention Center</p>
 									</div>
 								</div>
 
 								<div className="flex flex-wrap gap-3 pt-2">
 									<a
-										href="https://maps.app.goo.gl/uzFFhcNdpm3xBM5q7"
+										href="https://maps.app.goo.gl/ZMZxJ2zVjYjwk3XV9"
 										target="_blank"
 										rel="noopener noreferrer"
 										className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors"
@@ -244,7 +240,7 @@ export default function AfPlusPage() {
 								<div className="relative aspect-4/3">
 									<Image
 										src="/images/events/af-plus/MIST_Y FOREST/MIST_Y FOREST.jpg"
-										alt="Anime Fest plus featured artwork preview"
+										alt="mist;y forest image preview"
 										fill
 										sizes="(max-width: 768px) 100vw, 50vw"
 										className="object-cover"
@@ -256,23 +252,6 @@ export default function AfPlusPage() {
 					</div>
 				</div>
 
-				<div className="lg:container lg:mx-auto px-8 py-14 flex flex-col gap-8">
-					<div className="flex items-center gap-3">
-						<div className="flex-1 h-px bg-brown/15" />
-						<span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">Fan Art</span>
-						<div className="flex-1 h-px bg-brown/15" />
-					</div>
-					<p className="font-play text-brown/70 text-center max-w-3xl mx-auto">
-						Nostalgic and fantasy-inspired drops featuring Digimon Adventures, Cardcaptor Sakura,
-						and Frieren with standees, interactive keychains, and NFC pieces.
-					</p>
-
-					<div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-						{fanArtProducts.map((product) => (
-							<ProductCard key={product.name} product={product} />
-						))}
-					</div>
-				</div>
 
         <div className="lg:container lg:mx-auto px-8 py-14 flex flex-col gap-8">
           <div className="flex items-center gap-3">
@@ -314,11 +293,31 @@ export default function AfPlusPage() {
 					</div>
 				</div>
 
+
+				<div className="lg:container lg:mx-auto px-8 py-14 flex flex-col gap-8">
+					<div className="flex items-center gap-3">
+						<div className="flex-1 h-px bg-brown/15" />
+						<span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">Fan Art</span>
+						<div className="flex-1 h-px bg-brown/15" />
+					</div>
+					<p className="font-play text-brown/70 text-center max-w-3xl mx-auto">
+						Nostalgic and fantasy-inspired drops featuring Digimon Adventures, Cardcaptor Sakura,
+						and Frieren with standees, interactive keychains, and NFC pieces.
+					</p>
+
+					<div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+						{fanArtProducts.map((product) => (
+							<ProductCard key={product.name} product={product} />
+						))}
+					</div>
+				</div>
+
+				<div className="bg-light-brown/70">
 				<div className="lg:container lg:mx-auto px-8 py-14">
 					<div className="rounded-2xl border border-brown/10 bg-white/70 p-8 md:p-10 text-center flex flex-col gap-4 items-center">
-						<h2 className="font-rye text-2xl md:text-3xl text-dark-brown">See You At AF+ Round 2</h2>
+						<h2 className="font-rye text-2xl md:text-3xl text-dark-brown">See You At Cosmic 2026</h2>
 						<p className="font-play text-brown/70 max-w-2xl">
-							All artworks shown on this page are planned for Anime Fest+ 2026 (Round 2).
+							All artworks shown on this page are planned for Cosmic 2026.
 							Stock may vary by day, so come early for the full selection.
 						</p>
 						<Link
@@ -328,6 +327,7 @@ export default function AfPlusPage() {
 							Explore Other Events
 						</Link>
 					</div>
+				</div>
 				</div>
 			</div>
 

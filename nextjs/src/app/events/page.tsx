@@ -15,6 +15,15 @@ const events = [
     link: '/events/af-plus-2026',
   },
   {
+    date: '11 - 13 Sep 2026',
+    title: 'Cosmic 2026 - TBC',
+    location: 'Sunway Pyramid Convention Center',
+    type: 'Anime Convention',
+    image: "/images/events/booths/Cosmic Sep2026 TBC.webp",
+    upcoming: true,
+    link: '/events/cosmic-2026',
+  },
+  {
     date: '28 - 30 Aug 2026',
     title: 'Animangaki 2026',
     location: 'The Mines - MIECC',

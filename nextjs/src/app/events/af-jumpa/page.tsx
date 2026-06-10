@@ -201,29 +201,29 @@ export default function AfPlusPage() {
 					<div className="lg:container lg:mx-auto px-8 py-16 flex flex-col gap-8">
 						<div className="flex items-center gap-3">
 							<div className="h-px w-8 bg-brown/30" />
-							<span className="font-play text-xs tracking-widest uppercase text-brown/50">Anime Fest+ 2026</span>
+							<span className="font-play text-xs tracking-widest uppercase text-brown/50">Anime Fest</span>
 						</div>
 
 						<div className="grid md:grid-cols-2 gap-8 items-center">
 							<div className="flex flex-col gap-4">
 								<h1 className="font-rye text-4xl md:text-5xl text-dark-brown leading-tight">
-									Anime Fest+ 2026<br />Round 2
+									Anime Fest
 								</h1>
 
 								<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
 									<div className="rounded-xl border border-brown/15 bg-white/60 px-4 py-3">
 										<p className="font-play text-xs uppercase tracking-widest text-brown/50">Date</p>
-										<p className="font-rye text-dark-brown text-lg">26 to 27 Sep 2026</p>
+										<p className="font-rye text-dark-brown text-lg">24 to 26 Jul 2026</p>
 									</div>
 									<div className="rounded-xl border border-brown/15 bg-white/60 px-4 py-3">
 										<p className="font-play text-xs uppercase tracking-widest text-brown/50">Venue</p>
-										<p className="font-rye text-dark-brown text-lg">WTC Kuala Lumpur</p>
+										<p className="font-rye text-dark-brown text-lg">Sungai Wang Plaza</p>
 									</div>
 								</div>
 
 								<div className="flex flex-wrap gap-3 pt-2">
 									<a
-										href="https://maps.app.goo.gl/uzFFhcNdpm3xBM5q7"
+										href="https://maps.app.goo.gl/D35VJQA77SrZ71mb9"
 										target="_blank"
 										rel="noopener noreferrer"
 										className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#4F321E] hover:bg-accent text-cream rounded-full font-play text-sm transition-colors"

@@ -11,6 +11,17 @@ const events = [
     googleMapsLink: "https://maps.app.goo.gl/4ZfRs7Hkqitwr9eT9",
     link: '/events/af-plus-2026',
   },
+
+  {
+    name: "Cosmic 2026 - TBC",
+    venue: "Sunway Pyramid Convention Center",
+    date: "11 - 13 Sep 2026",
+    image: "/images/events/booths/Cosmic Sep2026 TBC.webp",
+    alt: "Cosmic 2026 - TBC event logo",
+    upcoming: true,
+    googleMapsLink: "https://maps.app.goo.gl/ZMZxJ2zVjYjwk3XV9",
+    link: '/events/cosmic-2026',
+  },
   {
     name: "Animangaki 2026",
     venue: "The Mines - MIECC",

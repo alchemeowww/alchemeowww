@@ -94,58 +94,47 @@ const originalCatArtProducts: Product[] = [
 			// },
 		],
 	},
-];
-
-const mistyForestProducts: Product[] = [
 	{
 		name: 'Story Interactive Board Game',
 		description:
 			'The first ready game follows Hansel and Gretel (Candy House). It plays like snake and ladder: roll dice, move through steps, and trigger online Alchemy and Trap Card interactions on the game website.',
 		images: [
 			{
-				src: '/images/events/af-plus/MIST_Y FOREST/Boardgame 2.jpg',
+				src: '/images/events/af-plus/MIST_Y FOREST/MIST_Y FOREST.jpg',
 				alt: 'MIST;Y FOREST board game preview 2',
 			},
+		],
+	},
+];
+
+const mistyForestProducts: Product[] = [
+	{
+		name: 'Standee',
+		description:
+			'Digimon Standee features the main characters and their Digimon partners in a dynamic pose, with vibrant colors and intricate details that capture the essence of the series.',
+		images: [
 			{
-				src: '/images/events/af-plus/MIST_Y FOREST/Boardgame 3.jpg',
-				alt: 'MIST;Y FOREST board game preview 3',
+				src: '/images/events/kyu_hchy/Hachii Standee.png',
+				alt: 'Hachii standee artwork',
+			},
+			{
+				src: '/images/events/kyu_hchy/Hachii Standee 2.png',
+				alt: 'Hachii standee artwork',
+			},
+			{
+				src: '/images/events/kyu_hchy/Hachii Standee 3.png',
+				alt: 'Hachii standee artwork',
 			},
 		],
 	},
 	{
-		name: 'Story Art Book',
+		name: 'Keychain',
 		description:
-			'A new story art book version is planned around the same Hansel and Gretel fairy-tale universe, retold with original MIST;Y FOREST characters and a fresh storyline.',
+			'Pokemon Keychain features a chibi-style character, with a cute and playful expression that captures the essence of the beloved franchise.',
 		images: [
 			{
-				src: '/images/events/af-plus/MIST_Y FOREST/MIST_Y FOREST.jpg',
-				alt: 'MIST;Y FOREST story world visual',
-			},
-		],
-	},
-	{
-		name: 'Interactive Keychain and NFC with Light',
-		description:
-			'NFC with light keychain combines collectable design with utility. The NFC chip can be configured for quick actions such as opening a link or digital business card details.',
-		images: [
-			{
-				src: '/images/events/af-plus/MIST_Y FOREST/NFC glowing keychain.gif',
-				alt: 'MIST;Y FOREST NFC glowing keychain',
-			},
-			{
-				src: '/images/events/af-plus/MIST_Y FOREST/Website - NFC Light Lantern.png',
-				alt: 'NFC light lantern keychain design',
-			},
-		],
-	},
-	{
-		name: 'Wooden Cardholder with NFC Light',
-		description:
-			'Layered wooden cardholder with NFC light feature. You can keep a transport card inside and tap at station gates while enjoying the light effect.',
-		images: [
-			{
-				src: '/images/events/af-plus/MIST_Y FOREST/Wooden Cardholder with light.jpg',
-				alt: 'Real wooden cardholder with light photo',
+				src: '/images/events/kyu_hchy/Hachii Keychain.png',
+				alt: 'Hachii keychain artwork',
 			},
 		],
 	},
@@ -207,7 +196,7 @@ export default function AfPlusPage() {
 						<div className="grid md:grid-cols-2 gap-8 items-center">
 							<div className="flex flex-col gap-4">
 								<h1 className="font-rye text-4xl md:text-5xl text-dark-brown leading-tight">
-									Anime Fest
+									<span className="text-accent">HachiiMeowww</span><br/>Anime Fest
 								</h1>
 
 								<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
@@ -243,7 +232,7 @@ export default function AfPlusPage() {
 							<div className="rounded-2xl overflow-hidden border border-brown/10 shadow-lg bg-white/60">
 								<div className="relative aspect-4/3">
 									<Image
-										src="/images/events/af-plus/MIST_Y FOREST/MIST_Y FOREST.jpg"
+										src="/images/events/kyu_hchy/HachiiMeowww.webp"
 										alt="Anime Fest plus featured artwork preview"
 										fill
 										sizes="(max-width: 768px) 100vw, 50vw"
@@ -256,10 +245,28 @@ export default function AfPlusPage() {
 					</div>
 				</div>
 
+				
+		
+        <div className="lg:container lg:mx-auto px-8 py-14 flex flex-col gap-8">
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-brown/15" />
+						<span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">Kyu_hchy Fan Art</span>
+            <div className="flex-1 h-px bg-brown/15" />
+          </div>
+          <p className="font-play text-brown/70 text-center max-w-4xl mx-auto leading-relaxed">
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {mistyForestProducts.map((product) => (
+              <ProductCard key={product.name} product={product} />
+            ))}
+          </div>
+        </div>
+			<div className="bg-light-brown/70">
 				<div className="lg:container lg:mx-auto px-8 py-14 flex flex-col gap-8">
 					<div className="flex items-center gap-3">
 						<div className="flex-1 h-px bg-brown/15" />
-						<span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">Fan Art</span>
+						<span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">Alchemeowww Fan Art</span>
 						<div className="flex-1 h-px bg-brown/15" />
 					</div>
 					<p className="font-play text-brown/70 text-center max-w-3xl mx-auto">
@@ -273,52 +280,31 @@ export default function AfPlusPage() {
 						))}
 					</div>
 				</div>
+			</div>
 
-        <div className="lg:container lg:mx-auto px-8 py-14 flex flex-col gap-8">
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-brown/15" />
-            <span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">MIST;Y FOREST 迷霧森林</span>
-            <div className="flex-1 h-px bg-brown/15" />
-          </div>
-          <p className="font-play text-brown/70 text-center max-w-4xl mx-auto leading-relaxed">
-            MIST;Y FOREST is an interactive story universe about 3 main characters who enter the forest,
-            meet along the journey, and experience different stories together. The first playable release is
-            based on Hansel and Gretel (Candy House), with online interactable Alchemy and Trap cards that
-            players draw from the game website to continue their run.
-          </p>
+				<div className="lg:container lg:mx-auto px-8 py-14 flex flex-col gap-8">
+					<div className="flex items-center gap-3">
+						<div className="flex-1 h-px bg-brown/20" />
+						<span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">Original Cat Art</span>
+						<div className="flex-1 h-px bg-brown/20" />
+					</div>
+					<p className="font-play text-brown/70 text-center max-w-3xl mx-auto">
+						Original interactive cat-themed creations, from mood-swappable magnet standees
+						to playful keychains, fridge magnets, and sticker sheets.
+					</p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            {mistyForestProducts.map((product) => (
-              <ProductCard key={product.name} product={product} />
-            ))}
-          </div>
-        </div>
-
-				<div className="bg-light-brown/70">
-					<div className="lg:container lg:mx-auto px-8 py-14 flex flex-col gap-8">
-						<div className="flex items-center gap-3">
-							<div className="flex-1 h-px bg-brown/20" />
-							<span className="font-rye text-brown text-sm tracking-widest whitespace-nowrap">Original Cat Art</span>
-							<div className="flex-1 h-px bg-brown/20" />
-						</div>
-						<p className="font-play text-brown/70 text-center max-w-3xl mx-auto">
-							Original interactive cat-themed creations, from mood-swappable magnet standees
-							to playful keychains, fridge magnets, and sticker sheets.
-						</p>
-
-						<div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-							{originalCatArtProducts.map((product) => (
-								<ProductCard key={product.name} product={product} />
-							))}
-						</div>
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+						{originalCatArtProducts.map((product) => (
+							<ProductCard key={product.name} product={product} />
+						))}
 					</div>
 				</div>
 
 				<div className="lg:container lg:mx-auto px-8 py-14">
 					<div className="rounded-2xl border border-brown/10 bg-white/70 p-8 md:p-10 text-center flex flex-col gap-4 items-center">
-						<h2 className="font-rye text-2xl md:text-3xl text-dark-brown">See You At AF+ Round 2</h2>
+						<h2 className="font-rye text-2xl md:text-3xl text-dark-brown">See You At Anime Fest Jumpa</h2>
 						<p className="font-play text-brown/70 max-w-2xl">
-							All artworks shown on this page are planned for Anime Fest+ 2026 (Round 2).
+							All artworks shown on this page are planned for Anime Fest Jumpa.
 							Stock may vary by day, so come early for the full selection.
 						</p>
 						<Link

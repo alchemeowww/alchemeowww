@@ -37,7 +37,7 @@ const events = [
     location: 'Hextar World Empire City',
     type: 'Art Market',
     image: '/images/events/booths/CAFKLX.webp',
-    upcoming: true,
+    upcoming: false,
     link: '/events/cafkl-x',
   },
   {

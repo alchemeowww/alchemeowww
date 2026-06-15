@@ -37,7 +37,7 @@ const events = [
     date: "13 - 14 Jun 2026",
     image: "/images/events/booths/CAFKLX.webp",
     alt: "Comic Art Festival KL X event logo",
-    upcoming: true,
+    upcoming: false,
     googleMapsLink: "https://maps.app.goo.gl/Gthk6ha1NHf4i8w97",
     link: '/events/cafkl-x'
   },

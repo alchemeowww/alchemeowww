@@ -71,7 +71,7 @@ export default function Hero() {
         </div>
 
         {/* Upcoming event promo (desktop/tablet) */}
-        <div className={`absolute right-3 bottom-6 z-20 flex flex-row items-end transition-all duration-500 ${hasScrolled ? 'translate-x-[120%] opacity-0 pointer-events-none' : 'translate-x-0 opacity-100'}`}>
+        {/* <div className={`absolute right-3 bottom-6 z-20 flex flex-row items-end transition-all duration-500 ${hasScrolled ? 'translate-x-[120%] opacity-0 pointer-events-none' : 'translate-x-0 opacity-100'}`}>
         <a
           href="/events/cafkl-x"
           className="rounded-full"
@@ -104,7 +104,7 @@ export default function Hero() {
             </div>
           </div>
         </a>
-        </div>
+        </div> */}
 
         {/* Scroll cue */}
         <div className="absolute bottom-18 md:bottom-8 flex flex-col items-center gap-1 text-brown animate-bounce" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-delay="300" data-aos-once="true">

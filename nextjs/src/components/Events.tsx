@@ -1,6 +1,18 @@
 import Footer from "./Footer";
 
 const events = [
+
+  {
+    name: "Comic Fiesta 2026 - TBC",
+    venue: "Kuala Lumpur Convention Center",
+    date: "19 - 20 Dec 2026",
+    image: "/images/events/cf.webp",
+    alt: "Comic Fiesta 2026 - event logo",
+    tbc: true,
+    upcoming: true,
+    googleMapsLink: "https://maps.app.goo.gl/8bfFeyPxrvynRn7k8",
+    link: '/events/comic-fiesta-2026',
+  },
   {
     name: "Anime Fest+ 2026(Round 2)",
     venue: "World Trade Center, Kuala Lumpur",
@@ -47,14 +59,6 @@ const events = [
     date: "25 - 26 Apr 2026",
     image: "/images/events/cosmic-spring.webp",
     alt: "Cosmic Spring 2026 event logo",
-    upcoming: false,
-  },
-  {
-    name: "Comic Fiesta 2025",
-    venue: "KLCC",
-    date: "20 - 21 Dec 2025",
-    image: "/images/events/cf.webp",
-    alt: "Comic Fiesta 2025 event logo",
     upcoming: false,
   }
 ];
@@ -104,7 +108,11 @@ export default function Events() {
                 >
                   {/* Event logo */}
                   <div className={`flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden bg-white shadow-sm flex items-center justify-center`}>
-                    <img src={event.image} alt={event.alt} className="w-full h-full object-cover" />
+                    <div
+                      style={{ backgroundImage: `url('${event.image}')` }}
+                      className={`w-full h-full bg-cover bg-center ${event.tbc ? 'bg-white/70 bg-blend-overlay' : ''
+                        }`}
+                    ></div>
                   </div>
 
                   {/* Event info */}

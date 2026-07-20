@@ -6,6 +6,16 @@ import Footer from '../../components/Footer';
 
 const events = [
   {
+    date: '19 - 20 Dec 2026',
+    title: 'Comic Fiesta 2026 - TBC',
+    location: 'Kuala Lumpur Convention Center',
+    type: 'Anime Convention',
+    image: "/images/events/cf.webp",
+    upcoming: true,
+    tbc: true,
+    link: '/events/comic-fiesta-2026',
+  },
+  {
     date: '26 - 27 Sep 2026',
     title: 'Anime Fest+ 2026(Round 2)',
     location: 'World Trade Center, Kuala Lumpur',
@@ -168,11 +178,11 @@ export default function Events() {
               const inner = (<>
                 {/* Image */}
                 <div className="relative aspect-4/3 overflow-hidden bg-light-brown">
-                  <img
-                    src={event.image}
-                    alt={`${event.title} booth`}
-                    className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-105`}
-                  />
+                  <div
+                    style={{ backgroundImage: `url('${event.image}')` }}
+                    className={`w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 ${event.tbc ? 'bg-white/70 bg-blend-overlay' : ''
+                      }`}
+                  ></div>
                   {/* Upcoming badge */}
                   {event.upcoming && (
                     <div className="absolute top-3 left-3 flex items-center gap-1 bg-amber-100 border border-amber-300 text-amber-700 px-2.5 py-1 rounded-full text-xs font-semibold font-play shadow-sm">

@@ -7,19 +7,19 @@ import Footer from '../../components/Footer';
 const events = [
   {
     date: '26 - 27 Sep 2026',
-    title: 'Anime Fest+ 2026(Round 2) - TBC',
+    title: 'Anime Fest+ 2026(Round 2)',
     location: 'World Trade Center, Kuala Lumpur',
     type: 'Anime Convention',
-    image: "/images/events/booths/AF-tbc.webp",
+    image: "/images/events/booths/AF.webp",
     upcoming: true,
     link: '/events/af-plus-2026',
   },
   {
     date: '11 - 13 Sep 2026',
-    title: 'Cosmic 2026 - TBC',
+    title: 'Cosmic 2026',
     location: 'Sunway Pyramid Convention Center',
     type: 'Anime Convention',
-    image: "/images/events/booths/Cosmic Sep2026 TBC.webp",
+    image: "/images/events/booths/Cosmic-Sep2026.webp",
     upcoming: true,
     link: '/events/cosmic-2026',
   },

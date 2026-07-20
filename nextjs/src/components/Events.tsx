@@ -2,22 +2,22 @@ import Footer from "./Footer";
 
 const events = [
   {
-    name: "Anime Fest+ 2026(Round 2) - TBC",
+    name: "Anime Fest+ 2026(Round 2)",
     venue: "World Trade Center, Kuala Lumpur",
     date: "26 - 27 Sep 2026",
-    image: "/images/events/booths/AF-tbc.webp",
-    alt: "Anime Fest+ 2026(Round 2) - TBC event logo",
+    image: "/images/events/booths/AF.webp",
+    alt: "Anime Fest+ 2026(Round 2) - event logo",
     upcoming: true,
     googleMapsLink: "https://maps.app.goo.gl/4ZfRs7Hkqitwr9eT9",
     link: '/events/af-plus-2026',
   },
 
   {
-    name: "Cosmic 2026 - TBC",
+    name: "Cosmic 2026",
     venue: "Sunway Pyramid Convention Center",
     date: "11 - 13 Sep 2026",
-    image: "/images/events/booths/Cosmic Sep2026 TBC.webp",
-    alt: "Cosmic 2026 - TBC event logo",
+    image: "/images/events/booths/Cosmic-Sep2026.webp",
+    alt: "Cosmic 2026 - event logo",
     upcoming: true,
     googleMapsLink: "https://maps.app.goo.gl/ZMZxJ2zVjYjwk3XV9",
     link: '/events/cosmic-2026',

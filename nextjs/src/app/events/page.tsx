@@ -16,6 +16,15 @@ const events = [
     link: '/events/comic-fiesta-2026',
   },
   {
+    date: '14 - 15 Nov 2026',
+    title: 'Georgetown Illustration Festival 2026',
+    location: 'Level 3 Island 88, George Town, Penang',
+    type: 'Art Festival',
+    image: "/images/events/gtif2026.webp",
+    upcoming: true,
+    googleMapsLink: "https://maps.app.goo.gl/yYirzj7qwGmUwCwG6",
+  },
+  {
     date: '26 - 27 Sep 2026',
     title: 'Anime Fest+ 2026(Round 2)',
     location: 'World Trade Center, Kuala Lumpur',

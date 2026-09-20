@@ -153,7 +153,7 @@ const mistyForestProducts: Product[] = [
 
 function ProductCard({ product }: { product: Product }) {
 	return (
-		<div className="rounded-2xl border border-brown/10 bg-white/70 overflow-hidden shadow-sm flex flex-col md:flex-row">
+		<div className="rounded-2xl border border-brown/10 bg-white/70 shadow-sm flex flex-col md:flex-row md:overflow-hidden">
 			<div className="p-6 flex flex-col gap-3 md:w-2/5 md:border-r md:border-brown/10">
 				<h3 className="font-rye text-xl text-dark-brown">{product.name}</h3>
 				{product.description ? (
@@ -174,14 +174,14 @@ function ProductCard({ product }: { product: Product }) {
 				}`}
 			>
 				{product.images.map((image) => (
-					<div key={image.src} className="rounded-xl overflow-hidden border border-brown/10 bg-white">
-						<div className="relative aspect-square">
+					<div key={image.src} className="relative w-full overflow-hidden rounded-xl border border-brown/10 bg-white">
+						<div className="relative aspect-square w-full">
 							<Image
 								src={image.src}
 								alt={image.alt}
 								fill
 								sizes="(max-width: 768px) 100vw, 50vw"
-								className="object-cover object-center"
+								className="h-full w-full object-cover object-center"
 							/>
 						</div>
 					</div>

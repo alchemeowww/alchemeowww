@@ -154,7 +154,7 @@ const mistyForestProducts: Product[] = [
 function ProductCard({ product }: { product: Product }) {
 	return (
 		<div className="rounded-2xl border border-brown/10 bg-white/70 shadow-sm flex flex-col md:flex-row md:overflow-hidden">
-			<div className="p-6 flex flex-col gap-3 md:w-2/5 md:border-r md:border-brown/10">
+			<div className="p-6 flex flex-col gap-3 md:w-2/5 md:border-r md:border-brown/10 grow">
 				<h3 className="font-rye text-xl text-dark-brown">{product.name}</h3>
 				{product.description ? (
 					<p className="font-play text-sm text-brown/70 leading-relaxed">{product.description}</p>
@@ -175,7 +175,7 @@ function ProductCard({ product }: { product: Product }) {
 			>
 				{product.images.map((image) => (
 					<div key={image.src} className="relative w-full overflow-hidden rounded-xl border border-brown/10 bg-white">
-						<div className="relative aspect-square w-full">
+						<div className="relative aspect-square w-full min-h-80">
 							<Image
 								src={image.src}
 								alt={image.alt}
@@ -191,7 +191,7 @@ function ProductCard({ product }: { product: Product }) {
 	);
 }
 
-export default function AfPlusPage() {
+export default function cfPage() {
 	return (
 		<>
 			<Header activePage="events" />
@@ -305,7 +305,7 @@ export default function AfPlusPage() {
 						and Frieren with standees, interactive keychains, and NFC pieces.
 					</p>
 
-					<div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+					<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
 						{fanArtProducts.map((product) => (
 							<ProductCard key={product.name} product={product} />
 						))}

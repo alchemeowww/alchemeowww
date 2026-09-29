@@ -17,7 +17,7 @@ type NdefReadingEvent = Event & {
 };
 
 interface NdefReader extends EventTarget {
-  write: (message: NdefMessage, options?: { overwrite?: boolean }) => Promise<void>;
+  write: (message: NdefMessage, options?: { overwrite?: boolean; signal?: AbortSignal }) => Promise<void>;
   scan: (options?: { signal?: AbortSignal }) => Promise<void>;
 }
 
@@ -25,7 +25,7 @@ type WebNfcWindow = Window & {
   NDEFReader?: new () => NdefReader;
 };
 
-type WriterStatus = 'idle' | 'erasing' | 'writing' | 'success' | 'error';
+type WriterStatus = 'idle' | 'writing' | 'success' | 'error';
 
 const uriPrefixes = [
   '', 'http://www.', 'https://www.', 'http://', 'https://', 'tel:', 'mailto:',
@@ -62,15 +62,16 @@ export default function NfcUrlWriter() {
   const [isReading, setIsReading] = useState(false);
   const [readRecords, setReadRecords] = useState<Array<{ type: string; value: string }>>([]);
   const readController = useRef<AbortController | null>(null);
+  const writeController = useRef<AbortController | null>(null);
 
   useEffect(() => {
     setEnabled(new URLSearchParams(window.location.search).get('nfc') === 'true');
     setSupported(window.isSecureContext && typeof (window as WebNfcWindow).NDEFReader === 'function');
   }, []);
 
-  if (!enabled || !supported) return null;
+  // if (!enabled || !supported) return null;
 
-  const isWriting = status === 'erasing' || status === 'writing';
+  const isWriting = status === 'writing';
 
   async function handleRead() {
     const Reader = (window as WebNfcWindow).NDEFReader;
@@ -117,6 +118,10 @@ export default function NfcUrlWriter() {
     setMessage('NFC reading stopped.');
   }
 
+  function handleCancelWriting() {
+    writeController.current?.abort();
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -136,25 +141,34 @@ export default function NfcUrlWriter() {
     }
 
     const reader = new Reader();
-    setStatus('erasing');
-    setMessage('Hold the NFC tag near your phone to erase its current data.');
+    const controller = new AbortController();
+    writeController.current = controller;
+    setStatus('writing');
+    setMessage('Hold the NFC tag near your phone to replace its contents with the URL.');
 
     try {
       await reader.write(
         { records: [{ recordType: 'url', data: targetUrl.toString() }] },
-        { overwrite: true }
+        { overwrite: true, signal: controller.signal }
       );
       setStatus('success');
       setMessage(`URL written successfully: ${targetUrl.toString()}`);
     } catch (error) {
-      setStatus('error');
-      if (error instanceof DOMException && error.name === 'NotAllowedError') {
+      if (controller.signal.aborted) {
+        setStatus('idle');
+        setMessage('Writing cancelled.');
+      } else if (error instanceof DOMException && error.name === 'NotAllowedError') {
+        setStatus('error');
         setMessage('NFC access was denied. Allow NFC access and try again.');
       } else if (error instanceof DOMException && error.name === 'NotSupportedError') {
+        setStatus('error');
         setMessage('The tag could not be read. Check that it supports NFC Forum NDEF.');
       } else {
+        setStatus('error');
         setMessage('The write did not complete. Keep the tag near your phone and try again.');
       }
+    } finally {
+      if (writeController.current === controller) writeController.current = null;
     }
   }
 
@@ -169,7 +183,7 @@ export default function NfcUrlWriter() {
         <div>
           <h2 className="font-rye text-xl text-brown">Write a URL to your NFC tag</h2>
           <p className="mt-2 font-play text-sm leading-relaxed text-brown/70">
-            This will erase the tag first, then write only the URL you enter. Keep the tag near your Android phone and tap it again when prompted.
+            This will replace the tag&apos;s existing contents with the URL you enter. Keep the tag near your Android phone when prompted.
           </p>
         </div>
       </div>
@@ -196,11 +210,21 @@ export default function NfcUrlWriter() {
           <span className="material-symbols-outlined text-lg" aria-hidden="true">
             {isWriting ? 'sync' : 'edit_note'}
           </span>
-          {status === 'erasing' ? 'Erasing tag…' : status === 'writing' ? 'Writing URL…' : 'Erase and write'}
+          {isWriting ? 'Writing URL…' : 'Write URL'}
         </button>
       </form>
 
       <div className="mt-4 flex flex-wrap gap-3">
+        {isWriting && (
+          <button
+            type="button"
+            onClick={handleCancelWriting}
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-brown/20 px-5 py-3 font-play text-sm text-brown transition-colors hover:bg-cream/70"
+          >
+            <span className="material-symbols-outlined text-lg" aria-hidden="true">close</span>
+            Cancel writing
+          </button>
+        )}
         <button
           type="button"
           onClick={isReading ? handleStopReading : handleRead}

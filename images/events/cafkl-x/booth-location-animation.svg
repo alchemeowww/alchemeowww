@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" fill-rule="evenodd" clip-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="1.5">
+  <path data-motion-path="true" d="M890.25,588.75l0,-84l-62.25,0l0,-95.25l-132,0l0,24.75" fill="none" stroke="#ffb700" stroke-width="9" />
+  <path data-draw="true" d="M610.5,395.55c0,10.928 19.324,19.8 43.125,19.8c3.773,0 7.53,-0.227 11.174,-0.676l19.014,10.576l-5.442,-13.484c11.52,-3.706 18.379,-9.758 18.379,-16.216c0,-10.928 -19.324,-19.8 -43.125,-19.8c-23.801,0 -43.125,8.872 -43.125,19.8Z" fill="#fff" fill-opacity="0.67" stroke="#ffb700" stroke-width="4" />
+  <g transform="matrix(0.596708,0,0,0.596708,118.055956,93.534013)">
+    <rect x="842" y="482.195" width="106.954" height="62.059" fill="#fff" fill-opacity="0" />
+    <g transform="matrix(40.220646,0,0,40.220646,948.953925,520)" />
+    <text data-draw="true" x="842" y="515" style="font-family: play, sans-serif; font-size: 34px" fill="#ffb700" fill-opacity="0" stroke="#ffb700" stroke-width="2.51" stroke-linecap="butt" stroke-miterlimit="2">C17-18</text>
+  </g>
+</svg>

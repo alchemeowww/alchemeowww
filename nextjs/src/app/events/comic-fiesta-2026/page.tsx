@@ -169,7 +169,7 @@ function ProductCard({ product }: { product: Product }) {
 			</div>
 
 			<div
-				className={`grid gap-2 p-3 md:w-3/5 md:p-4 self-start ${
+				className={`grid gap-2 p-3 w-full md:w-3/5 md:p-4 self-start ${
 					product.images.length === 1 ? 'grid-cols-1' : 'grid-cols-2'
 				}`}
 			>

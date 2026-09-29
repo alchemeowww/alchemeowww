@@ -113,7 +113,7 @@ export default function NfcGuide() {
             </div>
           </div>
 
-          {/* <NfcUrlWriter /> */}
+          <NfcUrlWriter />
 
           {/* Still Stuck CTA */}
           <div className="bg-light-brown rounded-2xl p-10 flex flex-col items-center text-center gap-4" data-aos="fade-up" data-aos-once="true">

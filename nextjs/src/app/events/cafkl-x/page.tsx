@@ -192,16 +192,14 @@ export default function CafKlXPage() {
                 Our booth at <span className="text-accent text-xl">Row C, Booth 17-18</span> — Near to the entry A! Here's a handy map to help you find us once you're at the venue. We can't wait to see you there!
               </p>
             </div>
-            <div className="relative md:h-auto rounded-2xl overflow-hidden border border-brown/10 shadow-md">
-              <Image
-                src="/images/events/cafkl-x/booth-location.webp"
-                alt="Alchemeowww booth location map at CAFKL X"
-                width={1200}
-                height={800}
-                className="h-full w-full object-contain origin-bottom-right scale-[1.55] sm:scale-[1.35] md:h-auto md:origin-center md:scale-100"
-              />
-              <BoothLocationAnimation className="origin-bottom-right scale-[1.55] sm:scale-[1.35] md:origin-center md:scale-100" />
-            </div>
+            <BoothLocationAnimation
+              imageSrc="/images/events/cafkl-x/booth-location.webp"
+              imageAlt="Alchemeowww booth location map at CAFKL X"
+              svgSrc="/images/events/cafkl-x/booth-location-animation.svg"
+              className="rounded-2xl overflow-hidden border border-brown/10 shadow-md"
+              imageClassName="h-auto w-full object-contain origin-bottom-right scale-[1.55] sm:scale-[1.35] md:origin-center md:scale-100"
+              overlayClassName="origin-bottom-right scale-[1.55] sm:scale-[1.35] md:origin-center md:scale-100"
+            />
           </div>
         </div>
 

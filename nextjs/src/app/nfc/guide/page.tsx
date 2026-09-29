@@ -1,6 +1,7 @@
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import AOSInit from '../../../components/AOSInit';
+import NfcUrlWriter from '../../../components/NfcUrlWriter';
 
 const steps = [
   {
@@ -111,6 +112,8 @@ export default function NfcGuide() {
               ))}
             </div>
           </div>
+
+          <NfcUrlWriter />
 
           {/* Still Stuck CTA */}
           <div className="bg-light-brown rounded-2xl p-10 flex flex-col items-center text-center gap-4" data-aos="fade-up" data-aos-once="true">

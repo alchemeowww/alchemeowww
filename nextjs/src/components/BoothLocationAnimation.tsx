@@ -11,6 +11,7 @@ type BoothLocationAnimationProps = {
   imageHeight?: number;
   motionPathSelector?: string;
   drawSelector?: string;
+  markerColor?: string;
   className?: string;
   imageClassName?: string;
   overlayClassName?: string;
@@ -24,6 +25,7 @@ export default function BoothLocationAnimation({
   imageHeight = 800,
   motionPathSelector = '[data-motion-path]',
   drawSelector = '[data-draw]',
+  markerColor = '#ffb700',
   className = '',
   imageClassName = 'h-auto w-full object-contain',
   overlayClassName = '',
@@ -125,6 +127,7 @@ export default function BoothLocationAnimation({
         alt={imageAlt}
         width={imageWidth}
         height={imageHeight}
+        unoptimized
         className={imageClassName}
       />
       <div
@@ -137,7 +140,8 @@ export default function BoothLocationAnimation({
         />
         <div
           ref={markerRef}
-          className="absolute left-0 top-0 z-30 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ffb700] shadow-[0_0_8px_rgb(0,0,0)] sm:h-5 sm:w-5"
+          className="absolute left-0 top-0 z-30 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_0_8px_rgb(0,0,0)] sm:h-5 sm:w-5"
+          style={{ backgroundColor: markerColor }}
         />
       </div>
     </div>

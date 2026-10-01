@@ -3,12 +3,12 @@ import Footer from "./Footer";
 const events = [
 
   {
-    name: "Comic Fiesta 2026 - TBC",
+    name: "Comic Fiesta 2026",
     venue: "Kuala Lumpur Convention Center",
     date: "19 - 20 Dec 2026",
     image: "/images/events/cf.webp",
     alt: "Comic Fiesta 2026 - event logo",
-    tbc: true,
+    tbc: false,
     upcoming: true,
     googleMapsLink: "https://maps.app.goo.gl/8bfFeyPxrvynRn7k8",
     link: '/events/comic-fiesta-2026',
@@ -29,7 +29,7 @@ const events = [
     date: "26 - 27 Sep 2026",
     image: "/images/events/booths/AF.webp",
     alt: "Anime Fest+ 2026(Round 2) - event logo",
-    upcoming: true,
+    upcoming: false,
     googleMapsLink: "https://maps.app.goo.gl/4ZfRs7Hkqitwr9eT9",
     link: '/events/af-plus-2026',
   },

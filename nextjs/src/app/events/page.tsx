@@ -7,12 +7,12 @@ import Footer from '../../components/Footer';
 const events = [
   {
     date: '19 - 20 Dec 2026',
-    title: 'Comic Fiesta 2026 - TBC',
+    title: 'Comic Fiesta 2026',
     location: 'Kuala Lumpur Convention Center',
     type: 'Anime Convention',
     image: "/images/events/cf.webp",
     upcoming: true,
-    tbc: true,
+    tbc: false,
     link: '/events/comic-fiesta-2026',
   },
   {

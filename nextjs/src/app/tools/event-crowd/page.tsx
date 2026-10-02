@@ -6,7 +6,6 @@ import Footer from '@/components/Footer';
 import CrowdDashboard from './CrowdDashboard';
 import type { CrowdConfig, CrowdSession, Crossing, IntervalMinutes, IntervalRow } from './crowd-types';
 import { useCrowdMonitor } from './useCrowdMonitor';
-import './event-crowd.css';
 
 const CONFIG_KEY = 'event-crowd-config-v1';
 const SESSIONS_KEY = 'event-crowd-sessions-v1';
@@ -124,7 +123,7 @@ export default function EventCrowdPage() {
 		URL.revokeObjectURL(url);
 	};
 
-	return <><Header /><div className="event-crowd-page"><CrowdDashboard config={config} updateConfig={updateConfig} monitoring={monitoring} status={monitor.status} error={monitor.error} startedAt={startedAt} elapsed={elapsed} rows={rows} crossings={monitor.crossings} people={monitor.people} todayTotal={savedToday + (monitoring ? monitor.crossings.length : 0)} cameras={monitor.cameras} start={start} stop={stop} videoRef={videoRef} canvasRef={canvasRef} onExport={onExport} /></div><Footer /></>;
+	return <><Header /><div className="event-crowd-page"><CrowdDashboard config={config} updateConfig={updateConfig} monitoring={monitoring} status={monitor.status} attentionStatus={monitor.attentionStatus} error={monitor.error} startedAt={startedAt} elapsed={elapsed} rows={rows} crossings={monitor.crossings} people={monitor.people} todayTotal={savedToday + (monitoring ? monitor.crossings.length : 0)} cameras={monitor.cameras} start={start} stop={stop} videoRef={videoRef} canvasRef={canvasRef} onExport={onExport} /></div><Footer /></>;
 }
 
 function buildRows(start: number, end: number, crossings: Crossing[], intervalMinutes: IntervalMinutes): IntervalRow[] {

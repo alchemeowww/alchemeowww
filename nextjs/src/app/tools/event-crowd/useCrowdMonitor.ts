@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MutableRefObject } from 'react';
-import type { CrowdConfig, Crossing, TrackedPerson } from './crowd-types';
+import type { Attention, AttentionModelStatus, CrowdConfig, Crossing, TrackedPerson } from './crowd-types';
+import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 type MonitorStatus = 'idle' | 'starting' | 'live' | 'error';
 type Track = { id: number; x: number; y: number; firstSeen: number; lastSeen: number; counted: boolean };
@@ -17,6 +18,7 @@ export function useCrowdMonitor(
 	enabled: boolean,
 ) {
 	const [status, setStatus] = useState<MonitorStatus>('idle');
+	const [attentionStatus, setAttentionStatus] = useState<AttentionModelStatus>('idle');
 	const [error, setError] = useState('');
 	const [crossings, setCrossings] = useState<Crossing[]>([]);
 	const [people, setPeople] = useState<TrackedPerson[]>([]);
@@ -38,6 +40,7 @@ export function useCrowdMonitor(
 	useEffect(() => {
 		if (!enabled) {
 			setStatus('idle');
+			setAttentionStatus('idle');
 			setPeople([]);
 			return;
 		}
@@ -52,12 +55,13 @@ export function useCrowdMonitor(
 		let lastFaceFrame = 0;
 		let nextId = 1;
 		let tracks: Track[] = [];
-		let recentFaces: Array<{ x: number; y: number; looking: boolean | null }> = [];
+		let recentFaces: Array<{ x: number; y: number; attention: Attention }> = [];
 		let lastPublish = 0;
 
 		const boot = async () => {
 			try {
 				setStatus('starting');
+				setAttentionStatus('loading');
 				setError('');
 				const mediaDevices = navigator.mediaDevices;
 				if (!mediaDevices?.getUserMedia) throw new Error('Camera access is not available in this browser.');
@@ -93,7 +97,12 @@ export function useCrowdMonitor(
 				]);
 				if (personTask.status === 'rejected') throw personTask.reason;
 				detector = personTask.value;
-				if (faceTask.status === 'fulfilled') faceLandmarker = faceTask.value;
+				if (faceTask.status === 'fulfilled') {
+					faceLandmarker = faceTask.value;
+					setAttentionStatus('ready');
+				} else {
+					setAttentionStatus('unavailable');
+				}
 				if (cancelled) {
 					detector.close();
 					faceLandmarker?.close();
@@ -115,16 +124,8 @@ export function useCrowdMonitor(
 						try {
 							const result = faceLandmarker.detectForVideo(currentVideo, now);
 							recentFaces = result.faceLandmarks.map((landmarks) => {
-								const leftEye = landmarks[33];
-								const rightEye = landmarks[263];
 								const nose = landmarks[1];
-								if (!leftEye || !rightEye || !nose) return { x: 0, y: 0, looking: null };
-								const eyeDistance = Math.abs(rightEye.x - leftEye.x);
-								const eyeMidpoint = (rightEye.x + leftEye.x) / 2;
-								const yawOffset = Math.abs(nose.x - eyeMidpoint) / Math.max(eyeDistance, 0.001);
-								const eyeHeight = (leftEye.y + rightEye.y) / 2;
-								const pitchOffset = Math.abs(nose.y - eyeHeight) / Math.max(eyeDistance, 0.001);
-								return { x: nose.x, y: nose.y, looking: yawOffset < 0.19 && pitchOffset > 0.25 && pitchOffset < 0.82 ? true : yawOffset > 0.32 || pitchOffset <= 0.25 || pitchOffset >= 0.82 ? false : null };
+								return { x: nose?.x ?? -1, y: nose?.y ?? -1, attention: classifyAttention(landmarks) };
 							});
 						} catch {
 							recentFaces = [];
@@ -156,14 +157,16 @@ export function useCrowdMonitor(
 						const track: Track = previous
 							? { ...previous, x: person.x, y: person.y, lastSeen: now }
 							: { id: nextId++, x: person.x, y: person.y, firstSeen: now, lastSeen: now, counted: false };
-						const face = recentFaces.find((item) => item.x >= person.left && item.x <= person.left + person.width && item.y >= person.top && item.y <= person.top + person.height);
-						const attention = face?.looking === true ? 'looking' : face?.looking === false ? 'not-looking' : 'unknown';
+						const facesInPerson = recentFaces
+							.filter((face) => face.x >= person.left && face.x <= person.left + person.width && face.y >= person.top && face.y <= person.top + person.height * 0.55)
+							.sort((first, second) => Math.abs(first.x - (person.left + person.width / 2)) - Math.abs(second.x - (person.left + person.width / 2)));
+						const attention = facesInPerson[0]?.attention ?? 'unknown';
 						if (previous && !track.counted && now - track.firstSeen >= activeConfig.minimumTrackingMs && ((previous.x < activeConfig.linePosition / 100 && person.x >= activeConfig.linePosition / 100) || (previous.x > activeConfig.linePosition / 100 && person.x <= activeConfig.linePosition / 100))) {
 							track.counted = true;
 							setCrossings((current) => [...current, { timestamp: Date.now(), direction: person.x > previous.x ? 'left-to-right' : 'right-to-left', attention }]);
 						}
 						nextTracks.push(track);
-						visiblePeople.push({ id: track.id, left: person.left, top: person.top, width: person.width, height: person.height, confidence: person.confidence });
+						visiblePeople.push({ id: track.id, left: person.left, top: person.top, width: person.width, height: person.height, confidence: person.confidence, attention });
 					}
 					tracks = [...nextTracks, ...tracks.filter((track, index) => !used.has(index) && now - track.lastSeen < 1200)];
 					if (time - lastPublish > 100) {
@@ -175,6 +178,7 @@ export function useCrowdMonitor(
 				frameRequest = requestAnimationFrame(processFrame);
 			} catch (caughtError) {
 				if (!cancelled) {
+					setAttentionStatus('unavailable');
 					setError(caughtError instanceof Error ? caughtError.message : 'Could not start camera monitoring.');
 					setStatus('error');
 				}
@@ -194,7 +198,41 @@ export function useCrowdMonitor(
 	}, [enabled, cameraId, config.resolution, refreshCameras, videoRef, canvasRef]);
 
 	const clearCrossings = useCallback(() => setCrossings([]), []);
-	return { status, error, crossings, people, cameras, cameraId, setCameraId, refreshCameras, clearCrossings };
+	return { status, attentionStatus, error, crossings, people, cameras, cameraId, setCameraId, refreshCameras, clearCrossings };
+}
+
+export function classifyAttention(landmarks: NormalizedLandmark[]): Attention {
+	const outerLeft = landmarks[33];
+	const innerLeft = landmarks[133];
+	const upperLeft = landmarks[159];
+	const lowerLeft = landmarks[145];
+	const irisLeft = landmarks[468];
+	const innerRight = landmarks[362];
+	const outerRight = landmarks[263];
+	const upperRight = landmarks[386];
+	const lowerRight = landmarks[374];
+	const irisRight = landmarks[473];
+	const nose = landmarks[1];
+	if (!outerLeft || !innerLeft || !upperLeft || !lowerLeft || !irisLeft || !innerRight || !outerRight || !upperRight || !lowerRight || !irisRight || !nose) return 'unknown';
+
+	const interEyeDistance = Math.abs(outerRight.x - outerLeft.x);
+	if (interEyeDistance < 0.025) return 'unknown';
+	const yawOffset = Math.abs(nose.x - (outerLeft.x + outerRight.x) / 2) / interEyeDistance;
+	const leftGazeX = (irisLeft.x - outerLeft.x) / (innerLeft.x - outerLeft.x);
+	const rightGazeX = (irisRight.x - outerRight.x) / (innerRight.x - outerRight.x);
+	const leftGazeY = (irisLeft.y - upperLeft.y) / (lowerLeft.y - upperLeft.y);
+	const rightGazeY = (irisRight.y - upperRight.y) / (lowerRight.y - upperRight.y);
+	if (![yawOffset, leftGazeX, rightGazeX, leftGazeY, rightGazeY].every(Number.isFinite)) return 'unknown';
+
+	const headTurned = yawOffset > 0.38;
+	const eyesAway = (leftGazeX < 0.18 && rightGazeX > 0.82) || (leftGazeX > 0.82 && rightGazeX < 0.18);
+	const gazeHighOrLow = (leftGazeY < 0.12 && rightGazeY < 0.12) || (leftGazeY > 0.88 && rightGazeY > 0.88);
+	if (headTurned || eyesAway || gazeHighOrLow) return 'not-looking';
+
+	const headFacingCamera = yawOffset < 0.24;
+	const eyesCentered = [leftGazeX, rightGazeX].every((position) => position >= 0.25 && position <= 0.75);
+	const gazeLevel = [leftGazeY, rightGazeY].every((position) => position >= 0.2 && position <= 0.8);
+	return headFacingCamera && eyesCentered && gazeLevel ? 'looking' : 'unknown';
 }
 
 function drawOverlay(canvas: HTMLCanvasElement | null, video: HTMLVideoElement, people: TrackedPerson[], linePosition: number, area: CrowdConfig['detectionArea']) {
@@ -229,6 +267,7 @@ function drawOverlay(canvas: HTMLCanvasElement | null, video: HTMLVideoElement, 
 		context.strokeRect(x, y, width, height);
 		context.fillStyle = '#82d6ac';
 		context.font = `600 ${Math.max(12, canvas.width / 90)}px sans-serif`;
-		context.fillText(`P${person.id}  ${Math.round(person.confidence * 100)}%`, x, Math.max(14, y - 6));
+		const attentionLabel = person.attention === 'looking' ? 'LOOKING' : person.attention === 'not-looking' ? 'NOT LOOKING' : 'UNKNOWN';
+		context.fillText(`P${person.id}  ${Math.round(person.confidence * 100)}%  ·  ${attentionLabel}`, x, Math.max(14, y - 6));
 	});
 }

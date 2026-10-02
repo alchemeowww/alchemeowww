@@ -1,4 +1,5 @@
 export type Attention = 'looking' | 'not-looking' | 'unknown';
+export type AttentionModelStatus = 'idle' | 'loading' | 'ready' | 'unavailable';
 export type Direction = 'left-to-right' | 'right-to-left';
 export type IntervalMinutes = number;
 
@@ -23,6 +24,7 @@ export type TrackedPerson = {
 	id: number;
 	left: number;	top: number;	width: number;	height: number;
 	confidence: number;
+	attention: Attention;
 };
 
 export type IntervalRow = {

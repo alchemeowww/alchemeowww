@@ -116,6 +116,9 @@
 .attention-panel { padding: 0.1rem 1rem 0.85rem; }
 .attention-panel .crowd-panel-head { border-bottom: 1px solid var(--crowd-line); }
 .attention-panel .crowd-panel-head > .material-symbols-outlined { color: var(--crowd-coral); font-size: 1.2rem; }
+.crowd-attention-status { display: inline-block; border: 1px solid #e0e4dc; padding: 0.25rem 0.4rem; color: #7a847a; font-size: 0.48rem; font-weight: 800; letter-spacing: 0.07em; white-space: nowrap; }
+.crowd-attention-status.is-ready { border-color: #c8ddcd; background: #eff7ef; color: #2d7557; }
+.crowd-attention-status.is-unavailable { border-color: #ead0c8; background: #fff4ef; color: #a84d3d; }
 .crowd-attention-bar { display: flex; height: 0.4rem; gap: 2px; margin: 0.85rem 0 0.65rem; background: #e6e8e1; }
 .crowd-attention-bar i:first-child { background: var(--crowd-green); }
 .crowd-attention-bar i:nth-child(2) { background: var(--crowd-yellow); }

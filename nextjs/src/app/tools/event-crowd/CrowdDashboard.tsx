@@ -1,13 +1,14 @@
 'use client';
 
 import type { ChangeEvent } from 'react';
-import type { CrowdConfig, Crossing, IntervalRow, TrackedPerson } from './crowd-types';
+import type { AttentionModelStatus, CrowdConfig, Crossing, IntervalRow, TrackedPerson } from './crowd-types';
 
 type Props = {
 	config: CrowdConfig;
 	updateConfig: (key: keyof CrowdConfig, value: CrowdConfig[keyof CrowdConfig]) => void;
 	monitoring: boolean;
 	status: 'idle' | 'starting' | 'live' | 'error';
+	attentionStatus: AttentionModelStatus;
 	error: string;
 	startedAt: number | null;
 	elapsed: string;
@@ -26,7 +27,7 @@ type Props = {
 const formatTime = (timestamp: number) => new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(timestamp);
 
 export default function CrowdDashboard(props: Props) {
-	const { config, updateConfig, monitoring, status, error, startedAt, elapsed, rows, crossings, people, todayTotal, cameras, start, stop, videoRef, canvasRef, onExport } = props;
+	const { config, updateConfig, monitoring, status, attentionStatus, error, startedAt, elapsed, rows, crossings, people, todayTotal, cameras, start, stop, videoRef, canvasRef, onExport } = props;
 	const total = crossings.length;
 	const leftToRight = crossings.filter((crossing) => crossing.direction === 'left-to-right').length;
 	const rightToLeft = total - leftToRight;
@@ -103,13 +104,14 @@ export default function CrowdDashboard(props: Props) {
 							<div className="crowd-setting crowd-range-setting"><label htmlFor="line-position">Counting line <output>{config.linePosition}%</output></label><input id="line-position" type="range" min="20" max="80" step="1" value={config.linePosition} onChange={handleRange('linePosition')} disabled={monitoring} /></div>
 							<div className="crowd-setting crowd-range-setting"><label htmlFor="confidence">Minimum confidence <output>{Math.round(config.minimumConfidence * 100)}%</output></label><input id="confidence" type="range" min="30" max="90" step="5" value={Math.round(config.minimumConfidence * 100)} onChange={(event) => field('minimumConfidence', Number(event.target.value) / 100)} disabled={monitoring} /></div>
 							<div className="crowd-setting"><label htmlFor="tracking-duration">Minimum tracking time</label><select id="tracking-duration" value={config.minimumTrackingMs} onChange={(event) => field('minimumTrackingMs', Number(event.target.value))} disabled={monitoring}><option value="0">No minimum</option><option value="500">0.5 seconds</option><option value="1000">1 second</option><option value="1500">1.5 seconds</option></select></div>
-							<p className="crowd-settings-note"><span className="material-symbols-outlined">info</span>Pose-based attention is an estimate. Faces that are small, obscured, or uncertain are recorded as unknown.</p>
+							<p className="crowd-settings-note"><span className="material-symbols-outlined">info</span>{attentionStatus === 'unavailable' ? 'Face analysis could not load. Footfall tracking continues, but attention will be recorded as unknown.' : 'Attention uses face orientation and iris position as an estimate. Small, obscured, or ambiguous faces are recorded as unknown.'}</p>
 						</details>
 
 						<section className="crowd-panel attention-panel">
 							<div className="crowd-panel-head compact"><div><p className="crowd-overline">04 / ATTENTION ESTIMATE</p><h2>Camera attention</h2></div><span className="material-symbols-outlined">face</span></div>
 							<div className="crowd-attention-bar"><i style={{ width: `${total ? looking / total * 100 : 0}%` }} /><i style={{ width: `${total ? crossings.filter((crossing) => crossing.attention === 'not-looking').length / total * 100 : 0}%` }} /></div>
 							<div className="crowd-attention-legend"><span><i className="looking-dot" />Looking <b>{looking}</b></span><span><i className="notlooking-dot" />Not looking <b>{crossings.filter((crossing) => crossing.attention === 'not-looking').length}</b></span><span><i className="unknown-dot" />Unknown <b>{crossings.filter((crossing) => crossing.attention === 'unknown').length}</b></span></div>
+							<div className={`crowd-attention-status is-${attentionStatus}`}>{attentionStatus === 'ready' ? 'POSE READY' : attentionStatus === 'loading' ? 'LOADING' : attentionStatus === 'unavailable' ? 'UNAVAILABLE' : 'IDLE'}</div>
 						</section>
 					</aside>
 				</section>

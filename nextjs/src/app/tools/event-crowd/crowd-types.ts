@@ -1,0 +1,46 @@
+export type Attention = 'looking' | 'not-looking' | 'unknown';
+export type Direction = 'left-to-right' | 'right-to-left';
+export type IntervalMinutes = number;
+
+export type CrowdConfig = {
+	sessionName: string;
+	intervalMinutes: IntervalMinutes;
+	linePosition: number;
+	detectionArea: 'full' | 'center';
+	minimumConfidence: number;
+	minimumTrackingMs: number;
+	cameraId: string;
+	resolution: '720p' | '1080p';
+};
+
+export type Crossing = {
+	timestamp: number;
+	direction: Direction;
+	attention: Attention;
+};
+
+export type TrackedPerson = {
+	id: number;
+	left: number;	top: number;	width: number;	height: number;
+	confidence: number;
+};
+
+export type IntervalRow = {
+	start: number;
+	end: number;
+	total: number;
+	leftToRight: number;
+	rightToLeft: number;
+	looking: number;
+	notLooking: number;
+	unknown: number;
+};
+
+export type CrowdSession = {
+	id: string;
+	name: string;
+	startedAt: number;
+	endedAt: number;
+	config: CrowdConfig;
+	rows: IntervalRow[];
+};

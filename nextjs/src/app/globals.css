@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "aos/dist/aos.css";
+@import "./tools/event-crowd/event-crowd.css";
 
 :root {
   --background: #ffffff;

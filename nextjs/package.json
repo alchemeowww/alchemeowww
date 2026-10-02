@@ -11,6 +11,7 @@
     "deploy": "next build && touch out/.nojekyll && npx gh-pages -d out --dotfiles"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.0.1",
     "animejs": "^4.4.1",
     "aos": "^2.3.4",
     "next": "16.1.6",

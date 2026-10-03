@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MutableRefObject } from 'react';
-import type { Attention, AttentionModelStatus, CrowdConfig, Crossing, TrackedPerson } from './crowd-types';
+import type { Attention, AttentionModelStatus, CameraZoomRange, CrowdConfig, Crossing, TrackedPerson } from './crowd-types';
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 type MonitorStatus = 'idle' | 'starting' | 'live' | 'error';
@@ -23,7 +23,9 @@ export function useCrowdMonitor(
 	const [crossings, setCrossings] = useState<Crossing[]>([]);
 	const [people, setPeople] = useState<TrackedPerson[]>([]);
 	const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
+	const [zoomRange, setZoomRange] = useState<CameraZoomRange | null>(null);
 	const [cameraId, setCameraId] = useState(config.cameraId);
+	const videoTrackRef = useRef<MediaStreamTrack | null>(null);
 	const configRef = useRef(config);
 	configRef.current = config;
 
@@ -36,6 +38,15 @@ export function useCrowdMonitor(
 	useEffect(() => {
 		setCameraId(config.cameraId);
 	}, [config.cameraId]);
+
+	useEffect(() => {
+		const track = videoTrackRef.current;
+		if (!track || !zoomRange) return;
+		const zoom = Math.max(zoomRange.min, Math.min(zoomRange.max, config.cameraZoom));
+		void track.applyConstraints({ advanced: [{ zoom } as MediaTrackConstraintSet] }).catch(() => {
+			setError('This camera could not apply the selected zoom level.');
+		});
+	}, [config.cameraZoom, zoomRange]);
 
 	useEffect(() => {
 		if (!enabled) {
@@ -73,6 +84,15 @@ export function useCrowdMonitor(
 					},
 					audio: false,
 				});
+				const videoTrack = stream.getVideoTracks()[0];
+				videoTrackRef.current = videoTrack ?? null;
+				const capabilities = videoTrack && typeof videoTrack.getCapabilities === 'function' ? videoTrack.getCapabilities() : undefined;
+				const cameraZoom = (capabilities as (MediaTrackCapabilities & { zoom?: { min?: number; max?: number; step?: number } }) | undefined)?.zoom;
+				if (cameraZoom && Number.isFinite(cameraZoom.min) && Number.isFinite(cameraZoom.max)) {
+					setZoomRange({ min: cameraZoom.min!, max: cameraZoom.max!, step: cameraZoom.step && cameraZoom.step > 0 ? cameraZoom.step : 0.1 });
+				} else {
+					setZoomRange(null);
+				}
 				if (cancelled) return stream.getTracks().forEach((track) => track.stop());
 				const video = videoRef.current;
 				if (!video) throw new Error('Camera preview could not be initialized.');
@@ -192,6 +212,7 @@ export function useCrowdMonitor(
 			cancelled = true;
 			cancelAnimationFrame(frameRequest);
 			stream?.getTracks().forEach((track) => track.stop());
+			videoTrackRef.current = null;
 			if (videoElement) videoElement.srcObject = null;
 			detector?.close();
 			faceLandmarker?.close();
@@ -200,7 +221,7 @@ export function useCrowdMonitor(
 	}, [enabled, cameraId, config.resolution, refreshCameras, videoRef, canvasRef]);
 
 	const clearCrossings = useCallback(() => setCrossings([]), []);
-	return { status, attentionStatus, error, crossings, people, cameras, cameraId, setCameraId, refreshCameras, clearCrossings };
+	return { status, attentionStatus, error, crossings, people, cameras, zoomRange, cameraId, setCameraId, refreshCameras, clearCrossings };
 }
 
 export function classifyAttention(landmarks: NormalizedLandmark[]): Attention {

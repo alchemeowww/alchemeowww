@@ -3,6 +3,7 @@ export type AttentionModelStatus = 'idle' | 'loading' | 'ready' | 'unavailable';
 export type Direction = 'left-to-right' | 'right-to-left';
 export type CountMode = 'line-crossing' | 'person-detection';
 export type IntervalMinutes = number;
+export type CameraZoomRange = { min: number; max: number; step: number };
 
 export type CrowdConfig = {
 	sessionName: string;
@@ -13,6 +14,7 @@ export type CrowdConfig = {
 	minimumConfidence: number;
 	minimumTrackingMs: number;
 	cameraId: string;
+	cameraZoom: number;
 	resolution: '720p' | '1080p';
 };
 

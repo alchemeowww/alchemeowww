@@ -1,7 +1,7 @@
 'use client';
 
 import type { ChangeEvent } from 'react';
-import type { AttentionModelStatus, CrowdConfig, Crossing, IntervalRow, TrackedPerson } from './crowd-types';
+import type { AttentionModelStatus, CameraZoomRange, CrowdConfig, Crossing, IntervalRow, TrackedPerson } from './crowd-types';
 
 type Props = {
 	config: CrowdConfig;
@@ -17,6 +17,7 @@ type Props = {
 	people: TrackedPerson[];
 	todayTotal: number;
 	cameras: MediaDeviceInfo[];
+	zoomRange: CameraZoomRange | null;
 	start: () => void;
 	stop: () => void;
 	videoRef: React.RefObject<HTMLVideoElement | null>;
@@ -27,7 +28,7 @@ type Props = {
 const formatTime = (timestamp: number) => new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(timestamp);
 
 export default function CrowdDashboard(props: Props) {
-	const { config, updateConfig, monitoring, status, attentionStatus, error, startedAt, elapsed, rows, crossings, people, todayTotal, cameras, start, stop, videoRef, canvasRef, onExport } = props;
+	const { config, updateConfig, monitoring, status, attentionStatus, error, startedAt, elapsed, rows, crossings, people, todayTotal, cameras, zoomRange, start, stop, videoRef, canvasRef, onExport } = props;
 	const total = crossings.length;
 	const leftToRight = crossings.filter((crossing) => crossing.direction === 'left-to-right').length;
 	const rightToLeft = total - leftToRight;
@@ -99,7 +100,8 @@ export default function CrowdDashboard(props: Props) {
 							<div className="crowd-setting"><label htmlFor="count-mode">Counting method</label><select id="count-mode" value={config.countMode} onChange={(event) => field('countMode', event.target.value)} disabled={monitoring}><option value="line-crossing">Cross a virtual line</option><option value="person-detection">Count each person once</option></select></div>
 							<div className="crowd-setting"><label htmlFor="interval">Recording interval</label><select id="interval" value={[1, 5, 10, 15, 30, 60].includes(config.intervalMinutes) ? config.intervalMinutes : 'custom'} onChange={(event) => field('intervalMinutes', event.target.value === 'custom' ? 20 : Number(event.target.value))} disabled={monitoring}>{[1, 5, 10, 15, 30, 60].map((minutes) => <option key={minutes} value={minutes}>{minutes === 60 ? '1 hour' : `${minutes} minutes`}</option>)}<option value="custom">Custom</option></select></div>
 							{![1, 5, 10, 15, 30, 60].includes(config.intervalMinutes) && <div className="crowd-setting"><label htmlFor="custom-interval">Custom minutes</label><input id="custom-interval" className="crowd-custom-interval" type="number" min="1" max="720" value={config.intervalMinutes} onChange={(event) => field('intervalMinutes', Math.min(720, Math.max(1, Number(event.target.value) || 1)))} disabled={monitoring} /></div>}
-							<div className="crowd-setting"><label htmlFor="camera-select">Camera</label><select id="camera-select" value={config.cameraId} onChange={(event) => field('cameraId', event.target.value)} disabled={monitoring}><option value="">Browser default</option>{cameras.map((camera, index) => <option value={camera.deviceId} key={camera.deviceId}>{camera.label || `Camera ${index + 1}`}</option>)}</select></div>
+							<div className="crowd-setting"><label htmlFor="camera-select">Camera</label><select id="camera-select" value={config.cameraId} onChange={(event) => field('cameraId', event.target.value)} disabled={monitoring}><option value="">Browser default</option>{cameras.map((camera, index) => { const label = camera.label || `Camera ${index + 1}`; const isWideAngle = /ultra.?wide|wide.?angle|0\.5x/i.test(label); return <option value={camera.deviceId} key={camera.deviceId}>{isWideAngle ? `${label} · Wide angle` : label}</option>; })}</select></div>
+							<div className="crowd-setting"><label htmlFor="camera-zoom">Lens / field of view</label><select id="camera-zoom" value={config.cameraZoom} onChange={(event) => field('cameraZoom', Number(event.target.value))} disabled={!zoomRange || zoomRange.min >= 1}><option value={zoomRange?.min ?? config.cameraZoom}>{zoomRange && zoomRange.min < 1 ? `Widest supported · ${zoomRange.min.toFixed(1)}×` : 'Wide angle unavailable'}</option>{zoomRange && zoomRange.min < 1 && zoomRange.max >= 1 && <option value={1}>Standard · 1×</option>}</select></div>
 							<div className="crowd-setting"><label htmlFor="resolution">Resolution</label><select id="resolution" value={config.resolution} onChange={(event) => field('resolution', event.target.value)} disabled={monitoring}><option value="720p">HD · 720p</option><option value="1080p">Full HD · 1080p</option></select></div>
 							<div className="crowd-setting"><label htmlFor="area">Detection area</label><select id="area" value={config.detectionArea} onChange={(event) => field('detectionArea', event.target.value)} disabled={monitoring}><option value="full">Full frame</option><option value="center">Center 70%</option></select></div>
 							<div className="crowd-setting crowd-range-setting"><label htmlFor="line-position">Counting line <output>{config.linePosition}%</output></label><input id="line-position" type="range" min="20" max="80" step="1" value={config.linePosition} onChange={handleRange('linePosition')} disabled={monitoring || config.countMode === 'person-detection'} /></div>

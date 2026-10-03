@@ -18,6 +18,7 @@ const DEFAULT_CONFIG: CrowdConfig = {
 	minimumConfidence: 0.55,
 	minimumTrackingMs: 500,
 	cameraId: '',
+	cameraZoom: 1,
 	resolution: '720p',
 };
 
@@ -124,7 +125,7 @@ export default function EventCrowdPage() {
 		URL.revokeObjectURL(url);
 	};
 
-	return <><Header /><div className="event-crowd-page"><CrowdDashboard config={config} updateConfig={updateConfig} monitoring={monitoring} status={monitor.status} attentionStatus={monitor.attentionStatus} error={monitor.error} startedAt={startedAt} elapsed={elapsed} rows={rows} crossings={monitor.crossings} people={monitor.people} todayTotal={savedToday + (monitoring ? monitor.crossings.length : 0)} cameras={monitor.cameras} start={start} stop={stop} videoRef={videoRef} canvasRef={canvasRef} onExport={onExport} /></div><Footer /></>;
+	return <><Header /><div className="event-crowd-page"><CrowdDashboard config={config} updateConfig={updateConfig} monitoring={monitoring} status={monitor.status} attentionStatus={monitor.attentionStatus} error={monitor.error} startedAt={startedAt} elapsed={elapsed} rows={rows} crossings={monitor.crossings} people={monitor.people} todayTotal={savedToday + (monitoring ? monitor.crossings.length : 0)} cameras={monitor.cameras} zoomRange={monitor.zoomRange} start={start} stop={stop} videoRef={videoRef} canvasRef={canvasRef} onExport={onExport} /></div><Footer /></>;
 }
 
 function buildRows(start: number, end: number, crossings: Crossing[], intervalMinutes: IntervalMinutes): IntervalRow[] {

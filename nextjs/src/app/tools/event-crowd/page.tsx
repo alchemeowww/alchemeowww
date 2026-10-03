@@ -11,6 +11,7 @@ const CONFIG_KEY = 'event-crowd-config-v1';
 const SESSIONS_KEY = 'event-crowd-sessions-v1';
 const DEFAULT_CONFIG: CrowdConfig = {
 	sessionName: 'Market floor',
+	countMode: 'line-crossing',
 	intervalMinutes: 5,
 	linePosition: 50,
 	detectionArea: 'full',
@@ -110,9 +111,9 @@ export default function EventCrowdPage() {
 
 	const onExport = (format: 'csv' | 'json') => {
 		if (!rows.length) return;
-		const payload = format === 'json' ? JSON.stringify({ session: config.sessionName, startedAt, endedAt: currentEnd, intervalMinutes: config.intervalMinutes, rows }, null, 2) : [
-			['Session', 'Interval start', 'Interval end', 'Total footfall', 'Left to right', 'Right to left', 'Looking', 'Not looking', 'Unknown'].join(','),
-			...rows.map((row) => [csv(config.sessionName), new Date(row.start).toISOString(), new Date(row.end).toISOString(), row.total, row.leftToRight, row.rightToLeft, row.looking, row.notLooking, row.unknown].join(',')),
+		const payload = format === 'json' ? JSON.stringify({ session: config.sessionName, countMode: config.countMode, startedAt, endedAt: currentEnd, intervalMinutes: config.intervalMinutes, rows }, null, 2) : [
+			['Session', 'Counting method', 'Interval start', 'Interval end', 'Total footfall', 'Presence', 'Left to right', 'Right to left', 'Looking', 'Not looking', 'Unknown'].join(','),
+			...rows.map((row) => [csv(config.sessionName), csv(config.countMode), new Date(row.start).toISOString(), new Date(row.end).toISOString(), row.total, row.presence, row.leftToRight, row.rightToLeft, row.looking, row.notLooking, row.unknown].join(',')),
 		].join('\r\n');
 		const blob = new Blob([payload], { type: format === 'csv' ? 'text/csv;charset=utf-8' : 'application/json' });
 		const url = URL.createObjectURL(blob);
@@ -134,10 +135,11 @@ function buildRows(start: number, end: number, crossings: Crossing[], intervalMi
 		const rowEnd = Math.min(rowStart + intervalMs, Math.max(rowStart, end));
 		const events = crossings.filter((crossing) => crossing.timestamp >= rowStart && (crossing.timestamp < rowStart + intervalMs || index === count - 1 && crossing.timestamp <= end));
 		const leftToRight = events.filter((event) => event.direction === 'left-to-right').length;
-		const rightToLeft = events.length - leftToRight;
+		const rightToLeft = events.filter((event) => event.direction === 'right-to-left').length;
+		const presence = events.filter((event) => event.direction === 'presence').length;
 		const looking = events.filter((event) => event.attention === 'looking').length;
 		const notLooking = events.filter((event) => event.attention === 'not-looking').length;
-		return { start: rowStart, end: rowEnd, total: events.length, leftToRight, rightToLeft, looking, notLooking, unknown: events.length - looking - notLooking };
+		return { start: rowStart, end: rowEnd, total: events.length, presence, leftToRight, rightToLeft, looking, notLooking, unknown: events.length - looking - notLooking };
 	});
 }
 

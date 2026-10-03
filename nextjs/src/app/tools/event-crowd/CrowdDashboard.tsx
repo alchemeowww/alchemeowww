@@ -59,9 +59,9 @@ export default function CrowdDashboard(props: Props) {
 				{error && <p className="crowd-error" role="alert"><span className="material-symbols-outlined">warning</span>{error}</p>}
 
 				<section className="crowd-stat-grid" aria-label="Session summary">
-					<Stat label="SESSION FOOTFALL" value={String(total).padStart(2, '0')} note="completed crossings" icon="groups" />
-					<Stat label="LEFT → RIGHT" value={String(leftToRight).padStart(2, '0')} note="westbound flow" icon="trending_flat" tone="green" />
-					<Stat label="RIGHT → LEFT" value={String(rightToLeft).padStart(2, '0')} note="eastbound flow" icon="trending_flat" tone="amber" reverse />
+					<Stat label={config.countMode === 'person-detection' ? 'PEOPLE COUNTED' : 'SESSION FOOTFALL'} value={String(total).padStart(2, '0')} note={config.countMode === 'person-detection' ? 'unique person detections' : 'completed crossings'} icon="groups" />
+					{config.countMode === 'person-detection' ? <Stat label="CURRENTLY IN FRAME" value={String(people.length).padStart(2, '0')} note="visible right now" icon="person_search" tone="green" /> : <Stat label="LEFT → RIGHT" value={String(leftToRight).padStart(2, '0')} note="westbound flow" icon="trending_flat" tone="green" />}
+					{config.countMode === 'person-detection' ? <Stat label="ATTENTION UNKNOWN" value={String(crossings.filter((crossing) => crossing.attention === 'unknown').length).padStart(2, '0')} note="face not clear enough" icon="visibility_off" tone="amber" /> : <Stat label="RIGHT → LEFT" value={String(rightToLeft).padStart(2, '0')} note="eastbound flow" icon="trending_flat" tone="amber" reverse />}
 					<Stat label="LOOKED TOWARD CAMERA" value={String(looking).padStart(2, '0')} note={`${total ? Math.round(looking / total * 100) : 0}% of crossings`} icon="visibility" tone="rose" />
 				</section>
 
@@ -73,9 +73,9 @@ export default function CrowdDashboard(props: Props) {
 								<video ref={videoRef} className={monitoring ? 'is-visible' : ''} muted playsInline aria-label="Live camera preview" />
 								<canvas ref={canvasRef} className={monitoring ? 'is-visible' : ''} aria-hidden="true" />
 								{!monitoring && <div className="crowd-camera-placeholder"><span className="material-symbols-outlined">videocam_off</span><p>Camera is off</p><small>Start a session to activate the live view</small></div>}
-								{monitoring && <div className="crowd-camera-corner">{people.length} IN FRAME <span>·</span> LINE {config.linePosition}%</div>}
+								{monitoring && <div className="crowd-camera-corner">{people.length} IN FRAME <span>·</span> {config.countMode === 'person-detection' ? 'PRESENCE MODE' : `LINE ${config.linePosition}%`}</div>}
 							</div>
-							<div className="crowd-camera-foot"><span><span className="material-symbols-outlined">shield_lock</span>Frames stay on this device</span><span><i className="crowd-legend-person" /> Person <i className="crowd-legend-line" /> Counting line</span></div>
+							<div className="crowd-camera-foot"><span><span className="material-symbols-outlined">shield_lock</span>Frames stay on this device</span><span><i className="crowd-legend-person" /> Person {config.countMode === 'line-crossing' && <><i className="crowd-legend-line" /> Counting line</>}</span></div>
 						</section>
 
 						<section className="crowd-panel flow-panel">
@@ -83,25 +83,26 @@ export default function CrowdDashboard(props: Props) {
 							{rows.length ? <div className="crowd-chart" role="img" aria-label="Footfall per recording interval">
 								<div className="crowd-chart-y"><span>{peak}</span><span>{Math.round(peak / 2)}</span><span>0</span></div>
 								<div className="crowd-chart-bars">{latestRows.map((row) => <div className="crowd-chart-column" key={row.start}><div className="crowd-bar-track"><span style={{ height: `${Math.max(row.total ? 8 : 2, row.total / peak * 100)}%` }} title={`${row.total} visitors`} /></div><small>{formatTime(row.start)}</small></div>)}</div>
-							</div> : <div className="crowd-chart-empty"><span className="material-symbols-outlined">monitoring</span><p>Interval activity appears here</p><small>Complete a line crossing to begin the chart.</small></div>}
+							</div> : <div className="crowd-chart-empty"><span className="material-symbols-outlined">monitoring</span><p>Interval activity appears here</p><small>{config.countMode === 'person-detection' ? 'A person must remain tracked briefly to be counted.' : 'Complete a line crossing to begin the chart.'}</small></div>}
 						</section>
 					</div>
 
 					<aside className="crowd-side-column">
 						<section className="crowd-panel session-panel">
 							<div className="crowd-panel-head compact"><div><p className="crowd-overline">SESSION STATUS</p><h2>{monitoring ? 'In progress' : 'Ready to begin'}</h2></div><span className="material-symbols-outlined crowd-status-icon">{monitoring ? 'sensors' : 'schedule'}</span></div>
-							<div className="crowd-session-stats"><div><span>DURATION</span><strong>{elapsed}</strong></div><div><span>TODAY’S TOTAL</span><strong>{String(todayTotal + total).padStart(2, '0')}</strong></div></div>
+							<div className="crowd-session-stats"><div><span>DURATION</span><strong>{elapsed}</strong></div><div><span>TODAY’S TOTAL</span><strong>{String(todayTotal).padStart(2, '0')}</strong></div></div>
 							<div className="crowd-interval-current"><span>CURRENT INTERVAL</span><strong>{rows.length ? `${formatTime(rows[rows.length - 1].start)} — ${rows[rows.length - 1].total} visitors` : 'Waiting for first crossing'}</strong></div>
 						</section>
 
 						<details className="crowd-panel settings-panel" open>
 							<summary><div><p className="crowd-overline">03 / SESSION SETUP</p><h2>Detection settings</h2></div><span className="material-symbols-outlined">tune</span></summary>
+							<div className="crowd-setting"><label htmlFor="count-mode">Counting method</label><select id="count-mode" value={config.countMode} onChange={(event) => field('countMode', event.target.value)} disabled={monitoring}><option value="line-crossing">Cross a virtual line</option><option value="person-detection">Count each person once</option></select></div>
 							<div className="crowd-setting"><label htmlFor="interval">Recording interval</label><select id="interval" value={[1, 5, 10, 15, 30, 60].includes(config.intervalMinutes) ? config.intervalMinutes : 'custom'} onChange={(event) => field('intervalMinutes', event.target.value === 'custom' ? 20 : Number(event.target.value))} disabled={monitoring}>{[1, 5, 10, 15, 30, 60].map((minutes) => <option key={minutes} value={minutes}>{minutes === 60 ? '1 hour' : `${minutes} minutes`}</option>)}<option value="custom">Custom</option></select></div>
 							{![1, 5, 10, 15, 30, 60].includes(config.intervalMinutes) && <div className="crowd-setting"><label htmlFor="custom-interval">Custom minutes</label><input id="custom-interval" className="crowd-custom-interval" type="number" min="1" max="720" value={config.intervalMinutes} onChange={(event) => field('intervalMinutes', Math.min(720, Math.max(1, Number(event.target.value) || 1)))} disabled={monitoring} /></div>}
 							<div className="crowd-setting"><label htmlFor="camera-select">Camera</label><select id="camera-select" value={config.cameraId} onChange={(event) => field('cameraId', event.target.value)} disabled={monitoring}><option value="">Browser default</option>{cameras.map((camera, index) => <option value={camera.deviceId} key={camera.deviceId}>{camera.label || `Camera ${index + 1}`}</option>)}</select></div>
 							<div className="crowd-setting"><label htmlFor="resolution">Resolution</label><select id="resolution" value={config.resolution} onChange={(event) => field('resolution', event.target.value)} disabled={monitoring}><option value="720p">HD · 720p</option><option value="1080p">Full HD · 1080p</option></select></div>
 							<div className="crowd-setting"><label htmlFor="area">Detection area</label><select id="area" value={config.detectionArea} onChange={(event) => field('detectionArea', event.target.value)} disabled={monitoring}><option value="full">Full frame</option><option value="center">Center 70%</option></select></div>
-							<div className="crowd-setting crowd-range-setting"><label htmlFor="line-position">Counting line <output>{config.linePosition}%</output></label><input id="line-position" type="range" min="20" max="80" step="1" value={config.linePosition} onChange={handleRange('linePosition')} disabled={monitoring} /></div>
+							<div className="crowd-setting crowd-range-setting"><label htmlFor="line-position">Counting line <output>{config.linePosition}%</output></label><input id="line-position" type="range" min="20" max="80" step="1" value={config.linePosition} onChange={handleRange('linePosition')} disabled={monitoring || config.countMode === 'person-detection'} /></div>
 							<div className="crowd-setting crowd-range-setting"><label htmlFor="confidence">Minimum confidence <output>{Math.round(config.minimumConfidence * 100)}%</output></label><input id="confidence" type="range" min="30" max="90" step="5" value={Math.round(config.minimumConfidence * 100)} onChange={(event) => field('minimumConfidence', Number(event.target.value) / 100)} disabled={monitoring} /></div>
 							<div className="crowd-setting"><label htmlFor="tracking-duration">Minimum tracking time</label><select id="tracking-duration" value={config.minimumTrackingMs} onChange={(event) => field('minimumTrackingMs', Number(event.target.value))} disabled={monitoring}><option value="0">No minimum</option><option value="500">0.5 seconds</option><option value="1000">1 second</option><option value="1500">1.5 seconds</option></select></div>
 							<p className="crowd-settings-note"><span className="material-symbols-outlined">info</span>{attentionStatus === 'unavailable' ? 'Face analysis could not load. Footfall tracking continues, but attention will be recorded as unknown.' : 'Attention uses face orientation and iris position as an estimate. Small, obscured, or ambiguous faces are recorded as unknown.'}</p>
@@ -118,7 +119,7 @@ export default function CrowdDashboard(props: Props) {
 
 				<section className="crowd-panel report-panel">
 					<div className="crowd-panel-head report-head"><div><p className="crowd-overline">05 / SESSION REPORT</p><h2>Interval breakdown</h2></div><div className="crowd-export-actions"><button type="button" onClick={() => onExport('csv')} disabled={!rows.length}><span className="material-symbols-outlined">table_view</span>Export CSV</button><button type="button" onClick={() => onExport('json')} disabled={!rows.length} aria-label="Export JSON"><span className="material-symbols-outlined">data_object</span><span className="export-json-label">JSON</span></button></div></div>
-					<div className="crowd-table-wrap"><table><thead><tr><th>INTERVAL</th><th>TOTAL</th><th>LEFT → RIGHT</th><th>RIGHT → LEFT</th><th>LOOKING</th><th>NOT LOOKING</th><th>UNKNOWN</th></tr></thead><tbody>{rows.length ? rows.slice().reverse().slice(0, 12).map((row) => <tr key={row.start}><td>{formatTime(row.start)} – {formatTime(row.end)}</td><td className="table-total">{row.total}</td><td>{row.leftToRight}</td><td>{row.rightToLeft}</td><td>{row.looking}</td><td>{row.notLooking}</td><td>{row.unknown}</td></tr>) : <tr><td colSpan={7} className="crowd-table-empty">Your interval summary will appear after monitoring begins.</td></tr>}</tbody></table></div>
+					<div className="crowd-table-wrap"><table><thead><tr><th>INTERVAL</th><th>TOTAL</th><th>PRESENCE</th><th>LEFT → RIGHT</th><th>RIGHT → LEFT</th><th>LOOKING</th><th>NOT LOOKING</th><th>UNKNOWN</th></tr></thead><tbody>{rows.length ? rows.slice().reverse().slice(0, 12).map((row) => <tr key={row.start}><td>{formatTime(row.start)} – {formatTime(row.end)}</td><td className="table-total">{row.total}</td><td>{row.presence}</td><td>{row.leftToRight}</td><td>{row.rightToLeft}</td><td>{row.looking}</td><td>{row.notLooking}</td><td>{row.unknown}</td></tr>) : <tr><td colSpan={8} className="crowd-table-empty">Your interval summary will appear after monitoring begins.</td></tr>}</tbody></table></div>
 				</section>
 
 				<div className="crowd-privacy"><span className="material-symbols-outlined">enhanced_encryption</span><p><strong>Privacy by design</strong> · Video is processed in your browser. No footage or face data is uploaded or saved. Anonymous tracking IDs are discarded when the session ends.</p></div>

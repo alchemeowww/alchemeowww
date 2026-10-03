@@ -161,9 +161,11 @@ export function useCrowdMonitor(
 							.filter((face) => face.x >= person.left && face.x <= person.left + person.width && face.y >= person.top && face.y <= person.top + person.height * 0.55)
 							.sort((first, second) => Math.abs(first.x - (person.left + person.width / 2)) - Math.abs(second.x - (person.left + person.width / 2)));
 						const attention = facesInPerson[0]?.attention ?? 'unknown';
-						if (previous && !track.counted && now - track.firstSeen >= activeConfig.minimumTrackingMs && ((previous.x < activeConfig.linePosition / 100 && person.x >= activeConfig.linePosition / 100) || (previous.x > activeConfig.linePosition / 100 && person.x <= activeConfig.linePosition / 100))) {
+						const crossedLine = previous && ((previous.x < activeConfig.linePosition / 100 && person.x >= activeConfig.linePosition / 100) || (previous.x > activeConfig.linePosition / 100 && person.x <= activeConfig.linePosition / 100));
+						if (previous && !track.counted && now - track.firstSeen >= activeConfig.minimumTrackingMs && (activeConfig.countMode === 'person-detection' || crossedLine)) {
 							track.counted = true;
-							setCrossings((current) => [...current, { timestamp: Date.now(), direction: person.x > previous.x ? 'left-to-right' : 'right-to-left', attention }]);
+							const direction = activeConfig.countMode === 'person-detection' ? 'presence' : person.x > previous.x ? 'left-to-right' : 'right-to-left';
+							setCrossings((current) => [...current, { timestamp: Date.now(), direction, attention }]);
 						}
 						nextTracks.push(track);
 						visiblePeople.push({ id: track.id, left: person.left, top: person.top, width: person.width, height: person.height, confidence: person.confidence, attention });
@@ -172,7 +174,7 @@ export function useCrowdMonitor(
 					if (time - lastPublish > 100) {
 						lastPublish = time;
 						setPeople(visiblePeople);
-						drawOverlay(canvasRef.current, currentVideo, visiblePeople, activeConfig.linePosition, activeConfig.detectionArea);
+						drawOverlay(canvasRef.current, currentVideo, visiblePeople, activeConfig.linePosition, activeConfig.detectionArea, activeConfig.countMode);
 					}
 				};
 				frameRequest = requestAnimationFrame(processFrame);
@@ -235,7 +237,7 @@ export function classifyAttention(landmarks: NormalizedLandmark[]): Attention {
 	return headFacingCamera && eyesCentered && gazeLevel ? 'looking' : 'unknown';
 }
 
-function drawOverlay(canvas: HTMLCanvasElement | null, video: HTMLVideoElement, people: TrackedPerson[], linePosition: number, area: CrowdConfig['detectionArea']) {
+function drawOverlay(canvas: HTMLCanvasElement | null, video: HTMLVideoElement, people: TrackedPerson[], linePosition: number, area: CrowdConfig['detectionArea'], countMode: CrowdConfig['countMode']) {
 	if (!canvas || !video.videoWidth || !video.videoHeight) return;
 	if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
 		canvas.width = video.videoWidth;
@@ -249,14 +251,16 @@ function drawOverlay(canvas: HTMLCanvasElement | null, video: HTMLVideoElement, 
 		context.fillRect(0, 0, canvas.width * 0.15, canvas.height);
 		context.fillRect(canvas.width * 0.85, 0, canvas.width * 0.15, canvas.height);
 	}
-	context.setLineDash([12, 10]);
-	context.strokeStyle = '#f4c95d';
-	context.lineWidth = Math.max(2, canvas.width / 500);
-	context.beginPath();
-	context.moveTo(canvas.width * linePosition / 100, 0);
-	context.lineTo(canvas.width * linePosition / 100, canvas.height);
-	context.stroke();
-	context.setLineDash([]);
+	if (countMode === 'line-crossing') {
+		context.setLineDash([12, 10]);
+		context.strokeStyle = '#f4c95d';
+		context.lineWidth = Math.max(2, canvas.width / 500);
+		context.beginPath();
+		context.moveTo(canvas.width * linePosition / 100, 0);
+		context.lineTo(canvas.width * linePosition / 100, canvas.height);
+		context.stroke();
+		context.setLineDash([]);
+	}
 	people.forEach((person) => {
 		const x = person.left * canvas.width;
 		const y = person.top * canvas.height;

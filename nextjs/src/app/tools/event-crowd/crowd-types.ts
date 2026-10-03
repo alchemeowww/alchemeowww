@@ -13,6 +13,7 @@ export type CrowdConfig = {
 	detectionArea: 'full' | 'center';
 	minimumConfidence: number;
 	minimumTrackingMs: number;
+	gazeDurationMs: number;
 	cameraId: string;
 	cameraZoom: number;
 	resolution: '720p' | '1080p';
@@ -22,6 +23,23 @@ export type Crossing = {
 	timestamp: number;
 	direction: Direction | 'presence';
 	attention: Attention;
+};
+
+export type AttentionReading = {
+	trackId: number;
+	timestamp: number;
+	attention: Attention;
+};
+
+export type LookingSuccess = {
+	trackId: number;
+	timestamp: number;
+};
+
+export type AttentionSummary = {
+	looking: number;
+	notLooking: number;
+	unknown: number;
 };
 
 export type TrackedPerson = {

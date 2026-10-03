@@ -1,7 +1,7 @@
 'use client';
 
 import type { ChangeEvent } from 'react';
-import type { AttentionModelStatus, CameraZoomRange, CrowdConfig, Crossing, IntervalRow, TrackedPerson } from './crowd-types';
+import type { AttentionModelStatus, AttentionSummary, CameraZoomRange, CrowdConfig, Crossing, IntervalRow, TrackedPerson } from './crowd-types';
 
 type Props = {
 	config: CrowdConfig;
@@ -14,6 +14,7 @@ type Props = {
 	elapsed: string;
 	rows: IntervalRow[];
 	crossings: Crossing[];
+	attentionCounts: AttentionSummary;
 	people: TrackedPerson[];
 	todayTotal: number;
 	cameras: MediaDeviceInfo[];
@@ -28,11 +29,13 @@ type Props = {
 const formatTime = (timestamp: number) => new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(timestamp);
 
 export default function CrowdDashboard(props: Props) {
-	const { config, updateConfig, monitoring, status, attentionStatus, error, startedAt, elapsed, rows, crossings, people, todayTotal, cameras, zoomRange, start, stop, videoRef, canvasRef, onExport } = props;
+	const { config, updateConfig, monitoring, status, attentionStatus, error, startedAt, elapsed, rows, crossings, attentionCounts, people, todayTotal, cameras, zoomRange, start, stop, videoRef, canvasRef, onExport } = props;
 	const total = crossings.length;
 	const leftToRight = crossings.filter((crossing) => crossing.direction === 'left-to-right').length;
-	const rightToLeft = total - leftToRight;
-	const looking = crossings.filter((crossing) => crossing.attention === 'looking').length;
+	const rightToLeft = crossings.filter((crossing) => crossing.direction === 'right-to-left').length;
+	const looking = attentionCounts.looking;
+	const notLooking = attentionCounts.notLooking;
+	const unknownAttention = attentionCounts.unknown;
 	const latestRows = rows.slice(-8);
 	const peak = Math.max(1, ...rows.map((row) => row.total));
 
@@ -62,8 +65,8 @@ export default function CrowdDashboard(props: Props) {
 				<section className="crowd-stat-grid" aria-label="Session summary">
 					<Stat label={config.countMode === 'person-detection' ? 'PEOPLE COUNTED' : 'SESSION FOOTFALL'} value={String(total).padStart(2, '0')} note={config.countMode === 'person-detection' ? 'unique person detections' : 'completed crossings'} icon="groups" />
 					{config.countMode === 'person-detection' ? <Stat label="CURRENTLY IN FRAME" value={String(people.length).padStart(2, '0')} note="visible right now" icon="person_search" tone="green" /> : <Stat label="LEFT → RIGHT" value={String(leftToRight).padStart(2, '0')} note="westbound flow" icon="trending_flat" tone="green" />}
-					{config.countMode === 'person-detection' ? <Stat label="ATTENTION UNKNOWN" value={String(crossings.filter((crossing) => crossing.attention === 'unknown').length).padStart(2, '0')} note="face not clear enough" icon="visibility_off" tone="amber" /> : <Stat label="RIGHT → LEFT" value={String(rightToLeft).padStart(2, '0')} note="eastbound flow" icon="trending_flat" tone="amber" reverse />}
-					<Stat label="LOOKED TOWARD CAMERA" value={String(looking).padStart(2, '0')} note={`${total ? Math.round(looking / total * 100) : 0}% of crossings`} icon="visibility" tone="rose" />
+					{config.countMode === 'person-detection' ? <Stat label="ATTENTION UNKNOWN" value={String(unknownAttention).padStart(2, '0')} note="face not clear enough" icon="visibility_off" tone="amber" /> : <Stat label="RIGHT → LEFT" value={String(rightToLeft).padStart(2, '0')} note="eastbound flow" icon="trending_flat" tone="amber" reverse />}
+					<Stat label="LOOKED TOWARD CAMERA" value={String(looking).padStart(2, '0')} note={`held gaze for ${(config.gazeDurationMs / 1000).toFixed(1)}s`} icon="visibility" tone="rose" />
 				</section>
 
 				<section className="crowd-workspace">
@@ -98,6 +101,7 @@ export default function CrowdDashboard(props: Props) {
 						<details className="crowd-panel settings-panel" open>
 							<summary><div><p className="crowd-overline">03 / SESSION SETUP</p><h2>Detection settings</h2></div><span className="material-symbols-outlined">tune</span></summary>
 							<div className="crowd-setting"><label htmlFor="count-mode">Counting method</label><select id="count-mode" value={config.countMode} onChange={(event) => field('countMode', event.target.value)} disabled={monitoring}><option value="line-crossing">Cross a virtual line</option><option value="person-detection">Count each person once</option></select></div>
+							<div className="crowd-setting"><label htmlFor="gaze-duration">Look success duration</label><select id="gaze-duration" value={config.gazeDurationMs} onChange={(event) => field('gazeDurationMs', Number(event.target.value))} disabled={monitoring}><option value="500">0.5 seconds</option><option value="1000">1 second</option><option value="1500">1.5 seconds</option><option value="2000">2 seconds</option></select></div>
 							<div className="crowd-setting"><label htmlFor="interval">Recording interval</label><select id="interval" value={[1, 5, 10, 15, 30, 60].includes(config.intervalMinutes) ? config.intervalMinutes : 'custom'} onChange={(event) => field('intervalMinutes', event.target.value === 'custom' ? 20 : Number(event.target.value))} disabled={monitoring}>{[1, 5, 10, 15, 30, 60].map((minutes) => <option key={minutes} value={minutes}>{minutes === 60 ? '1 hour' : `${minutes} minutes`}</option>)}<option value="custom">Custom</option></select></div>
 							{![1, 5, 10, 15, 30, 60].includes(config.intervalMinutes) && <div className="crowd-setting"><label htmlFor="custom-interval">Custom minutes</label><input id="custom-interval" className="crowd-custom-interval" type="number" min="1" max="720" value={config.intervalMinutes} onChange={(event) => field('intervalMinutes', Math.min(720, Math.max(1, Number(event.target.value) || 1)))} disabled={monitoring} /></div>}
 							<div className="crowd-setting"><label htmlFor="camera-select">Camera</label><select id="camera-select" value={config.cameraId} onChange={(event) => field('cameraId', event.target.value)} disabled={monitoring}><option value="">Browser default</option>{cameras.map((camera, index) => { const label = camera.label || `Camera ${index + 1}`; const isWideAngle = /ultra.?wide|wide.?angle|0\.5x/i.test(label); return <option value={camera.deviceId} key={camera.deviceId}>{isWideAngle ? `${label} · Wide angle` : label}</option>; })}</select></div>
@@ -112,8 +116,7 @@ export default function CrowdDashboard(props: Props) {
 
 						<section className="crowd-panel attention-panel">
 							<div className="crowd-panel-head compact"><div><p className="crowd-overline">04 / ATTENTION ESTIMATE</p><h2>Camera attention</h2></div><span className="material-symbols-outlined">face</span></div>
-							<div className="crowd-attention-bar"><i style={{ width: `${total ? looking / total * 100 : 0}%` }} /><i style={{ width: `${total ? crossings.filter((crossing) => crossing.attention === 'not-looking').length / total * 100 : 0}%` }} /></div>
-							<div className="crowd-attention-legend"><span><i className="looking-dot" />Looking <b>{looking}</b></span><span><i className="notlooking-dot" />Not looking <b>{crossings.filter((crossing) => crossing.attention === 'not-looking').length}</b></span><span><i className="unknown-dot" />Unknown <b>{crossings.filter((crossing) => crossing.attention === 'unknown').length}</b></span></div>
+							<div className="crowd-attention-legend"><span><i className="looking-dot" />Look successes <b>{looking}</b></span><span><i className="notlooking-dot" />Not looking now <b>{notLooking}</b></span><span><i className="unknown-dot" />Unknown now <b>{unknownAttention}</b></span></div>
 							<div className={`crowd-attention-status is-${attentionStatus}`}>{attentionStatus === 'ready' ? 'POSE READY' : attentionStatus === 'loading' ? 'LOADING' : attentionStatus === 'unavailable' ? 'UNAVAILABLE' : 'IDLE'}</div>
 						</section>
 					</aside>

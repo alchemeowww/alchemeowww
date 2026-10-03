@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CrowdDashboard from './CrowdDashboard';
-import type { CrowdConfig, CrowdSession, Crossing, IntervalMinutes, IntervalRow } from './crowd-types';
+import type { AttentionReading, AttentionSummary, CrowdConfig, CrowdSession, Crossing, IntervalMinutes, IntervalRow, LookingSuccess } from './crowd-types';
 import { useCrowdMonitor } from './useCrowdMonitor';
 
 const CONFIG_KEY = 'event-crowd-config-v1';
@@ -17,6 +17,7 @@ const DEFAULT_CONFIG: CrowdConfig = {
 	detectionArea: 'full',
 	minimumConfidence: 0.55,
 	minimumTrackingMs: 500,
+	gazeDurationMs: 1000,
 	cameraId: '',
 	cameraZoom: 1,
 	resolution: '720p',
@@ -29,6 +30,7 @@ export default function EventCrowdPage() {
 	const [endedAt, setEndedAt] = useState<number | null>(null);
 	const [clock, setClock] = useState(0);
 	const [savedToday, setSavedToday] = useState(0);
+	const [completedRows, setCompletedRows] = useState<IntervalRow[] | null>(null);
 	const [hydrated, setHydrated] = useState(false);
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -73,12 +75,33 @@ export default function EventCrowdPage() {
 	}, []);
 
 	const currentEnd = monitoring ? clock : endedAt ?? clock;
-	const rows = useMemo(() => startedAt ? buildRows(startedAt, currentEnd, monitor.crossings, config.intervalMinutes) : [], [startedAt, currentEnd, monitor.crossings, config.intervalMinutes]);
+	const rows = useMemo(() => {
+		if (!startedAt) return [];
+		if (!monitoring && completedRows) return completedRows;
+		return buildRows(startedAt, currentEnd, monitor.crossings, monitor.attentionReadings, monitor.lookingSuccesses, config.intervalMinutes);
+	}, [startedAt, currentEnd, monitoring, completedRows, monitor.crossings, monitor.attentionReadings, monitor.lookingSuccesses, config.intervalMinutes]);
+	const attentionCounts = useMemo<AttentionSummary>(() => {
+		if (!monitoring && completedRows) {
+			return completedRows.reduce((summary, row) => ({
+				looking: summary.looking + row.looking,
+				notLooking: summary.notLooking + row.notLooking,
+				unknown: summary.unknown + row.unknown,
+			}), { looking: 0, notLooking: 0, unknown: 0 });
+		}
+		const summary = monitor.attentionReadings.reduce((counts, reading) => {
+			if (reading.attention === 'not-looking') counts.notLooking += 1;
+			else if (reading.attention === 'unknown') counts.unknown += 1;
+			return counts;
+		}, { looking: 0, notLooking: 0, unknown: 0 });
+		summary.looking = monitor.lookingSuccesses.length;
+		return summary;
+	}, [monitoring, completedRows, monitor.attentionReadings, monitor.lookingSuccesses]);
 	const elapsed = formatDuration(startedAt ? currentEnd - startedAt : 0);
 
 	const start = () => {
 		setConfig((current) => ({ ...current, sessionName: current.sessionName.trim() || 'Untitled session' }));
 		monitor.clearCrossings();
+		setCompletedRows(null);
 		const startTime = Date.now();
 		setStartedAt(startTime);
 		setEndedAt(null);
@@ -88,6 +111,7 @@ export default function EventCrowdPage() {
 
 	const stop = () => {
 		const endTime = Date.now();
+		const finalRows = startedAt !== null ? buildRows(startedAt, endTime, monitor.crossings, monitor.attentionReadings, monitor.lookingSuccesses, config.intervalMinutes) : [];
 		if (startedAt !== null) {
 			const session: CrowdSession = {
 				id: `${startedAt}`,
@@ -95,7 +119,7 @@ export default function EventCrowdPage() {
 				startedAt,
 				endedAt: endTime,
 				config: { ...config },
-				rows: buildRows(startedAt, endTime, monitor.crossings, config.intervalMinutes),
+				rows: finalRows,
 			};
 			try {
 				const sessions = JSON.parse(localStorage.getItem(SESSIONS_KEY) ?? '[]') as CrowdSession[];
@@ -105,6 +129,9 @@ export default function EventCrowdPage() {
 				localStorage.removeItem(SESSIONS_KEY);
 			}
 		}
+		setCompletedRows(finalRows);
+		monitor.clearAttentionReadings();
+		monitor.clearLookingSuccesses();
 		setEndedAt(endTime);
 		setClock(endTime);
 		setMonitoring(false);
@@ -112,9 +139,9 @@ export default function EventCrowdPage() {
 
 	const onExport = (format: 'csv' | 'json') => {
 		if (!rows.length) return;
-		const payload = format === 'json' ? JSON.stringify({ session: config.sessionName, countMode: config.countMode, startedAt, endedAt: currentEnd, intervalMinutes: config.intervalMinutes, rows }, null, 2) : [
-			['Session', 'Counting method', 'Interval start', 'Interval end', 'Total footfall', 'Presence', 'Left to right', 'Right to left', 'Looking', 'Not looking', 'Unknown'].join(','),
-			...rows.map((row) => [csv(config.sessionName), csv(config.countMode), new Date(row.start).toISOString(), new Date(row.end).toISOString(), row.total, row.presence, row.leftToRight, row.rightToLeft, row.looking, row.notLooking, row.unknown].join(',')),
+		const payload = format === 'json' ? JSON.stringify({ session: config.sessionName, countMode: config.countMode, gazeDurationMs: config.gazeDurationMs, startedAt, endedAt: currentEnd, intervalMinutes: config.intervalMinutes, rows }, null, 2) : [
+			['Session', 'Counting method', 'Look duration threshold (ms)', 'Interval start', 'Interval end', 'Total footfall', 'Presence', 'Left to right', 'Right to left', 'Looking', 'Not looking', 'Unknown'].join(','),
+			...rows.map((row) => [csv(config.sessionName), csv(config.countMode), config.gazeDurationMs, new Date(row.start).toISOString(), new Date(row.end).toISOString(), row.total, row.presence, row.leftToRight, row.rightToLeft, row.looking, row.notLooking, row.unknown].join(',')),
 		].join('\r\n');
 		const blob = new Blob([payload], { type: format === 'csv' ? 'text/csv;charset=utf-8' : 'application/json' });
 		const url = URL.createObjectURL(blob);
@@ -125,22 +152,25 @@ export default function EventCrowdPage() {
 		URL.revokeObjectURL(url);
 	};
 
-	return <><Header /><div className="event-crowd-page"><CrowdDashboard config={config} updateConfig={updateConfig} monitoring={monitoring} status={monitor.status} attentionStatus={monitor.attentionStatus} error={monitor.error} startedAt={startedAt} elapsed={elapsed} rows={rows} crossings={monitor.crossings} people={monitor.people} todayTotal={savedToday + (monitoring ? monitor.crossings.length : 0)} cameras={monitor.cameras} zoomRange={monitor.zoomRange} start={start} stop={stop} videoRef={videoRef} canvasRef={canvasRef} onExport={onExport} /></div><Footer /></>;
+	return <><Header showLogo={false}/><div className="event-crowd-page"><CrowdDashboard config={config} updateConfig={updateConfig} monitoring={monitoring} status={monitor.status} attentionStatus={monitor.attentionStatus} error={monitor.error} startedAt={startedAt} elapsed={elapsed} rows={rows} crossings={monitor.crossings} attentionCounts={attentionCounts} people={monitor.people} todayTotal={savedToday + (monitoring ? monitor.crossings.length : 0)} cameras={monitor.cameras} zoomRange={monitor.zoomRange} start={start} stop={stop} videoRef={videoRef} canvasRef={canvasRef} onExport={onExport} /></div><Footer /></>;
 }
 
-function buildRows(start: number, end: number, crossings: Crossing[], intervalMinutes: IntervalMinutes): IntervalRow[] {
+function buildRows(start: number, end: number, crossings: Crossing[], attentionReadings: AttentionReading[], lookingSuccesses: LookingSuccess[], intervalMinutes: IntervalMinutes): IntervalRow[] {
 	const intervalMs = intervalMinutes * 60_000;
 	const count = Math.max(1, Math.ceil(Math.max(0, end - start) / intervalMs));
 	return Array.from({ length: count }, (_, index) => {
 		const rowStart = start + index * intervalMs;
 		const rowEnd = Math.min(rowStart + intervalMs, Math.max(rowStart, end));
 		const events = crossings.filter((crossing) => crossing.timestamp >= rowStart && (crossing.timestamp < rowStart + intervalMs || index === count - 1 && crossing.timestamp <= end));
+		const readings = attentionReadings.filter((reading) => reading.timestamp >= rowStart && (reading.timestamp < rowStart + intervalMs || index === count - 1 && reading.timestamp <= end));
+		const successfulLooks = lookingSuccesses.filter((success) => success.timestamp >= rowStart && (success.timestamp < rowStart + intervalMs || index === count - 1 && success.timestamp <= end));
 		const leftToRight = events.filter((event) => event.direction === 'left-to-right').length;
 		const rightToLeft = events.filter((event) => event.direction === 'right-to-left').length;
 		const presence = events.filter((event) => event.direction === 'presence').length;
-		const looking = events.filter((event) => event.attention === 'looking').length;
-		const notLooking = events.filter((event) => event.attention === 'not-looking').length;
-		return { start: rowStart, end: rowEnd, total: events.length, presence, leftToRight, rightToLeft, looking, notLooking, unknown: events.length - looking - notLooking };
+		const looking = successfulLooks.length;
+		const notLooking = readings.filter((reading) => reading.attention === 'not-looking').length;
+		const unknown = readings.filter((reading) => reading.attention === 'unknown').length;
+		return { start: rowStart, end: rowEnd, total: events.length, presence, leftToRight, rightToLeft, looking, notLooking, unknown };
 	});
 }
 

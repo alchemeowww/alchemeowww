@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MutableRefObject } from 'react';
-import type { Attention, AttentionModelStatus, CameraZoomRange, CrowdConfig, Crossing, TrackedPerson } from './crowd-types';
+import type { Attention, AttentionModelStatus, AttentionReading, CameraZoomRange, CrowdConfig, Crossing, LookingSuccess, TrackedPerson } from './crowd-types';
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 type MonitorStatus = 'idle' | 'starting' | 'live' | 'error';
-type Track = { id: number; x: number; y: number; firstSeen: number; lastSeen: number; counted: boolean };
+type Track = { id: number; x: number; y: number; firstSeen: number; lastSeen: number; counted: boolean; attention: Attention | null; lookingSince: number | null; lookedAtCamera: boolean };
 
 const PERSON_MODEL = 'https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/float16/1/efficientdet_lite0.tflite';
 const FACE_MODEL = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
@@ -21,6 +21,8 @@ export function useCrowdMonitor(
 	const [attentionStatus, setAttentionStatus] = useState<AttentionModelStatus>('idle');
 	const [error, setError] = useState('');
 	const [crossings, setCrossings] = useState<Crossing[]>([]);
+	const [attentionReadings, setAttentionReadings] = useState<AttentionReading[]>([]);
+	const [lookingSuccesses, setLookingSuccesses] = useState<LookingSuccess[]>([]);
 	const [people, setPeople] = useState<TrackedPerson[]>([]);
 	const [cameras, setCameras] = useState<MediaDeviceInfo[]>([]);
 	const [zoomRange, setZoomRange] = useState<CameraZoomRange | null>(null);
@@ -176,11 +178,26 @@ export function useCrowdMonitor(
 						if (closestIndex >= 0) used.add(closestIndex);
 						const track: Track = previous
 							? { ...previous, x: person.x, y: person.y, lastSeen: now }
-							: { id: nextId++, x: person.x, y: person.y, firstSeen: now, lastSeen: now, counted: false };
+							: { id: nextId++, x: person.x, y: person.y, firstSeen: now, lastSeen: now, counted: false, attention: null, lookingSince: null, lookedAtCamera: false };
 						const facesInPerson = recentFaces
 							.filter((face) => face.x >= person.left && face.x <= person.left + person.width && face.y >= person.top && face.y <= person.top + person.height * 0.55)
 							.sort((first, second) => Math.abs(first.x - (person.left + person.width / 2)) - Math.abs(second.x - (person.left + person.width / 2)));
 						const attention = facesInPerson[0]?.attention ?? 'unknown';
+						if (updateLookDwell(track, attention, now, activeConfig.gazeDurationMs)) {
+							const success = { trackId: track.id, timestamp: Date.now() };
+							setLookingSuccesses((current) => current.some((item) => item.trackId === track.id) ? current : [...current, success]);
+						}
+						if (attention !== 'unknown' || track.attention === null) {
+							if (track.attention !== attention) {
+								track.attention = attention;
+								const reading = { trackId: track.id, timestamp: Date.now(), attention };
+								setAttentionReadings((current) => {
+									const existingIndex = current.findIndex((item) => item.trackId === track.id);
+									if (existingIndex < 0) return [...current, reading];
+									return current.map((item, index) => index === existingIndex ? reading : item);
+								});
+							}
+						}
 						const crossedLine = previous && ((previous.x < activeConfig.linePosition / 100 && person.x >= activeConfig.linePosition / 100) || (previous.x > activeConfig.linePosition / 100 && person.x <= activeConfig.linePosition / 100));
 						if (previous && !track.counted && now - track.firstSeen >= activeConfig.minimumTrackingMs && (activeConfig.countMode === 'person-detection' || crossedLine)) {
 							track.counted = true;
@@ -220,8 +237,26 @@ export function useCrowdMonitor(
 		};
 	}, [enabled, cameraId, config.resolution, refreshCameras, videoRef, canvasRef]);
 
-	const clearCrossings = useCallback(() => setCrossings([]), []);
-	return { status, attentionStatus, error, crossings, people, cameras, zoomRange, cameraId, setCameraId, refreshCameras, clearCrossings };
+	const clearCrossings = useCallback(() => {
+		setCrossings([]);
+		setAttentionReadings([]);
+		setLookingSuccesses([]);
+	}, []);
+	const clearAttentionReadings = useCallback(() => setAttentionReadings([]), []);
+	const clearLookingSuccesses = useCallback(() => setLookingSuccesses([]), []);
+	return { status, attentionStatus, error, crossings, attentionReadings, lookingSuccesses, people, cameras, zoomRange, cameraId, setCameraId, refreshCameras, clearCrossings, clearAttentionReadings, clearLookingSuccesses };
+}
+
+export function updateLookDwell(track: { lookingSince: number | null; lookedAtCamera: boolean }, attention: Attention, now: number, durationMs: number): boolean {
+	if (track.lookedAtCamera) return false;
+	if (attention !== 'looking') {
+		track.lookingSince = null;
+		return false;
+	}
+	track.lookingSince ??= now;
+	if (now - track.lookingSince < durationMs) return false;
+	track.lookedAtCamera = true;
+	return true;
 }
 
 export function classifyAttention(landmarks: NormalizedLandmark[]): Attention {

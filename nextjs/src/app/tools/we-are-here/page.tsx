@@ -22,6 +22,7 @@ export default function WeAreHereTool() {
 	const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
 	const [motionPathSelector, setMotionPathSelector] = useState('path');
 	const [markerColor, setMarkerColor] = useState('#ffb700');
+	const [markerSize, setMarkerSize] = useState(20);
 	const [preview, setPreview] = useState<Preview | null>(null);
 	const [error, setError] = useState('');
 	const mapInputRef = useRef<HTMLInputElement>(null);
@@ -82,7 +83,7 @@ export default function WeAreHereTool() {
 			for (const point of stroke.slice(1)) context.lineTo(point.x * bitmap.width, point.y * bitmap.height);
 			context.stroke();
 		}
-	}, [drawingStrokes, mapDimensions, markerColor]);
+	}, [drawingStrokes, mapDimensions, markerColor, routeMode]);
 
 	const updateMapFile = (file: File | null) => {
 		setMapFile(file);
@@ -332,6 +333,24 @@ export default function WeAreHereTool() {
 							</div>
 						</div>
 
+						<div className="flex flex-col gap-2">
+							<label htmlFor="marker-size" className="font-play text-sm font-bold text-dark-brown">05 / Marker size</label>
+							<div className="flex items-center gap-3 border border-brown/20 bg-white/70 px-3 py-2">
+								<input
+									id="marker-size"
+									type="range"
+									min="4"
+									max="40"
+									step="1"
+									value={markerSize}
+									onChange={(event) => setMarkerSize(Number(event.target.value))}
+									aria-label="Choose marker size"
+									className="min-w-0 flex-1 accent-primary"
+								/>
+								<output htmlFor="marker-size" className="w-12 text-right font-mono text-sm text-dark-brown">{markerSize}px</output>
+							</div>
+						</div>
+
 						{error && <p role="alert" className="border-l-2 border-accent bg-accent/5 px-3 py-2 font-play text-sm text-accent">{error}</p>}
 
 						<button
@@ -371,6 +390,7 @@ export default function WeAreHereTool() {
 									imageHeight={preview.imageHeight}
 									motionPathSelector={motionPathSelector}
 									markerColor={markerColor}
+									markerSize={markerSize}
 									className="w-full overflow-hidden border border-brown/10 bg-white shadow-sm"
 									imageClassName="h-auto max-h-[65vh] w-full object-contain"
 									overlayClassName=""

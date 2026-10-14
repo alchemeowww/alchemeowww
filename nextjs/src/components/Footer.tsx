@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-export default function Footer() {
+export default function Footer({smallFooter = false}: {smallFooter?: boolean}) {
   const [year, setYear] = useState(2023);
 
   useEffect(() => {
@@ -12,7 +12,8 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-brown text-white/80" id="contact">
-      <div className="lg:container lg:mx-auto px-8 py-10 flex flex-col md:flex-row gap-8 md:gap-0 items-start justify-between">
+      
+      {!smallFooter && <div className="border-b border-white/10 lg:container lg:mx-auto px-8 py-10 flex flex-col md:flex-row gap-8 md:gap-0 items-start justify-between">
         {/* Brand block */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
@@ -62,10 +63,10 @@ export default function Footer() {
             @instagram.com/alchemeowww
           </a>
         </div>
-      </div>
+      </div>}
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10 px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-2">
+      <div className="px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-2 lg:container lg:mx-auto">
         <p className="font-play text-xs text-white/30">
           &copy; {year} Alchemist Cat Studio (JM1041071-T). All Rights Reserved.
         </p>

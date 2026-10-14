@@ -152,7 +152,7 @@ export default function EventCrowdPage() {
 		URL.revokeObjectURL(url);
 	};
 
-	return <><Header showLogo={false}/><div className="event-crowd-page"><CrowdDashboard config={config} updateConfig={updateConfig} monitoring={monitoring} status={monitor.status} attentionStatus={monitor.attentionStatus} error={monitor.error} startedAt={startedAt} elapsed={elapsed} rows={rows} crossings={monitor.crossings} attentionCounts={attentionCounts} people={monitor.people} todayTotal={savedToday + (monitoring ? monitor.crossings.length : 0)} cameras={monitor.cameras} zoomRange={monitor.zoomRange} start={start} stop={stop} videoRef={videoRef} canvasRef={canvasRef} onExport={onExport} /></div><Footer /></>;
+	return <><Header showLogo={false}/><div className="event-crowd-page"><CrowdDashboard config={config} updateConfig={updateConfig} monitoring={monitoring} status={monitor.status} attentionStatus={monitor.attentionStatus} error={monitor.error} startedAt={startedAt} elapsed={elapsed} rows={rows} crossings={monitor.crossings} attentionCounts={attentionCounts} people={monitor.people} todayTotal={savedToday + (monitoring ? monitor.crossings.length : 0)} cameras={monitor.cameras} zoomRange={monitor.zoomRange} start={start} stop={stop} videoRef={videoRef} canvasRef={canvasRef} onExport={onExport} /></div><Footer smallFooter={true} /></>;
 }
 
 function buildRows(start: number, end: number, crossings: Crossing[], attentionReadings: AttentionReading[], lookingSuccesses: LookingSuccess[], intervalMinutes: IntervalMinutes): IntervalRow[] {

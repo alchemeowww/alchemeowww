@@ -7,40 +7,30 @@ type BoothLocationAnimationProps = {
   imageSrc: string;
   imageAlt: string;
   svgSrc: string;
+  drawSvgSrc?: string;
   imageWidth?: number;
   imageHeight?: number;
   motionPathSelector?: string;
   drawSelector?: string;
   markerColor?: string;
   markerSize?: number;
+  pathDuration?: number;
   className?: string;
   imageClassName?: string;
   overlayClassName?: string;
 };
 
-export default function BoothLocationAnimation({
-  imageSrc,
-  imageAlt,
-  svgSrc,
-  imageWidth = 1200,
-  imageHeight = 800,
-  motionPathSelector = '[data-motion-path]',
-  drawSelector = '[data-draw]',
-  markerColor = '#ffb700',
-  markerSize = 20,
-  className = '',
-  imageClassName = 'h-auto w-full object-contain',
-  overlayClassName = '',
-}: BoothLocationAnimationProps) {
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const markerRef = useRef<HTMLDivElement>(null);
-  const [svgMarkup, setSvgMarkup] = useState('');
+const DRAWABLE_SHAPES = 'path, line, polyline, polygon, circle, ellipse, rect';
+
+function useSvgMarkup(src?: string) {
+  const [markup, setMarkup] = useState('');
 
   useEffect(() => {
+    setMarkup('');
+    if (!src) return;
     const controller = new AbortController();
-    setSvgMarkup('');
 
-    fetch(svgSrc, { signal: controller.signal })
+    fetch(src, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error(`Unable to load SVG: ${response.status}`);
         return response.text();
@@ -63,19 +53,53 @@ export default function BoothLocationAnimation({
         svgElement.setAttribute('width', '100%');
         svgElement.setAttribute('height', '100%');
         svgElement.setAttribute('class', 'absolute inset-0 h-full w-full');
-        setSvgMarkup(new XMLSerializer().serializeToString(svgElement));
+        setMarkup(new XMLSerializer().serializeToString(svgElement));
       })
       .catch((error: unknown) => {
         if (!controller.signal.aborted) console.error(error);
       });
 
     return () => controller.abort();
-  }, [svgSrc]);
+  }, [src]);
+
+  return markup;
+}
+
+export default function BoothLocationAnimation({
+  imageSrc,
+  imageAlt,
+  svgSrc,
+  drawSvgSrc,
+  imageWidth = 1200,
+  imageHeight = 800,
+  motionPathSelector = '[data-motion-path], path',
+  drawSelector = 'path, text',
+  markerColor = '#ffb700',
+  markerSize = 20,
+  pathDuration = 3000,
+  className = '',
+  imageClassName = 'h-auto w-full object-contain',
+  overlayClassName = '',
+}: BoothLocationAnimationProps) {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const drawOverlayRef = useRef<HTMLDivElement>(null);
+  const markerRef = useRef<HTMLDivElement>(null);
+  const svgMarkup = useSvgMarkup(svgSrc);
+  const drawSvgMarkup = useSvgMarkup(drawSvgSrc);
 
   useEffect(() => {
     const svgElement = overlayRef.current?.querySelector('svg');
     const motionPath = svgElement?.querySelector<SVGPathElement>(motionPathSelector);
-    const drawTargets = svgElement?.querySelectorAll<SVGGraphicsElement>(drawSelector);
+    const drawTargets = Array.from(
+      svgElement?.querySelectorAll<SVGGraphicsElement>(drawSelector) ?? []
+    );
+    const drawSvg = drawOverlayRef.current?.querySelector('svg');
+    if (drawSvg) {
+      const tagged = drawSvg.querySelectorAll<SVGGraphicsElement>(drawSelector);
+      drawTargets.push(
+        ...(tagged.length ? tagged : drawSvg.querySelectorAll<SVGGraphicsElement>(DRAWABLE_SHAPES))
+      );
+    }
     if (!motionPath || !markerRef.current) return;
 
     let cancelled = false;
@@ -87,7 +111,7 @@ export default function BoothLocationAnimation({
       animations.push(
         animate(markerRef.current!, {
           ease: 'linear',
-          duration: 3000,
+          duration: pathDuration,
           loop: true,
           loopDelay: 1000,
           ...svg.createMotionPath(motionPath),
@@ -95,15 +119,15 @@ export default function BoothLocationAnimation({
         animate(svg.createDrawable(motionPath), {
           draw: ['0 0', '0 1'],
           ease: 'linear',
-          duration: 3000,
+          duration: pathDuration,
           loop: true,
           loopDelay: 1000,
         })
       );
 
-      if (drawTargets?.length) {
+      if (drawTargets.length) {
         animations.push(
-          animate(svg.createDrawable(Array.from(drawTargets)), {
+          animate(svg.createDrawable(drawTargets), {
             keyframes: [
               { draw: '0 1', ease: 'inQuad', duration: 2000 },
               { draw: '0 1', ease: 'linear', duration: 1500 },
@@ -120,7 +144,7 @@ export default function BoothLocationAnimation({
       cancelled = true;
       animations.forEach((animation) => animation.pause());
     };
-  }, [svgMarkup, motionPathSelector, drawSelector]);
+  }, [svgMarkup, drawSvgMarkup, pathDuration, motionPathSelector, drawSelector]);
 
   return (
     <div className={`relative ${className}`}>
@@ -139,6 +163,11 @@ export default function BoothLocationAnimation({
           ref={overlayRef}
           className="absolute inset-0"
           dangerouslySetInnerHTML={{ __html: svgMarkup }}
+        />
+        <div
+          ref={drawOverlayRef}
+          className="absolute inset-0"
+          dangerouslySetInnerHTML={{ __html: drawSvgMarkup }}
         />
         <div
           ref={markerRef}

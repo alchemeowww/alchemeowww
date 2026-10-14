@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 type Preview = {
 	mapUrl: string;
 	svgUrl: string;
+	drawSvgUrl?: string;
 	imageWidth: number;
 	imageHeight: number;
 };
@@ -17,16 +18,19 @@ type Point = { x: number; y: number };
 export default function WeAreHereTool() {
 	const [mapFile, setMapFile] = useState<File | null>(null);
 	const [svgFile, setSvgFile] = useState<File | null>(null);
+	const [drawSvgFile, setDrawSvgFile] = useState<File | null>(null);
 	const [routeMode, setRouteMode] = useState<'upload' | 'draw'>('upload');
 	const [drawingStrokes, setDrawingStrokes] = useState<Point[][]>([]);
 	const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
 	const [motionPathSelector, setMotionPathSelector] = useState('path');
 	const [markerColor, setMarkerColor] = useState('#ffb700');
 	const [markerSize, setMarkerSize] = useState(20);
+	const [pathDuration, setPathDuration] = useState(3);
 	const [preview, setPreview] = useState<Preview | null>(null);
 	const [error, setError] = useState('');
 	const mapInputRef = useRef<HTMLInputElement>(null);
 	const svgInputRef = useRef<HTMLInputElement>(null);
+	const drawSvgInputRef = useRef<HTMLInputElement>(null);
 	const drawingCanvasRef = useRef<HTMLCanvasElement>(null);
 	const mapBitmapRef = useRef<ImageBitmap | null>(null);
 	const drawingPointerRef = useRef<number | null>(null);
@@ -36,6 +40,7 @@ export default function WeAreHereTool() {
 		return () => {
 			URL.revokeObjectURL(preview.mapUrl);
 			URL.revokeObjectURL(preview.svgUrl);
+			if (preview.drawSvgUrl) URL.revokeObjectURL(preview.drawSvgUrl);
 		};
 	}, [preview]);
 
@@ -93,6 +98,12 @@ export default function WeAreHereTool() {
 
 	const updateSvgFile = (file: File | null) => {
 		setSvgFile(file);
+		setPreview(null);
+		setError('');
+	};
+
+	const updateDrawSvgFile = (file: File | null) => {
+		setDrawSvgFile(file);
 		setPreview(null);
 		setError('');
 	};
@@ -178,6 +189,18 @@ export default function WeAreHereTool() {
 				}
 			}
 
+			let drawSvgSource: string | null = null;
+			if (drawSvgFile) {
+				if (!drawSvgFile.name.toLowerCase().endsWith('.svg') && drawSvgFile.type !== 'image/svg+xml') {
+					throw new Error('The draw layer file must be an SVG.');
+				}
+				drawSvgSource = await drawSvgFile.text();
+				const drawDocument = new DOMParser().parseFromString(drawSvgSource, 'image/svg+xml');
+				if (drawDocument.documentElement.localName !== 'svg' || drawDocument.querySelector('parsererror')) {
+					throw new Error('The draw layer is not a valid SVG document.');
+				}
+			}
+
 			const bitmap = await createImageBitmap(mapFile);
 			const imageWidth = bitmap.width;
 			const imageHeight = bitmap.height;
@@ -186,6 +209,7 @@ export default function WeAreHereTool() {
 			setPreview({
 				mapUrl: URL.createObjectURL(mapFile),
 				svgUrl: URL.createObjectURL(new Blob([svgSource], { type: 'image/svg+xml' })),
+				drawSvgUrl: drawSvgSource ? URL.createObjectURL(new Blob([drawSvgSource], { type: 'image/svg+xml' })) : undefined,
 				imageWidth,
 				imageHeight,
 			});
@@ -246,6 +270,7 @@ export default function WeAreHereTool() {
 												<button type="button" aria-pressed={routeMode === 'upload'} onClick={() => { setRouteMode('upload'); setPreview(null); setError(''); }} className={`px-3 py-2 font-play text-sm font-bold transition-colors ${routeMode === 'upload' ? 'bg-[#4F321E] text-cream' : 'text-brown hover:bg-brown/5'}`}>Upload SVG</button>
 												<button type="button" aria-pressed={routeMode === 'draw'} onClick={() => { setRouteMode('draw'); setPreview(null); setError(''); }} className={`px-3 py-2 font-play text-sm font-bold transition-colors ${routeMode === 'draw' ? 'bg-[#4F321E] text-cream' : 'text-brown hover:bg-brown/5'}`}>Draw route</button>
 											</div>
+
 
 											{routeMode === 'upload' ? (
 												<>
@@ -316,6 +341,32 @@ export default function WeAreHereTool() {
 													)}
 												</div>
 											)}
+
+											<input
+												ref={drawSvgInputRef}
+												id="draw-svg-upload"
+												type="file"
+												accept=".svg,image/svg+xml"
+												className="sr-only"
+												onChange={(event) => updateDrawSvgFile(event.target.files?.[0] ?? null)}
+											/>
+											<div className="flex min-h-20 items-center justify-between gap-4 border border-dashed border-brown/30 bg-white/45 px-4 py-3">
+												<div className="flex min-w-0 items-center gap-3">
+													<span className="material-symbols-outlined text-2xl text-primary">draw</span>
+													<div className="min-w-0">
+														<p className="truncate font-play text-sm text-dark-brown">{drawSvgFile?.name ?? 'Optional: highlight SVG layer'}</p>
+														<p className="font-play text-xs text-dark-brown/50">Strokes are drawn on top with a looping draw animation</p>
+													</div>
+												</div>
+												<div className="flex shrink-0 gap-2">
+													{drawSvgFile && (
+														<button type="button" onClick={() => { updateDrawSvgFile(null); if (drawSvgInputRef.current) drawSvgInputRef.current.value = ''; }} className="border border-brown/20 px-3 py-2 font-play text-xs font-bold text-brown">Remove</button>
+													)}
+													<button type="button" onClick={() => drawSvgInputRef.current?.click()} className="border border-brown/20 px-3 py-2 font-play text-xs font-bold text-brown transition-colors hover:bg-brown hover:text-cream">
+														{drawSvgFile ? 'Replace' : 'Browse'}
+													</button>
+												</div>
+											</div>
 										</div>
 
 						<div className="flex flex-col gap-2">
@@ -348,6 +399,24 @@ export default function WeAreHereTool() {
 									className="min-w-0 flex-1 accent-primary"
 								/>
 								<output htmlFor="marker-size" className="w-12 text-right font-mono text-sm text-dark-brown">{markerSize}px</output>
+							</div>
+						</div>
+
+						<div className="flex flex-col gap-2">
+							<label htmlFor="path-duration" className="font-play text-sm font-bold text-dark-brown">06 / Path duration</label>
+							<div className="flex items-center gap-3 border border-brown/20 bg-white/70 px-3 py-2">
+								<input
+									id="path-duration"
+									type="range"
+									min="1"
+									max="20"
+									step="0.5"
+									value={pathDuration}
+									onChange={(event) => setPathDuration(Number(event.target.value))}
+									aria-label="Choose path animation duration in seconds"
+									className="min-w-0 flex-1 accent-primary"
+								/>
+								<output htmlFor="path-duration" className="w-12 text-right font-mono text-sm text-dark-brown">{pathDuration}s</output>
 							</div>
 						</div>
 
@@ -386,11 +455,13 @@ export default function WeAreHereTool() {
 									imageSrc={preview.mapUrl}
 									imageAlt={`Map preview from ${mapFile?.name ?? 'uploaded map'}`}
 									svgSrc={preview.svgUrl}
+									drawSvgSrc={preview.drawSvgUrl}
 									imageWidth={preview.imageWidth}
 									imageHeight={preview.imageHeight}
 									motionPathSelector={motionPathSelector}
 									markerColor={markerColor}
 									markerSize={markerSize}
+									pathDuration={pathDuration * 1000}
 									className="w-full overflow-hidden border border-brown/10 bg-white shadow-sm"
 									imageClassName="h-auto max-h-[65vh] w-full object-contain"
 									overlayClassName=""

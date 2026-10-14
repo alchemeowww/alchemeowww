@@ -20,8 +20,6 @@ type BoothLocationAnimationProps = {
   overlayClassName?: string;
 };
 
-const DRAWABLE_SHAPES = 'path, line, polyline, polygon, circle, ellipse, rect';
-
 function useSvgMarkup(src?: string) {
   const [markup, setMarkup] = useState('');
 
@@ -73,7 +71,7 @@ export default function BoothLocationAnimation({
   imageWidth = 1200,
   imageHeight = 800,
   motionPathSelector = '[data-motion-path]',
-  drawSelector = '[data-draw]',
+  drawSelector = 'path, text',
   markerColor = '#ffb700',
   markerSize = 20,
   pathDuration = 3000,
@@ -91,15 +89,10 @@ export default function BoothLocationAnimation({
     const svgElement = overlayRef.current?.querySelector('svg');
     const motionPath = svgElement?.querySelector<SVGPathElement>(motionPathSelector);
     const drawTargets = Array.from(
-      svgElement?.querySelectorAll<SVGGraphicsElement>(drawSelector) ?? []
+      drawOverlayRef.current?.querySelector('svg')?.querySelectorAll<SVGGraphicsElement>(drawSelector) ?? []
     );
-    const drawSvg = drawOverlayRef.current?.querySelector('svg');
-    if (drawSvg) {
-      const tagged = drawSvg.querySelectorAll<SVGGraphicsElement>(drawSelector);
-      drawTargets.push(
-        ...(tagged.length ? tagged : drawSvg.querySelectorAll<SVGGraphicsElement>(DRAWABLE_SHAPES))
-      );
-    }
+    // <text> has no stroke length, so it fades in instead of being drawn.
+    const shapeTargets = drawTargets;
     if (!motionPath || !markerRef.current) return;
 
     let cancelled = false;
@@ -125,9 +118,9 @@ export default function BoothLocationAnimation({
         })
       );
 
-      if (drawTargets.length) {
+      if (shapeTargets.length) {
         animations.push(
-          animate(svg.createDrawable(drawTargets), {
+          animate(svg.createDrawable(shapeTargets), {
             keyframes: [
               { draw: '0 1', ease: 'inQuad', duration: 2000 },
               { draw: '0 1', ease: 'linear', duration: 1500 },

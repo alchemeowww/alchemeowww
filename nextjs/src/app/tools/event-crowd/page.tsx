@@ -32,6 +32,7 @@ export default function EventCrowdPage() {
 	const [savedToday, setSavedToday] = useState(0);
 	const [completedRows, setCompletedRows] = useState<IntervalRow[] | null>(null);
 	const [hydrated, setHydrated] = useState(false);
+	const backupHandleRef = useRef<BackupFileHandle | null>(null);
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const monitor = useCrowdMonitor(videoRef, canvasRef, config, monitoring);
@@ -96,9 +97,16 @@ export default function EventCrowdPage() {
 		summary.looking = monitor.lookingSuccesses.length;
 		return summary;
 	}, [monitoring, completedRows, monitor.attentionReadings, monitor.lookingSuccesses]);
+	const completedCount = monitoring ? Math.max(0, rows.length - 1) : 0;
+	useEffect(() => {
+		if (!completedCount || !startedAt) return;
+		void writeBackup(backupHandleRef.current, buildBackupCsv(rows.slice(0, completedCount)));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [completedCount, startedAt]);
 	const elapsed = formatDuration(startedAt ? currentEnd - startedAt : 0);
 
-	const start = () => {
+	const start = async () => {
+		backupHandleRef.current = await pickBackupFile(config.sessionName);
 		setConfig((current) => ({ ...current, sessionName: current.sessionName.trim() || 'Untitled session' }));
 		monitor.clearCrossings();
 		setCompletedRows(null);
@@ -129,6 +137,12 @@ export default function EventCrowdPage() {
 				localStorage.removeItem(SESSIONS_KEY);
 			}
 		}
+		if (finalRows.length) {
+			const backupCsv = buildBackupCsv(finalRows);
+			if (backupHandleRef.current) void writeBackup(backupHandleRef.current, backupCsv);
+			else downloadFile(backupCsv, `${fileSlug(config.sessionName)}-footfall-backup.csv`, 'text/csv;charset=utf-8');
+			backupHandleRef.current = null;
+		}
 		setCompletedRows(finalRows);
 		monitor.clearAttentionReadings();
 		monitor.clearLookingSuccesses();
@@ -143,13 +157,7 @@ export default function EventCrowdPage() {
 			['Session', 'Counting method', 'Look duration threshold (ms)', 'Interval start', 'Interval end', 'Total footfall', 'Presence', 'Left to right', 'Right to left', 'Looking', 'Not looking', 'Unknown'].join(','),
 			...rows.map((row) => [csv(config.sessionName), csv(config.countMode), config.gazeDurationMs, new Date(row.start).toISOString(), new Date(row.end).toISOString(), row.total, row.presence, row.leftToRight, row.rightToLeft, row.looking, row.notLooking, row.unknown].join(',')),
 		].join('\r\n');
-		const blob = new Blob([payload], { type: format === 'csv' ? 'text/csv;charset=utf-8' : 'application/json' });
-		const url = URL.createObjectURL(blob);
-		const anchor = document.createElement('a');
-		anchor.href = url;
-		anchor.download = `${(config.sessionName.trim() || 'crowd-session').replace(/[^a-z0-9-_]+/gi, '-').toLowerCase()}.${format}`;
-		anchor.click();
-		URL.revokeObjectURL(url);
+		downloadFile(payload, `${fileSlug(config.sessionName)}.${format}`, format === 'csv' ? 'text/csv;charset=utf-8' : 'application/json');
 	};
 
 	return <><Header showLogo={false}/><div className="event-crowd-page"><CrowdDashboard config={config} updateConfig={updateConfig} monitoring={monitoring} status={monitor.status} attentionStatus={monitor.attentionStatus} error={monitor.error} startedAt={startedAt} elapsed={elapsed} rows={rows} crossings={monitor.crossings} attentionCounts={attentionCounts} people={monitor.people} todayTotal={savedToday + (monitoring ? monitor.crossings.length : 0)} cameras={monitor.cameras} zoomRange={monitor.zoomRange} start={start} stop={stop} videoRef={videoRef} canvasRef={canvasRef} onExport={onExport} /></div><Footer smallFooter={true} /></>;
@@ -181,4 +189,53 @@ function formatDuration(milliseconds: number) {
 
 function csv(value: string) {
 	return `"${value.replaceAll('"', '""')}"`;
+}
+type BackupFileHandle = { createWritable: () => Promise<{ write: (data: string) => Promise<void>; close: () => Promise<void> }> };
+
+function fileSlug(name: string) {
+	return (name.trim() || 'crowd-session').replace(/[^a-z0-9-_]+/gi, '-').toLowerCase();
+}
+
+function downloadFile(content: string, filename: string, type: string) {
+	const url = URL.createObjectURL(new Blob([content], { type }));
+	const anchor = document.createElement('a');
+	anchor.href = url;
+	anchor.download = filename;
+	anchor.click();
+	URL.revokeObjectURL(url);
+}
+
+// Lets the user pick a file once so the backup can be rewritten after every interval; unsupported browsers fall back to a download on stop.
+async function pickBackupFile(sessionName: string): Promise<BackupFileHandle | null> {
+	const picker = (window as unknown as { showSaveFilePicker?: (options: object) => Promise<BackupFileHandle> }).showSaveFilePicker;
+	if (!picker) return null;
+	try {
+		return await picker({ suggestedName: `${fileSlug(sessionName)}-footfall-backup.csv`, types: [{ description: 'CSV file', accept: { 'text/csv': ['.csv'] } }] });
+	} catch {
+		return null;
+	}
+}
+
+async function writeBackup(handle: BackupFileHandle | null, content: string) {
+	if (!handle) return;
+	try {
+		const writable = await handle.createWritable();
+		await writable.write(content);
+		await writable.close();
+	} catch (error) {
+		console.error('Could not write the footfall backup', error);
+	}
+}
+
+function formatDateTime(timestamp: number) {
+	const date = new Date(timestamp);
+	const pad = (value: number) => String(value).padStart(2, '0');
+	return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+}
+
+function buildBackupCsv(rows: IntervalRow[]) {
+	return [
+		['startDateTime', 'endDateTime', 'totalFootfall', 'leftToRight', 'rightToLeft', 'lookingAtBooth'].join(','),
+		...rows.map((row) => [formatDateTime(row.start), formatDateTime(row.end), row.total, row.leftToRight, row.rightToLeft, row.looking].join(',')),
+	].join('\r\n');
 }

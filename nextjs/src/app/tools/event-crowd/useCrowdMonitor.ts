@@ -7,9 +7,12 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 type MonitorStatus = 'idle' | 'starting' | 'live' | 'error';
 type Track = { id: number; x: number; y: number; firstSeen: number; lastSeen: number; counted: boolean; attention: Attention | null; lookingSince: number | null; lookedAtCamera: boolean };
+type PersonBox = { left: number; top: number; width: number; height: number };
+type LookAnchor = PersonBox & { trackId: number; lastSeen: number };
 
 const PERSON_MODEL = 'https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/float16/1/efficientdet_lite0.tflite';
 const FACE_MODEL = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+const TRACK_RETENTION_MS = 3000;
 
 export function useCrowdMonitor(
 	videoRef: MutableRefObject<HTMLVideoElement | null>,
@@ -68,6 +71,7 @@ export function useCrowdMonitor(
 		let lastFaceFrame = 0;
 		let nextId = 1;
 		let tracks: Track[] = [];
+		let lookAnchors: LookAnchor[] = [];
 		let recentFaces: Array<{ x: number; y: number; attention: Attention }> = [];
 		let lastPublish = 0;
 
@@ -164,8 +168,10 @@ export function useCrowdMonitor(
 					})
 						.filter((person) => activeConfig.detectionArea === 'full' || (person.x > 0.15 && person.x < 0.85));
 					const used = new Set<number>();
+					const usedLookAnchors = new Set<LookAnchor>();
 					const nextTracks: Track[] = [];
 					const visiblePeople: TrackedPerson[] = [];
+					lookAnchors = lookAnchors.filter((anchor) => now - anchor.lastSeen < TRACK_RETENTION_MS);
 					for (const person of detected) {
 						let closestIndex = -1;
 						let closestDistance = 0.18;
@@ -179,11 +185,24 @@ export function useCrowdMonitor(
 						const track: Track = previous
 							? { ...previous, x: person.x, y: person.y, lastSeen: now }
 							: { id: nextId++, x: person.x, y: person.y, firstSeen: now, lastSeen: now, counted: false, attention: null, lookingSince: null, lookedAtCamera: false };
+						const lookAnchor = lookAnchors.find((anchor) => !usedLookAnchors.has(anchor) && anchor.trackId === track.id)
+							?? lookAnchors.find((anchor) => !usedLookAnchors.has(anchor) && boxIoU(anchor, person) >= 0.35);
+						if (lookAnchor) {
+							usedLookAnchors.add(lookAnchor);
+							lookAnchor.trackId = track.id;
+							lookAnchor.left = person.left;
+							lookAnchor.top = person.top;
+							lookAnchor.width = person.width;
+							lookAnchor.height = person.height;
+							lookAnchor.lastSeen = now;
+							track.lookedAtCamera = true;
+						}
 						const facesInPerson = recentFaces
 							.filter((face) => face.x >= person.left && face.x <= person.left + person.width && face.y >= person.top && face.y <= person.top + person.height * 0.55)
 							.sort((first, second) => Math.abs(first.x - (person.left + person.width / 2)) - Math.abs(second.x - (person.left + person.width / 2)));
 						const attention = facesInPerson[0]?.attention ?? 'unknown';
 						if (updateLookDwell(track, attention, now, activeConfig.gazeDurationMs)) {
+							lookAnchors.push({ trackId: track.id, left: person.left, top: person.top, width: person.width, height: person.height, lastSeen: now });
 							const success = { trackId: track.id, timestamp: Date.now() };
 							setLookingSuccesses((current) => current.some((item) => item.trackId === track.id) ? current : [...current, success]);
 						}
@@ -207,7 +226,7 @@ export function useCrowdMonitor(
 						nextTracks.push(track);
 						visiblePeople.push({ id: track.id, left: person.left, top: person.top, width: person.width, height: person.height, confidence: person.confidence, attention });
 					}
-					tracks = [...nextTracks, ...tracks.filter((track, index) => !used.has(index) && now - track.lastSeen < 1200)];
+					tracks = [...nextTracks, ...tracks.filter((track, index) => !used.has(index) && now - track.lastSeen < TRACK_RETENTION_MS)];
 					if (time - lastPublish > 100) {
 						lastPublish = time;
 						setPeople(visiblePeople);
@@ -257,6 +276,14 @@ export function updateLookDwell(track: { lookingSince: number | null; lookedAtCa
 	if (now - track.lookingSince < durationMs) return false;
 	track.lookedAtCamera = true;
 	return true;
+}
+
+function boxIoU(first: PersonBox, second: PersonBox) {
+	const intersectionWidth = Math.max(0, Math.min(first.left + first.width, second.left + second.width) - Math.max(first.left, second.left));
+	const intersectionHeight = Math.max(0, Math.min(first.top + first.height, second.top + second.height) - Math.max(first.top, second.top));
+	const intersection = intersectionWidth * intersectionHeight;
+	const union = first.width * first.height + second.width * second.height - intersection;
+	return union > 0 ? intersection / union : 0;
 }
 
 export function classifyAttention(landmarks: NormalizedLandmark[]): Attention {

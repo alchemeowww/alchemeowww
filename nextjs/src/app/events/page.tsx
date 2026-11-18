@@ -21,7 +21,7 @@ const events = [
     location: 'Level 3 Island 88, George Town, Penang',
     type: 'Art Festival',
     image: "/images/events/gtif2026.webp",
-    upcoming: true,
+    upcoming: false,
     googleMapsLink: "https://maps.app.goo.gl/yYirzj7qwGmUwCwG6",
   },
   {
@@ -30,7 +30,7 @@ const events = [
     location: 'World Trade Center, Kuala Lumpur',
     type: 'Anime Convention',
     image: "/images/events/booths/AF.webp",
-    upcoming: true,
+    upcoming: false,
     link: '/events/af-plus-2026',
   },
   {
@@ -39,7 +39,7 @@ const events = [
     location: 'Sunway Pyramid Convention Center',
     type: 'Anime Convention',
     image: "/images/events/booths/Cosmic-Sep2026.webp",
-    upcoming: true,
+    upcoming: false,
     link: '/events/cosmic-2026',
   },
   {
@@ -48,7 +48,7 @@ const events = [
     location: 'The Mines - MIECC',
     type: 'Anime Convention',
     image: '/images/events/booths/amg2026.webp',
-    upcoming: true,
+    upcoming: false,
   },
   {
     date: '13 - 14 Jun 2026',

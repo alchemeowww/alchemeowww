@@ -20,7 +20,7 @@ const events = [
     image: "/images/events/gtif2026.webp",
     alt: "Georgetown Illustration Festival 2026 - event logo",
     tbc: false,
-    upcoming: true,
+    upcoming: false,
     googleMapsLink: "https://maps.app.goo.gl/yYirzj7qwGmUwCwG6",
   },
   {
